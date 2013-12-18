@@ -5,9 +5,10 @@ var mongo = require('mongodb');
 var app = express();
 
 app.use(logfmt.requestLogger());
+app.use(express.static(__dirname + '/htdocs'));
 
 app.get('/', function(req, res) {
-  res.send(index.html);
+  res.send("<input type='text'></input>");
 });
 
 var port = process.env.PORT || 5000;
