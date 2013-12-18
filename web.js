@@ -24,6 +24,15 @@ app.post('/create', function(req, res){
 	  });
 	});
 
+	var dump
+	mongo.Db.connect(mongoUri, function (err, db) {
+	  db.collection('mydocs', function(er, collection) {
+	    dump = collection.find();
+	  });
+	});	
+
+	console.log(dump)
+
 	res.redirect('/');
 
 	//res.send('<p>Thank you</p>');
