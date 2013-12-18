@@ -27,10 +27,14 @@ app.post('/create', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
+				/*
 				stuff.each(function(err, doc){
 					console.log("Name:" + doc.Name)
 				});
-				console.log("Array: " + stuff.toArray());
+				*/
+				stuff.toArray(function(ret){
+					console.log(ret);
+				});
 			});
 		});
 	});
