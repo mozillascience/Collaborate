@@ -19,6 +19,7 @@ app.get('/', function(req, res) {
 app.post('/', function(req, res){
 	console.log('testing app.post')
 	//console.log(req)
+	res.render('index');
 });
 
 var port = process.env.PORT || 5000;
