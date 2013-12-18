@@ -10,6 +10,7 @@ var mongoUri = process.env.MONGOLAB_URI ||
 
 //app.use(logfmt.requestLogger());
 app.use(express.static(__dirname));
+app.use(express.bodyParser());
 
 app.get('/', function(req, res) {
   //res.redirect("/index.html");
@@ -18,7 +19,7 @@ app.get('/', function(req, res) {
 
 app.post('/', function(req, res){
 	console.log('testing app.post')
-	console.log(req.param)
+	console.log(req.body)
 	res.render('index', {title:'plzWork'});
 });
 
