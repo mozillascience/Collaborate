@@ -31,7 +31,7 @@ app.post('/create', function(req, res){
 				//name = doc.Name;
 
 			console.log('fetch attempt: ')
-			console.log(cursor.forEach(printjson));
+			console.log(cursor.forEach( function(document){console.log("Name:" + document.Name)} ));
 		});
 	});
 
