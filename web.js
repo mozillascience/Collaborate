@@ -17,23 +17,23 @@ app.get('/', function(req, res) {
 
 app.post('/create', function(req, res){
 
-	mongo.Db.connect(mongoUri, function (err, db) {
+	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.insert({'Name': req.body.Name, 'Race': req.body.Race, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {});
 		});
 	});
 
-/*
-	mongo.Db.connect( mongoUri, function(err, db){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			var cursor = collection.find(),
-				doc = cursor.next(),
-				name = doc.Name;
+				doc = cursor.next();
+				//name = doc.Name;
 
-			console.log(name)
+			console.log(doc)
 		});
 	});
-*/
+
 
 	res.redirect('/');
 
