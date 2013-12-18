@@ -42,7 +42,7 @@ function createCollectionCallback( error, collection )
 
 function collectionCallback( error, collection )
 {
-    contactsCollection = collection;
+    dump = collection;
 };
 
 	console.log(dump)
