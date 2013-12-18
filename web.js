@@ -19,7 +19,7 @@ app.get('/', function(req, res) {
 app.post('/', function(req, res){
 	console.log('testing app.post')
 	//console.log(req)
-	res.render('index');
+	res.render('index', {title:'plzWork'});
 });
 
 var port = process.env.PORT || 5000;
