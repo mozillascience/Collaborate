@@ -18,15 +18,15 @@ app.get('/', function(req, res) {
 });
 
 app.post('/create', function(req, res){
-	
+
 	mongo.Db.connect(mongoUri, function (err, db) {
 	  db.collection('mydocs', function(er, collection) {
-	    collection.insert({'Name': req.body.Name, 'Race': req.body.Age, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {
+	    collection.insert({'Name': req.body.Name, 'Race': req.body.Race, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {
 	    });
 	  });
 	});
 
-	res.render('index', {title:'plzWork'});
+	//res.render('index', {title:'plzWork'});
 });
 
 var port = process.env.PORT || 5000;
