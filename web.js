@@ -24,32 +24,13 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	var dump = 1;
-
 	mongo.connect( mongoUri, {}, dbConnectCallback );
 
-function dbConnectCallback( error, db )
-{
-    database = db;
+	function dbConnectCallback( error, db ){
+	    dump = db.mydocs.find();
+	};
 
-    database.createCollection( "contacts", createCollectionCallback );
-};
-
-function createCollectionCallback( error, collection )
-{
-    database.collection( "mydocs", collectionCallback )
-};
-
-function collectionCallback( error, collection )
-{
-    dump = collection;
-};
-
-	console.log(dump)
-
-	res.redirect('/');
-
-	//res.send('<p>Thank you</p>');
+	console.log(dump);
 });
 
 var port = process.env.PORT || 5000;
