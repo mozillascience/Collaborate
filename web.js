@@ -24,13 +24,11 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	mongo.connect( mongoUri, {}, dbConnectCallback );
+	mongo.Db.connect( mongoUri, function(err, db){
+		console.log(db.mydocs.find());
+	});
 
-	function dbConnectCallback( error, db ){
-	    dump = db.mydocs.find();
-	};
 
-	console.log(dump);
 });
 
 var port = process.env.PORT || 5000;
