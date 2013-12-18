@@ -18,14 +18,15 @@ app.get('/', function(req, res) {
 app.post('/create', function(req, res){
 
 	mongo.Db.connect(mongoUri, function (err, db) {
-	  db.collection('mydocs', function(er, collection) {
-	    collection.insert({'Name': req.body.Name, 'Race': req.body.Race, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {
-	    });
-	  });
+		db.collection('mydocs', function(er, collection) {
+			collection.insert({'Name': req.body.Name, 'Race': req.body.Race, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {});
+		});
 	});
 
 	mongo.Db.connect( mongoUri, function(err, db){
-		console.log(db.mydocs.find());
+		db.collection('mydocs', function(er, collection) {
+			console.log(collection.find());
+		});
 	});
 
 
