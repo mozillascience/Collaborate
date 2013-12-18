@@ -6,7 +6,7 @@ var app = express();
 app.use(logfmt.requestLogger());
 
 app.get('/', function(req, res) {
-  res.send('Hello Wurld!');
+  res.send(<input type='number'></input>);
 });
 
 var port = process.env.PORT || 5000;
