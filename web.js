@@ -26,12 +26,12 @@ app.post('/create', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
-			var cursor = collection.find();
-				//doc = cursor.next();
+			var cursor = collection.find(),
+				doc = cursor.next;
 				//name = doc.Name;
 
 			console.log('fetch attempt: ')
-			console.log(cursor)
+			console.log(doc)
 		});
 	});
 
