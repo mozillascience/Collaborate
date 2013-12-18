@@ -27,7 +27,7 @@ app.post('/create', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
-				stuff.forEach(function(err, doc){
+				stuff.each(function(err, doc){
 					console.log("Name:" + doc.Name)
 				});
 			});
