@@ -26,7 +26,7 @@ app.listen(port, function() {
 
 mongo.Db.connect(mongoUri, function (err, db) {
   db.collection('mydocs', function(er, collection) {
-    collection.insert({'HERP': 'DERP'}, {safe: true}, function(er,rs) {
+    collection.insert({'Name': document.getElementById('name').value, 'Age': document.getElementById('age').value}, {safe: true}, function(er,rs) {
     });
   });
 });
