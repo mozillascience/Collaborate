@@ -18,8 +18,16 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res){
-	console.log('testing app.post')
-	console.log(req.body)
+	//console.log('testing app.post')
+	//console.log(req.body)
+
+	mongo.Db.connect(mongoUri, function (err, db) {
+	  db.collection('mydocs', function(er, collection) {
+	    collection.insert({'Name': req.body.Name, 'Age': req.body.Age}, {safe: true}, function(er,rs) {
+	    });
+	  });
+	});
+
 	res.render('index', {title:'plzWork'});
 });
 
@@ -30,10 +38,11 @@ app.listen(port, function() {
 
 
 
-
+/*
 mongo.Db.connect(mongoUri, function (err, db) {
   db.collection('mydocs', function(er, collection) {
     collection.insert({'HERP': 'DERP'}, {safe: true}, function(er,rs) {
     });
   });
 });
+*/
