@@ -9,6 +9,7 @@ app.use(express.static(__dirname + 'index.html'));
 
 app.get('/', function(req, res) {
   //res.send("<input type='text'></input>");
+  res.send(index.html);
 });
 
 var port = process.env.PORT || 5000;
