@@ -37,12 +37,17 @@ app.post('/create', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
-			var dump = collection.find({}).toArray(),
-				i;
+			collection.find({}, function(err, stuff){
+				//stuff.each(function(err, doc){
+				//	console.log("Name:" + doc.Name)
+				//});
+				var dump = stuff.toArray(), i;
 
-			for(i=0; i<dump.length; i++){
-				console.log(dump[0].Name);
-			}
+				for(i=0; i<dump.length; i++){
+					console.log(dump[i]);
+				}
+
+			});
 		});
 	});
 
