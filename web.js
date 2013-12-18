@@ -9,7 +9,7 @@ var mongoUri = process.env.MONGOLAB_URI ||
   'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
 
 //app.use(logfmt.requestLogger());
-app.use(express.static(__dirname));
+//app.use(express.static(__dirname));
 
 app.get('/', function(req, res) {
   //res.redirect("/index.html");
