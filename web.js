@@ -8,7 +8,6 @@ app.use(logfmt.requestLogger());
 app.use(express.static(__dirname));
 
 app.get('/', function(req, res) {
-  //res.send("<input type='text'></input>");
   res.redirect("/index.html");
 });
 
@@ -16,10 +15,11 @@ var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-/*
+
+
 var mongoUri = process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
-  'mongodb://heroku_app17567162:epvq4e1ccopjjpu2o3l2pvaifo@ds041228.mongolab.com:41228/heroku_app17567162';
+  'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
 
 mongo.Db.connect(mongoUri, function (err, db) {
   db.collection('mydocs', function(er, collection) {
@@ -27,4 +27,3 @@ mongo.Db.connect(mongoUri, function (err, db) {
     });
   });
 });
-*/
