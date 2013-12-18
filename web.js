@@ -5,7 +5,7 @@ var mongo = require('mongodb');
 var app = express();
 
 app.use(logfmt.requestLogger());
-app.use(express.static(__dirname + '/htdocs'));
+app.use(express.static(__dirname + 'index.html'));
 
 app.get('/', function(req, res) {
   res.send("<input type='text'></input>");
