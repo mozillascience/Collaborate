@@ -17,13 +17,11 @@ app.get('/', function(req, res) {
   res.render('index', {title:'plzWork'});
 });
 
-app.post('/', function(req, res){
-	//console.log('testing app.post')
-	//console.log(req.body)
-
+app.post('/create', function(req, res){
+	
 	mongo.Db.connect(mongoUri, function (err, db) {
 	  db.collection('mydocs', function(er, collection) {
-	    collection.insert({'Name': req.body.Name, 'Age': req.body.Age}, {safe: true}, function(er,rs) {
+	    collection.insert({'Name': req.body.Name, 'Race': req.body.Age, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {
 	    });
 	  });
 	});
@@ -35,14 +33,3 @@ var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-
-
-
-/*
-mongo.Db.connect(mongoUri, function (err, db) {
-  db.collection('mydocs', function(er, collection) {
-    collection.insert({'HERP': 'DERP'}, {safe: true}, function(er,rs) {
-    });
-  });
-});
-*/
