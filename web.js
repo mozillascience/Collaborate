@@ -23,7 +23,7 @@ app.post('/create', function(req, res){
 		});
 	});
 
-/*
+
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
@@ -33,8 +33,8 @@ app.post('/create', function(req, res){
 			});
 		});
 	});
-*/
 
+/*
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
@@ -50,7 +50,7 @@ app.post('/create', function(req, res){
 			});
 		});
 	});
-
+*/
 	res.redirect('/');
 
 
