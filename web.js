@@ -12,7 +12,6 @@ app.use(express.static(__dirname));
 app.use(express.bodyParser());
 
 app.get('/', function(req, res) {
-	res.send('<p>Thank you</p>');
 	res.render('index');
 });
 
@@ -26,8 +25,16 @@ app.post('/create', function(req, res){
 	});
 
 	res.redirect('/');
-	//app.render('index.html');
+
 	//res.send('<p>Thank you</p>');
+
+	console.log(
+	mongo.Db.connect(mongoUri, function (err, db) {
+	  db.collection('mydocs', function(er, collection) {
+	    collection.find();
+	  });
+	});
+		)
 });
 
 var port = process.env.PORT || 5000;
