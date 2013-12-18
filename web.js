@@ -26,12 +26,14 @@ app.post('/create', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
-			var cursor = collection.find();
-				//doc = cursor.next();
-				//name = doc.Name;
+			collection.find({}, function(err, stuff){
+				stuff.forEach(function(err, doc){
+					console.log("Name:" + doc.Name)
+				});
+			});
 
-			console.log('fetch attempt: ')
-			console.log(cursor.forEach( function(document){console.log("Name:" + document.Name)} ));
+			//console.log('fetch attempt: ')
+			//console.log(cursor.forEach( function(document){console.log("Name:" + document.Name)} ));
 		});
 	});
 
