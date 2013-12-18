@@ -24,10 +24,6 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	res.redirect('/');
-
-	//res.send('<p>Thank you</p>');
-
 	console.log(
 	mongo.Db.connect(mongoUri, function (err, db) {
 	  db.collection('mydocs', function(er, collection) {
@@ -35,6 +31,10 @@ app.post('/create', function(req, res){
 	  });
 	});
 		)
+
+	res.redirect('/');
+
+	//res.send('<p>Thank you</p>');
 });
 
 var port = process.env.PORT || 5000;
