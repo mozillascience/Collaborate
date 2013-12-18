@@ -24,12 +24,26 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	var dump
-	mongo.Db.connect(mongoUri, function (err, db) {
-	  db.collection('mydocs', function(er, collection) {
-	    dump = collection.find();
-	  });
-	});	
+	var dump = 1;
+
+	mongo.connect( mongoUri, {}, dbConnectCallback );
+
+function dbConnectCallback( error, db )
+{
+    database = db;
+
+    database.createCollection( "contacts", createCollectionCallback );
+};
+
+function createCollectionCallback( error, collection )
+{
+    database.collection( "mydocs", collectionCallback )
+};
+
+function collectionCallback( error, collection )
+{
+    contactsCollection = collection;
+};
 
 	console.log(dump)
 
