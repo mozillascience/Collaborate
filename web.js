@@ -22,7 +22,7 @@ app.post('/create', function(req, res){
 			collection.insert({'Name': req.body.Name, 'Race': req.body.Race, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {});
 		});
 	});
-
+/*
 	mongo.Db.connect( mongoUri, function(err, db){
 		db.collection('mydocs', function(er, collection) {
 			var cursor = collection.find(),
@@ -30,11 +30,9 @@ app.post('/create', function(req, res){
 				name = doc.Name;
 
 			console.log(name)
-
-
 		});
 	});
-
+*/
 
 });
 
