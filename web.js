@@ -23,7 +23,7 @@ app.post('/create', function(req, res){
 		});
 	});
 
-
+/*
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
@@ -31,12 +31,20 @@ app.post('/create', function(req, res){
 					console.log("Name:" + doc.Name)
 				});
 			});
-
-			//console.log('fetch attempt: ')
-			//console.log(cursor.forEach( function(document){console.log("Name:" + document.Name)} ));
 		});
 	});
+*/
 
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('mydocs', function(er, collection) {
+			var dump = collection.find({}).toArray(),
+				i;
+
+			for(i=0; i<dump.length; i++){
+				console.log(dump[0].Name);
+			}
+		});
+	});
 
 	res.redirect('/');
 
