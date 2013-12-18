@@ -30,6 +30,7 @@ app.post('/create', function(req, res){
 				stuff.each(function(err, doc){
 					console.log("Name:" + doc.Name)
 				});
+				console.log("Array: " + stuff.toArray());
 			});
 		});
 	});
