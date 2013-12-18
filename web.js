@@ -26,7 +26,8 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	//res.render('index', {title:'plzWork'});
+	res.render('index', {title:'plzWork'});
+	res.end();
 });
 
 var port = process.env.PORT || 5000;
