@@ -8,7 +8,7 @@ app.use(logfmt.requestLogger());
 app.use(express.static(__dirname + 'index.html'));
 
 app.get('/', function(req, res) {
-  res.send("<input type='text'></input>");
+  //res.send("<input type='text'></input>");
 });
 
 var port = process.env.PORT || 5000;
