@@ -1,0 +1,30 @@
+{
+  "name": "herokuHW",
+  "version": "0.0.0",
+  "description": "learning how to Heroku",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BillMills/node-example.git"
+  },
+  "keywords": [
+    "example",
+    "heroku"
+  ],
+  "author": "BillMills",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BillMills/node-example/issues"
+  },
+  "dependencies": {
+    "logfmt": "~0.18.1",
+    "express": "~3.4.7"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
+
