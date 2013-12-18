@@ -14,7 +14,7 @@ app.use(express.bodyParser());
 
 app.get('/', function(req, res) {
   //res.redirect("/index.html");
-  res.render('index', {title:'plzWork'});
+  res.render('index');
 });
 
 app.post('/create', function(req, res){
@@ -26,9 +26,8 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	//res.render('index', {title:'plzWork'});
-	//res.end();
-	res.send('<p>Thank you</p>');
+	res.render('index.html');
+	//res.send('<p>Thank you</p>');
 });
 
 var port = process.env.PORT || 5000;
