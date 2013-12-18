@@ -24,14 +24,6 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	console.log(
-	mongo.Db.connect(mongoUri, function (err, db) {
-	  db.collection('mydocs', function(er, collection) {
-	    collection.find();
-	  });
-	});
-		)
-
 	res.redirect('/');
 
 	//res.send('<p>Thank you</p>');
