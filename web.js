@@ -16,6 +16,11 @@ app.get('/', function(req, res) {
   res.render('index', {title:'plzWork'});
 });
 
+app.post('/', function(req, res){
+	console.log('testing app.post')
+	console.log(req)
+});
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
@@ -26,7 +31,7 @@ app.listen(port, function() {
 
 mongo.Db.connect(mongoUri, function (err, db) {
   db.collection('mydocs', function(er, collection) {
-    collection.insert({'Name': document.getElementById('name').value, 'Age': document.getElementById('age').value}, {safe: true}, function(er,rs) {
+    collection.insert({'HERP': 'DERP'}, {safe: true}, function(er,rs) {
     });
   });
 });
