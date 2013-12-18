@@ -8,7 +8,8 @@ app.use(logfmt.requestLogger());
 app.use(express.static(__dirname));
 
 app.get('/', function(req, res) {
-  res.redirect("/index.html");
+  //res.redirect("/index.html");
+  res.render('index', {title:'plzWork'});
 });
 
 var port = process.env.PORT || 5000;
