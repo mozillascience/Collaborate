@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 app.post('/', function(req, res){
 	console.log('testing app.post')
-	//console.log(req)
+	console.log(req.param)
 	res.render('index', {title:'plzWork'});
 });
 
