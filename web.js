@@ -22,6 +22,9 @@ app.post('/create', function(req, res){
 			collection.insert({'Name': req.body.Name, 'Race': req.body.Race, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {});
 		});
 	});
+
+	mongo.connect( mongoUri, {}, dbConnectCallback );
+
 /*
 	mongo.Db.connect( mongoUri, function(err, db){
 		db.collection('mydocs', function(er, collection) {
@@ -33,6 +36,9 @@ app.post('/create', function(req, res){
 		});
 	});
 */
+
+	res.redirect('/');
+
 
 });
 
