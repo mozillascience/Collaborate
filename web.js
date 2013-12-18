@@ -5,11 +5,11 @@ var mongo = require('mongodb');
 var app = express();
 
 app.use(logfmt.requestLogger());
-app.use(express.static(__dirname + 'index.html'));
+app.use(express.static(__dirname));
 
 app.get('/', function(req, res) {
   //res.send("<input type='text'></input>");
-  res.send(index.html);
+  res.redirect("/index.html");
 });
 
 var port = process.env.PORT || 5000;
