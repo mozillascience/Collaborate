@@ -24,7 +24,8 @@ app.post('/create', function(req, res){
 	  });
 	});
 
-	app.render('index.html');
+	res.redirect('/')
+	//app.render('index.html');
 	//res.send('<p>Thank you</p>');
 });
 
