@@ -27,7 +27,7 @@ app.post('/create', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			var cursor = collection.find(),
-				doc = cursor.next;
+				doc = cursor.next();
 				//name = doc.Name;
 
 			console.log('fetch attempt: ')
