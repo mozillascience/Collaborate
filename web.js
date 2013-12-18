@@ -32,8 +32,8 @@ app.post('/create', function(req, res){
 					console.log("Name:" + doc.Name)
 				});
 				*/
-				stuff.toArray(function(ret){
-					console.log(ret);
+				stuff.toArray(function(err, docs){
+					console.log(docs);
 				});
 			});
 		});
