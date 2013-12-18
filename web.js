@@ -25,7 +25,13 @@ app.post('/create', function(req, res){
 
 	mongo.Db.connect( mongoUri, function(err, db){
 		db.collection('mydocs', function(er, collection) {
-			console.log(collection.find());
+			var cursor = collection.find(),
+				doc = cursor.next(),
+				name = doc.Name;
+
+			console.log(name)
+
+
 		});
 	});
 
