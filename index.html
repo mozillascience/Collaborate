@@ -5,4 +5,13 @@
 		<input type='number'></input>
 		<input type='text'></input>
 	</body>
+
+	<script>
+		mongo.Db.connect(mongoUri, function (err, db) {
+		  db.collection('mydocs', function(er, collection) {
+		    collection.insert({'first': 'post'}, {safe: true}, function(er,rs) {
+		    });
+		  });
+		});
+	</script>
 </html>
