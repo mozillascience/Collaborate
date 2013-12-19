@@ -23,6 +23,8 @@ app.post('/create', function(req, res){
 		});
 	});
 
+	var content;
+
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
