@@ -23,41 +23,21 @@ app.post('/create', function(req, res){
 		});
 	});
 
+	var content;
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
-				/*
-				stuff.each(function(err, doc){
-					console.log("Name:" + doc.Name)
-				});
-				*/
 				stuff.toArray(function(err, docs){
-					console.log(docs);
+					content = docs
 				});
 			});
 		});
 	});
 
-/*
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('mydocs', function(er, collection) {
-			collection.find({}, function(err, stuff){
-				//stuff.each(function(err, doc){
-				//	console.log("Name:" + doc.Name)
-				//});
-				var dump = stuff.toArray(), i;
+	console.log(content)
 
-				for(i=0; i<dump.length; i++){
-					console.log(dump[i]);
-				}
-
-			});
-		});
-	});
-*/
 	res.redirect('/');
-
 
 });
 
