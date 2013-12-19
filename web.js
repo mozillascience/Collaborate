@@ -35,8 +35,8 @@ app.post('/create', function(req, res){
 		});
 	});
 
-	for(var i =0; i<content.length; i++)
-		console.log(content[i].Name)
+	//for(var i=0; i<content.length; i++)
+		console.log(content)
 
 	res.redirect('/');
 
