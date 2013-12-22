@@ -32,7 +32,7 @@ app.post('/dinoSubmit', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('dinos', function(er, collection) {
-			collection.insert({'Name': req.body.Name, 'Feature': req.body.feature, 'Wants': req.body.Wants}, {safe: true}, function(er,rs) {});
+			collection.insert({'Name': req.body.Name, 'Feature': req.body.feature, 'Wants': req.body.wants}, {safe: true}, function(er,rs) {});
 		});
 	});
 
@@ -65,7 +65,7 @@ app.post('/roboSubmit', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('robos', function(er, collection) {
-			collection.insert({'Name': req.body.Name, 'Language': req.body.language, 'Wants':req.body.Wants}, {safe: true}, function(er,rs) {});
+			collection.insert({'Name': req.body.Name, 'Language': req.body.language, 'Wants':req.body.wants}, {safe: true}, function(er,rs) {});
 		});
 	});
 
