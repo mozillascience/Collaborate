@@ -16,6 +16,21 @@ app.get('/', function(req, res) {
 	res.render('index');
 });
 
+app.post('/dinoStart', function(req, res){
+
+	res.render('dinoInput.jade', {});
+
+});
+
+app.post('/roboStart', function(req, res){
+
+	res.render('roboInput.jade', {});
+
+});
+
+
+
+/*
 app.post('/create', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
@@ -43,9 +58,9 @@ app.post('/report', function(req, res){
 		});
 	});
 
-	//res.redirect('/herpaderp.html');
 	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
 });
+*/
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
