@@ -23,23 +23,19 @@ app.post('/create', function(req, res){
 		});
 	});
 
-	content = [];
-
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
 				stuff.toArray(function(err, docs){
-					console.log(docs.length)
+					var content = [];
 					for(var i=0; i<docs.length; i++)
 						content[i] = docs[i].Name;
+
+					console.log(content);
 				});
 			});
 		});
 	});
-
-	console.log(content.length)
-	//for(var i=0; i<content.length; i++)
-	//	console.log(content[i]);
 
 	res.redirect('/');
 
