@@ -44,7 +44,7 @@ app.post('/report', function(req, res){
 	});
 
 	//res.redirect('/herpaderp.html');
-	res.render('/trololo.jade', {trololo: 'Jade Ahoy!'})
+	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
 });
 
 var port = process.env.PORT || 5000;
