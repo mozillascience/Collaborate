@@ -57,8 +57,6 @@ app.post('/dinoSubmit', function(req, res){
 		});
 	});
 
-	//res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
-
 });
 
 app.post('/roboSubmit', function(req, res){
@@ -69,58 +67,28 @@ app.post('/roboSubmit', function(req, res){
 		});
 	});
 
-	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
-
-});
-
-
-
-
-
-
-app.post('/create', function(req, res){
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('mydocs', function(er, collection) {
-			collection.insert({'Name': req.body.Name, 'Race': req.body.Race, 'Occupation': req.body.Occupation}, {safe: true}, function(er,rs) {});
-		});
-	});
-
-	res.redirect('/');
-
-});
-
-app.post('/report', function(req, res){
-
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('dinos', function(er, collection) {
 			collection.find().toArray(function(err, dinos){
 
-				mongo.Db.connect(mongoUri, function(err, db) {
-					db.collection('robos', function(er, collection) {
-						collection.find().toArray(function(err, robos){
+				var matches = [];
 
-							var content = [];
+				for(var i=0; i<dinos.length; i++)
+					if(req.body.wants == dinos[i].Feature)
+						matches[matches.length] = dinos[i].Name								
 
-							for(var i=0; i<dinos.length; i++)
-								content[i] = dinos[i].Name;
-
-							for(i=dinos.length; i<dinos.length+robos.length; i++)
-								content[i] = robos[i - dinos.length].Name;
-
-							console.log(content);										
-
-						});
-					});
-				});				
+				if(matches.length == 0)
+					res.render('dinoReport.jade', {name: '404: NO DINOS FOUND, CONTACT YOUR DINO PROVIDER'})
+				else if (matches.length == 1)
+					res.render('dinoReport.jade', {name: matches[0]+' satisfies all criteria.'})
+				else
+					res.render('dinoReport.jade', {name: 'TOO MANY MATCHES, DINO OVERFLOW'})
 
 			});
 		});
 	});
 
-	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
 });
-
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
