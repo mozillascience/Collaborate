@@ -9,8 +9,19 @@ var mongoUri = process.env.MONGOLAB_URI ||
   'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
 
 app.set('views', __dirname + '/views');
+
 app.use(express.static(__dirname));
+
 app.use(express.bodyParser());
+
+app.use(express.basicAuth(function(user, pass, callback) {
+		var result = true//(user === 'testUser' && pass === 'testPass');
+		callback(null /* error */, result);
+	})
+);
+
+
+
 
 app.get('/', function(req, res) {
 	res.render('index.jade');
@@ -63,18 +74,12 @@ app.post('/roboSubmit', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('dinos', function(er, collection) {
-			collection.find().toArray(function(err, dinos){
+			collection.find({Feature : req.body.wants}).toArray(function(err, dinos){							
 
-				var matches = [];
-
-				for(var i=0; i<dinos.length; i++)
-					if(req.body.wants == dinos[i].Feature)
-						matches[matches.length] = dinos[i].Name								
-
-				if(matches.length == 0)
+				if(dinos.length == 0)
 					res.render('dinoReport.jade', {name: '404: NO DINOS FOUND, CONTACT YOUR DINO PROVIDER'})
-				else if (matches.length == 1)
-					res.render('dinoReport.jade', {name: matches[0]+' satisfies all criteria.'})
+				else if (dinos.length == 1)
+					res.render('dinoReport.jade', {name: dinos[0].Name+' satisfies all criteria.'})
 				else
 					res.render('dinoReport.jade', {name: 'TOO MANY MATCHES, DINO OVERFLOW'})
 
