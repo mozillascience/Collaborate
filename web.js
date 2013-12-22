@@ -90,6 +90,10 @@ app.post('/roboSubmit', function(req, res){
 
 });
 
+app.post('/home', function(req, res) {
+	res.render('index');
+});
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
