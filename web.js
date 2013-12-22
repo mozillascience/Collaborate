@@ -42,7 +42,7 @@ app.post('/report', function(req, res){
 		});
 	});
 
-	res.end();
+	res.redirect('/herpaderp.html');
 });
 
 var port = process.env.PORT || 5000;
