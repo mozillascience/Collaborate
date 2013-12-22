@@ -86,6 +86,8 @@ app.post('/create', function(req, res){
 app.post('/report', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
+		var content = [];
+
 		db.collection('mydocs', function(er, collection) {
 			collection.find().toArray(function(err, docs){
 				for(var i=0; i<docs.length; i++)
