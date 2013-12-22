@@ -29,6 +29,7 @@ app.post('/create', function(req, res){
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
 				stuff.toArray(function(err, docs){
+					console.log(docs.length)
 					for(var i=0; i<docs.length; i++)
 						content[i] = docs[i].Name;
 				});
