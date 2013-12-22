@@ -84,25 +84,17 @@ app.post('/create', function(req, res){
 });
 
 app.post('/report', function(req, res){
-	content = [];
-/*
+
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find().toArray(function(err, docs){
 				for(var i=0; i<docs.length; i++)
 					content[i] = docs[i].Name;
-				console.log(content);
 			});
 		});
-	});
-*/
-	mongo.Db.connect(mongoUri).collection.find().toArray(function(err, docs){
-		for(var i=0; i<docs.length; i++)
-			content[i] = docs[i].Name;
+
 		console.log(content);
 	});
-	
-	console.log(content.length);
 
 	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
 });
