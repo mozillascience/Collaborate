@@ -6,12 +6,19 @@ html
     h1 Welcome, RoboFriend!
 
     form(method='post', action='roboSubmit')
+      label Name
+        input(type='text')
+    
+      label Mode of Transportation
       select(name='locomotion')
         option Bipedal
         option Quadrepedal
         option Antigrav
 
+      label Fav Language
       select(name='language')
         option Haskell
-        option BASIC
+        option FORTRAN 77
         option Jade
+
+      input(type='submit' value='Upload Record to Hive Mind')
