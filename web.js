@@ -38,7 +38,7 @@ app.post('/dinoSubmit', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('robos', function(er, collection) {
-			collection.find({Language == req.body.wants}).toArray(function(err, robos){
+			collection.find({Language : req.body.wants}).toArray(function(err, robos){
 
 				if(robos.length == 0)
 					res.render('dinoReport.jade', {name: 'Sorry friend, no one matches your dino demands :('})
