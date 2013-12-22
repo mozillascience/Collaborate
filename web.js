@@ -23,6 +23,11 @@ app.post('/create', function(req, res){
 		});
 	});
 
+	res.redirect('/');
+
+});
+
+app.post('/report', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
@@ -36,9 +41,6 @@ app.post('/create', function(req, res){
 			});
 		});
 	});
-
-	res.redirect('/');
-
 });
 
 var port = process.env.PORT || 5000;
