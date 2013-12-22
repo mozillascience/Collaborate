@@ -38,18 +38,12 @@ app.post('/dinoSubmit', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('robos', function(er, collection) {
-			collection.find().toArray(function(err, robos){
+			collection.find({Language == req.body.wants}).toArray(function(err, robos){
 
-				var matches = [];
-
-				for(var i=0; i<robos.length; i++)
-					if(req.body.wants == robos[i].Language)
-						matches[matches.length] = robos[i].Name								
-
-				if(matches.length == 0)
+				if(robos.length == 0)
 					res.render('dinoReport.jade', {name: 'Sorry friend, no one matches your dino demands :('})
-				else if (matches.length == 1)
-					res.render('dinoReport.jade', {name: matches[0]+' is perfect for you!'})
+				else if (robos.length == 1)
+					res.render('dinoReport.jade', {name: robos[0].Name+' is perfect for you!'})
 				else
 					res.render('dinoReport.jade', {name: 'there are so many matches you dont even know'})
 
