@@ -43,7 +43,7 @@ app.post('/dinoSubmit', function(req, res){
 				var matches = [];
 
 				for(var i=0; i<robos.length; i++)
-					if(req.body.Wants == robos[i].Language)
+					if(req.body.wants == robos[i].Language)
 						matches[matches.length] = robos[i].Name								
 
 				if(matches.length == 0)
