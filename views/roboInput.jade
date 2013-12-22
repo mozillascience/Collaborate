@@ -4,4 +4,14 @@ html
 
   body
     h1 Welcome, RoboFriend!
-  
+
+    form(method='post', action='roboSubmit')
+      select(name='locomotion')
+        option Bipedal
+        option Quadrepedal
+        option Antigrav
+
+      select(name='language')
+        option Haskell
+        option BASIC
+        option Jade
