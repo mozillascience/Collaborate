@@ -104,7 +104,7 @@ app.post('/report', function(req, res){
 								content[i] = dinos[i].Name;
 
 							for(i=dinos.length; i<dinos.length+robos.length; i++)
-								content[i] = robos[i].Name;
+								content[i] = robos[i - dinos.length].Name;
 
 							console.log(content);										
 
