@@ -84,12 +84,21 @@ app.post('/create', function(req, res){
 });
 
 app.post('/report', function(req, res){
+	content = [];
+
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
-			var poop = collection.find({}).toArray();;
-			console.log(poop)
+			collection.find({}, function(err, stuff){
+				stuff.toArray(function(err, docs){
+					for(var i=0; i<docs.length; i++)
+						content[i] = docs[i].Name;
+				});
+			});
 		});
+
+		console.log(content.length)
 	});
+	
 
 	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
 });
