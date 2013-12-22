@@ -86,16 +86,28 @@ app.post('/create', function(req, res){
 app.post('/report', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
-		var content = [];
+		db.collection('dinos', function(er, collection) {
+			collection.find().toArray(function(err, dinos){
 
-		db.collection('mydocs', function(er, collection) {
-			collection.find().toArray(function(err, docs){
-				for(var i=0; i<docs.length; i++)
-					content[i] = docs[i].Name;
+				mongo.Db.connect(mongoUri, function(err, db) {
+					db.collection('robos', function(er, collection) {
+						collection.find().toArray(function(err, robos){
+							var content = [];
+
+							for(var i=0; i<dinos.length; i++)
+								content[i] = dinos[i].Name;
+
+							for(i=dinos.length; i<dinos.length+robos.length; i++)
+								content[i] = robos[i].Name;
+
+							console.log(content);										
+
+						});
+					});
+				});				
+
 			});
 		});
-
-		console.log(content);
 	});
 
 	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
