@@ -86,8 +86,7 @@ app.post('/create', function(req, res){
 app.post('/report', function(req, res){
 	content = [];
 
-    console.log(
-	mongo.Db.connect(mongoUri, function(err, db) {
+	var fie = mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('mydocs', function(er, collection) {
 			collection.find({}, function(err, stuff){
 				stuff.toArray(function(err, docs){
@@ -97,7 +96,8 @@ app.post('/report', function(req, res){
 			});
 		});
 	});
-	)
+	
+	console.log(fie)
 
 	console.log(content.length);
 
