@@ -13,7 +13,7 @@ app.use(express.static(__dirname));
 app.use(express.bodyParser());
 
 app.get('/', function(req, res) {
-	res.render('index');
+	res.render('index.jade');
 });
 
 app.post('/dinoStart', function(req, res){
@@ -91,7 +91,7 @@ app.post('/roboSubmit', function(req, res){
 });
 
 app.post('/home', function(req, res) {
-	res.render('index');
+	res.render('index.jade');
 });
 
 var port = process.env.PORT || 5000;
