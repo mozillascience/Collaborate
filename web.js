@@ -41,6 +41,8 @@ app.post('/report', function(req, res){
 			});
 		});
 	});
+
+	res.end();
 });
 
 var port = process.env.PORT || 5000;
