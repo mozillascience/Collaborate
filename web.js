@@ -89,9 +89,15 @@ app.post('/report', function(req, res){
 		db.collection('dinos', function(er, collection) {
 			collection.find().toArray(function(err, dinos){
 
+				console.log(dinos.length)
+
 				mongo.Db.connect(mongoUri, function(err, db) {
 					db.collection('robos', function(er, collection) {
 						collection.find().toArray(function(err, robos){
+
+							console.log(dinos.length)
+							console.log(robos.length)
+
 							var content = [];
 
 							for(var i=0; i<dinos.length; i++)
