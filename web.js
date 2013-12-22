@@ -57,7 +57,7 @@ app.post('/dinoSubmit', function(req, res){
 		});
 	});
 
-	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
+	//res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
 
 });
 
