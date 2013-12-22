@@ -4,4 +4,21 @@ html
 
   body
     h1 Welcome, DinoFriend!
-  
+
+    form(method='post', action='dinoSubmit')
+      label Name
+        input(type='text', name='Name')
+
+      label Noms
+      select(name='diet')
+        option Carnivore
+        option Herbivore
+        option Omnivore
+
+      label Fanciest Feature
+      select(name='feature')
+        option Spikes
+        option Scales
+        option Wings
+
+      input(type='submit' value='Fossilize Record')

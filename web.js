@@ -28,6 +28,30 @@ app.post('/roboStart', function(req, res){
 
 });
 
+app.post('/dinoSubmit', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('dinos', function(er, collection) {
+			collection.insert({'Name': req.body.Name, 'Diet': req.body.diet, 'Feature': req.body.feature}, {safe: true}, function(er,rs) {});
+		});
+	});
+
+	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
+
+});
+
+app.post('/roboSubmit', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('robos', function(er, collection) {
+			collection.insert({'Name': req.body.Name, 'Locomotion': req.body.locomotion, 'Language': req.body.language}, {safe: true}, function(er,rs) {});
+		});
+	});
+
+	res.render('trololo.jade', {trololo: 'Jade Ahoy!'})
+
+});
+
 
 
 /*
