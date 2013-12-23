@@ -31,9 +31,9 @@ passport.use(new LocalStrategy(
 		      if (!user) {
 		        return done(null, false, { message: 'Incorrect username.' });
 		      }
-		      //if (!user.validPassword(password)) {
-		      //  return done(null, false, { message: 'Incorrect password.' });
-		      //}
+		      if (user.Pass != password) {
+		        return done(null, false, { message: 'Incorrect password.' });
+		      }
 		      return done(null, user);
 		    });
 		});
@@ -50,15 +50,17 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
-
+//landing page
 app.get('/', function(req, res) {
 	res.render('login.jade');
 });
 
+//main page
 app.get('/passedLogin', function(req, res) {
 	res.render('index.jade');
 });
 
+//validate login attempt
 app.post('/login',
  	passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/'})
 );
