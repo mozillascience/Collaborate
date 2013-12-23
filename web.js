@@ -36,7 +36,7 @@ passport.use(new LocalStrategy(
 
 			    bcrypt.compare(password, user.Pass, function(err, isMatch) {
 			        if (err) res.render('login.jade');
-			        return done(null, isMatch)
+			        return done(null, user)
 			    });
 		    });
 		});
@@ -61,7 +61,7 @@ app.get('/', function(req, res) {
 
 //main page
 app.get('/passedLogin', function(req, res) {
-	res.render('index.jade', {name: req.user});
+	res.render('index.jade', {name: req.user.uName});
 });
 
 //validate login attempt
