@@ -86,7 +86,7 @@ app.get('/logout', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/badCredentials', failureFlash: true}) );
+app.post('/login', passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/badCredentials'}) );
 
 //register a new user
 app.post('/regUser', function(req, res){
@@ -97,12 +97,16 @@ app.post('/regUser', function(req, res){
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		    	if(err) return res.render('error.jade');
 		    	//make sure the password was entered correctly twice
-		    	else if(req.body.pass != req.body.repass) return res.render('login.jade');
+		    	if(req.body.pass != req.body.repass) return res.render('login.jade');
 		    	
+		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
+		    		if(accounts.length != 0) return res.render('error.jade');
+		    	});
+
 		        // hash the password along with our new salt:
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 		        	if(err) return res.render('error.jade');
-		        
+
 	        		//register new user in the db:
 					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
 
