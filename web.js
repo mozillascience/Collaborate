@@ -41,7 +41,7 @@ passport.use(new LocalStrategy(
 
 //passport serialize / deserialize magics
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
@@ -68,6 +68,14 @@ app.post('/login',
                                    failureRedirect: '/',
                                    failureFlash: false })
 );
+
+
+
+
+
+
+
+
 
 app.post('/regUser', function(req, res){
 
