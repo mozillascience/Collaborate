@@ -44,9 +44,13 @@ app.get('/', function(req, res) {
 	res.render('login.jade');
 });
 
+app.get('/passedLogin', function(req, res) {
+	res.render('index.jade');
+});
+
 app.post('/login',
- 	passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
+ 	passport.authenticate('local', { successRedirect: '/passedLogin',
+                                   failureRedirect: '/',
                                    failureFlash: false })
 );
 
