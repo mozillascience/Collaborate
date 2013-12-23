@@ -26,7 +26,8 @@
     "jade": "*",
     "passport": "*",
     "passport-local": "*",
-    "bcrypt":"*"
+    "bcrypt":"*",
+    "nodemailer":"*"
   },
   "engines": {
     "node": "0.10.x",
