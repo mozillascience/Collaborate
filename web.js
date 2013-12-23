@@ -1,17 +1,14 @@
 // require all the things
-var express = require("express");
-var logfmt = require("logfmt");
-var mongo = require('mongodb');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;
-var app = express();
-
-//point at the DB
-var mongoUri = process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
+var express = require("express"),
+	logfmt = require("logfmt"),
+	mongo = require('mongodb'),
+	passport = require('passport'),
+	LocalStrategy = require('passport-local').Strategy,
+	bcrypt = require('bcrypt'),
+    SALT_WORK_FACTOR = 10,
+	app = express(),
+	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
+  		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
 
 //set up the app
 app.set('views', __dirname + '/views');
@@ -85,7 +82,7 @@ app.post('/regUser', function(req, res){
 		    	if(err)
 		    		res.render('login.jade');
 		    	//make sure the password was entered correctly twice
-		    	if(res.body.pass != res.body.repass)
+		    	if(req.body.pass != req.body.repass)
 		    		res.render('login.jade');
 		        // hash the password along with our new salt
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
