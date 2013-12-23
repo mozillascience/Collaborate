@@ -99,12 +99,15 @@ app.post('/regUser', function(req, res){
 		    	else if(req.body.pass != req.body.repass)
 		    		res.render('login.jade');
 		    	else{
-			        // hash the password along with our new salt
+			        // hash the password along with our new salt, register it in the db, and log the new user in:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 			        	if(err) res.render('login.jade');
 			        	else{
 							collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
-							req.login();
+							req.login(user, function(err) {
+								if (err) return next(err);
+								return res.redirect('/passedLogin');
+							});
 						}
 			        });
 			    }
