@@ -86,7 +86,7 @@ app.get('/logout', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/badCredentials'}) );
+app.post('/login', passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/badCredentials', failureFlash: true}) );
 
 //register a new user
 app.post('/regUser', function(req, res){
