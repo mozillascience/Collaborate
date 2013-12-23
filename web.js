@@ -17,6 +17,7 @@ app.use(express.static(__dirname));
 app.use(express.bodyParser());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.cookieParser());
 
 //configure the passport authentication
 passport.use(new LocalStrategy(
@@ -41,17 +42,11 @@ passport.use(new LocalStrategy(
 
 //passport serialize / deserialize magics
 passport.serializeUser(function(user, done) {
-  done(null, user._id);
+  done(null, user);
 });
 
-passport.deserializeUser(function(id, done) {
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-			collection.findById(id, function(err, user) {
-				done(err, user);
-			});
-		});
-	});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
 });
 
 
