@@ -91,26 +91,26 @@ app.post('/regUser', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err)
-		    		res.render('login.jade');
+		    	if(err) return res.render('login.jade');
 		    	//make sure the password was entered correctly twice
-		    	else if(req.body.pass != req.body.repass)
-		    		res.render('login.jade');
-		    	else{
-			        // hash the password along with our new salt:
-			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-			        	if(err) res.render('login.jade');
-			        	else{
-			        		//register new user in the db:
-							collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
-							//log the new user in:
-							req.login(user, function(err) {
-								if (err) return next(err);
-									passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/'});
-							});
-						}
-			        });
-			    }
+		    	else if(req.body.pass != req.body.repass) return res.render('login.jade');
+		    	
+		        // hash the password along with our new salt:
+		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+		        	if(err) return res.render('login.jade');
+		        
+	        		//register new user in the db:
+					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
+
+					//log the new user in:
+					req.login({username: req.body.uName, password: req.body.pass}, function(err){
+						if(err) return res.render('login.jade');
+
+						return res.redirect('/passedLogin');
+					});
+					
+		        });
+			    
 		    });
 		});
 	});
