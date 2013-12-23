@@ -61,7 +61,7 @@ app.get('/', function(req, res) {
 
 //main page
 app.get('/passedLogin', function(req, res) {
-	res.render('index.jade', {name: req.user.uName});
+	res.render('index.jade', {name: req.user});
 });
 
 //validate login attempt
