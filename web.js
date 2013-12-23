@@ -83,7 +83,7 @@ app.post('/regUser', function(req, res){
 		    		res.render('login.jade');
 		    	//make sure the password was entered correctly twice
 		    	if(req.body.pass != req.body.repass)
-		    		return done(null, false, { message: "Passwords don't match." )
+		    		return done(null, false, { message: "Passwords don't match."} );
 		        // hash the password along with our new salt
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 		        	if(err) res.render('login.jade');
