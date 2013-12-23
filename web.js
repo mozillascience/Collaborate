@@ -49,7 +49,6 @@ passport.use(new LocalStrategy(
 
 //passport serialize / deserialize magics
 passport.serializeUser(function(user, done) {
-console.log('User: ' + user)
   done(null, user);
 });
 
@@ -103,10 +102,13 @@ app.post('/regUser', function(req, res){
 					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
 
 					//log the new user in:
-					req.login({username: req.body.uName, password: req.body.pass}, function(err){
+					collection.findOne({uName: req.body.uName}, function(err, user){
 						if(err) return res.render('login.jade');
 
-						return res.render('index.jade', {name: req.body.uName});
+						req.login(user, function(err) {
+						  if (err) return next(err);
+						  return res.redirect('/passedLogin');
+						});
 					});
 					
 		        });
