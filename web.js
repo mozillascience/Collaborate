@@ -106,7 +106,7 @@ app.post('/regUser', function(req, res){
 	
 				//reject new account if the username is already taken	    	
 		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
-		    		if(accounts.length != 0) return res.render('userTaken.jade');
+		    		if(accounts.length != 0) return res.redirect('/userTaken');
 
 			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
