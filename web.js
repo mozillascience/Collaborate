@@ -39,7 +39,7 @@ passport.use(new LocalStrategy(
 			        // hash the password along with our new salt
 			        bcrypt.hash(password, salt, function(err, hash) {
 			        	if(err) res.render('login.jade');
-
+console.log('hash == ' + hash)
 					    if (user.Pass != hash) {
 					      return done(null, false, { message: 'Incorrect password.' });
 					    }
