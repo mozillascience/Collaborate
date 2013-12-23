@@ -39,7 +39,20 @@ passport.use(new LocalStrategy(
   }
 ));
 
+//passport serialize / deserialize magics
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
 
+passport.deserializeUser(function(id, done) {
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+			collection.findById(id, function(err, user) {
+				done(err, user);
+			});
+		});
+	});
+});
 
 
 app.get('/', function(req, res) {
