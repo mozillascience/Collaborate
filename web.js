@@ -32,13 +32,13 @@ passport.use(new LocalStrategy(
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    collection.findOne({ uName: username }, function(err, user) {
-		    	if (err) { return done(err); }
+		    	if (err) res.render('error.jade');
 		    	if (!user) {
 		    		return done(null, false, { message: 'Incorrect username.' });
 		    	}
 
 			    bcrypt.compare(password, user.Pass, function(err, isMatch) {
-			        if (err) res.render('login.jade');
+			        if (err) res.render('error.jade');
 			        return done(null, user)
 			    });
 		    });
@@ -62,7 +62,7 @@ passport.deserializeUser(function(obj, done) {
 
 //landing page
 app.get('/', function(req, res) {
-	res.render('login.jade' {loginMessage: null});
+	res.render('login.jade', {loginMessage: null});
 });
 
 //landing page - bad user / pass combo
