@@ -91,7 +91,7 @@ app.post('/regUser', function(req, res){
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 		        	if(err) res.render('login.jade');
 					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
-					res.render('index.jade', {name: req.user.uName});
+					res.render('login.jade');
 		        });
 		    });
 		});
