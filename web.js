@@ -34,17 +34,9 @@ passport.use(new LocalStrategy(
 		    		return done(null, false, { message: 'Incorrect username.' });
 		    	}
 
-			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-			    	if(err) res.render('login.jade');
-			        // hash the password along with our new salt
-			        bcrypt.hash(password, salt, function(err, hash) {
-			        	if(err) res.render('login.jade');
-console.log('hash == ' + hash)
-					    if (user.Pass != hash) {
-					      return done(null, false, { message: 'Incorrect password.' });
-					    }
-					    return done(null, user);
-			        });
+			    bcrypt.compare(password, user.Pass, function(err, isMatch) {
+			        if (err) res.render('login.jade');
+			        return done(null, isMatch)
 			    });
 		    });
 		});
