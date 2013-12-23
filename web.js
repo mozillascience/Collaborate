@@ -106,7 +106,7 @@ app.post('/regUser', function(req, res){
 					req.login({username: req.body.uName, password: req.body.pass}, function(err){
 						if(err) return res.render('login.jade');
 
-						return res.redirect('/passedLogin');
+						return res.render('index.jade', {name: req.body.uName});
 					});
 					
 		        });
