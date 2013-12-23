@@ -60,7 +60,7 @@ app.get('/', function(req, res) {
 
 //main page
 app.get('/passedLogin', function(req, res) {
-	res.render('index.jade');
+	res.render('index.jade', {name: req.user.Name});
 });
 
 //validate login attempt
@@ -87,7 +87,7 @@ app.post('/regUser', function(req, res){
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 		        	if(err) res.render('login.jade');
 					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
-					res.render('index.jade');
+					res.render('index.jade', {name: req.user.Name});
 		        });
 		    });
 		});
@@ -157,7 +157,7 @@ app.post('/roboSubmit', function(req, res){
 });
 
 app.post('/home', function(req, res) {
-	res.render('index.jade');
+	res.render('index.jade', {name: req.user.Name});
 });
 
 var port = process.env.PORT || 5000;
