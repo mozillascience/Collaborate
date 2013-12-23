@@ -15,6 +15,8 @@ var mongoUri = process.env.MONGOLAB_URI ||
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname));
 app.use(express.bodyParser());
+app.use(passport.initialize());
+app.use(passport.session());
 
 //configure the passport authentication
 passport.use(new LocalStrategy(
