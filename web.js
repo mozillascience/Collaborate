@@ -14,17 +14,23 @@ app.use(express.static(__dirname));
 
 app.use(express.bodyParser());
 
-app.use(express.basicAuth(function(user, pass, callback) {
-		var result = true//(user === 'testUser' && pass === 'testPass');
-		callback(null /* error */, result);
-	})
-);
+
 
 
 
 
 app.get('/', function(req, res) {
 	res.render('index.jade');
+});
+
+app.post('/regUser', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+			collection.insert({'uName': req.body.uName, 'Pass': req.body.pass}, {safe: true}, function(er,rs) {});
+		});
+	});
+
 });
 
 app.post('/dinoStart', function(req, res){
