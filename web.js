@@ -62,7 +62,12 @@ passport.deserializeUser(function(obj, done) {
 
 //landing page
 app.get('/', function(req, res) {
-	res.render('login.jade');
+	res.render('login.jade' {loginMessage: null});
+});
+
+//landing page - bad user / pass combo
+app.get('/badCredentials', function(req, res){
+	res.render('login.jade' {loginMessage: 'Whooops!  Bad user / pass combo, try again plz:'})
 });
 
 //main page
