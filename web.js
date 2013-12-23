@@ -98,30 +98,30 @@ app.post('/regUser', function(req, res){
 		    	if(err) return res.render('error.jade');
 		    	//make sure the password was entered correctly twice
 		    	if(req.body.pass != req.body.repass) return res.render('login.jade');
-		    	
+	
+				//reject new account if the username is already taken	    	
 		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
 		    		if(accounts.length != 0) return res.render('error.jade');
-		    	});
 
-		        // hash the password along with our new salt:
-		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-		        	if(err) return res.render('error.jade');
+			        // hash the password along with our new salt:
+			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+			        	if(err) return res.render('error.jade');
 
-	        		//register new user in the db:
-					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
+		        		//register new user in the db:
+						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
 
-					//log the new user in:
-					collection.findOne({uName: req.body.uName}, function(err, user){
-						if(err) return res.render('error.jade');
+						//log the new user in:
+						collection.findOne({uName: req.body.uName}, function(err, user){
+							if(err) return res.render('error.jade');
 
-						req.login(user, function(err) {
-						  if (err) return res.render('error.jade');
-						  return res.redirect('/passedLogin');
+							req.login(user, function(err) {
+							  if (err) return res.render('error.jade');
+							  return res.redirect('/passedLogin');
+							});
 						});
-					});
-					
-		        });
-			    
+						
+			        });
+		    	});
 		    });
 		});
 	});
