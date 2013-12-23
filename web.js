@@ -2,8 +2,10 @@
 var express = require("express");
 var logfmt = require("logfmt");
 var mongo = require('mongodb');
-var passport = require('passport')
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var bcrypt = require('bcrypt'),
+    SALT_WORK_FACTOR = 10;
 var app = express();
 
 //point at the DB
@@ -77,12 +79,18 @@ app.post('/regUser', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
-			collection.insert({'uName': req.body.uName, 'Pass': req.body.pass}, {safe: true}, function(er,rs) {});
 
-			res.render('index.jade')
+		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+		    	if(err) res.render('login.jade');
+		        // hash the password along with our new salt
+		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+		        	if(err) res.render('login.jade');
+					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
+					res.render('index.jade');
+		        });
+		    });
 		});
 	});
-
 });
 
 app.post('/dinoStart', function(req, res){
