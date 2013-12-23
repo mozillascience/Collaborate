@@ -62,12 +62,17 @@ passport.deserializeUser(function(obj, done) {
 
 //landing page
 app.get('/', function(req, res) {
-	res.render('login.jade', {loginMessage: null});
+	res.render('login.jade', {loginMessage: null, registerMessage: null});
 });
 
 //landing page - bad user / pass combo
 app.get('/badCredentials', function(req, res){
-	res.render('login.jade', {loginMessage: 'Whooops!  Bad user / pass combo, try again plz:'})
+	res.render('login.jade', {loginMessage: 'Whooops!  Bad user / pass combo, try again plz:', registerMessage: null})
+});
+
+//landing page - username already taken
+app.get('/userTaken', function(req, res){
+	res.render('login.jade', {loginMessage: null, registerMessage: 'Too late!  That username is already taken - choose again!'})
 });
 
 //main page
@@ -101,7 +106,7 @@ app.post('/regUser', function(req, res){
 	
 				//reject new account if the username is already taken	    	
 		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
-		    		if(accounts.length != 0) return res.render('error.jade');
+		    		if(accounts.length != 0) return res.render('userTaken.jade');
 
 			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
