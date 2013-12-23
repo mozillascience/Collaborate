@@ -1,33 +1,62 @@
-// web.js
+// require all the things
 var express = require("express");
 var logfmt = require("logfmt");
 var mongo = require('mongodb');
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy;
 var app = express();
 
+//point at the DB
 var mongoUri = process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
   'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
 
+//set up the app
 app.set('views', __dirname + '/views');
-
 app.use(express.static(__dirname));
-
 app.use(express.bodyParser());
 
+//configure the passport authentication
+passport.use(new LocalStrategy(
+  function(username, password, done) {
 
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+		    collection.findOne({ username: username }, function(err, user) {
+		      if (err) { return done(err); }
+		      if (!user) {
+		        return done(null, false, { message: 'Incorrect username.' });
+		      }
+		      if (!user.validPassword(password)) {
+		        return done(null, false, { message: 'Incorrect password.' });
+		      }
+		      return done(null, user);
+		    });
+		});
+	});
+  }
+));
 
 
 
 
 app.get('/', function(req, res) {
-	res.render('index.jade');
+	res.render('login.jade');
 });
+
+app.post('/login',
+ 	passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: false })
+);
 
 app.post('/regUser', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 			collection.insert({'uName': req.body.uName, 'Pass': req.body.pass}, {safe: true}, function(er,rs) {});
+
+			res.render('index.jade')
 		});
 	});
 

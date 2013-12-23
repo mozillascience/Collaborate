@@ -23,7 +23,9 @@
     "logfmt": "~0.18.1",
     "express": "~3.4.7",
     "mongodb": "~1.3.23",
-    "jade": "*"
+    "jade": "*",
+    "passport": "*",
+    "passport-local": "*"
   },
   "engines": {
     "node": "0.10.x",
