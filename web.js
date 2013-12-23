@@ -75,18 +75,18 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-
-
-
-
-
+//register a new user
 app.post('/regUser', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) res.render('login.jade');
+		    	if(err)
+		    		res.render('login.jade');
+		    	//make sure the password was entered correctly twice
+		    	if(res.body.pass != res.body.repass)
+		    		res.render('login.jade');
 		        // hash the password along with our new salt
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 		        	if(err) res.render('login.jade');
@@ -97,6 +97,15 @@ app.post('/regUser', function(req, res){
 		});
 	});
 });
+
+
+
+
+
+
+
+
+
 
 app.post('/dinoStart', function(req, res){
 
