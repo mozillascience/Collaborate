@@ -156,8 +156,11 @@ app.post('/emailNewPassword', function(req, res){
 				    to: "herpderp, mills.wj@gmail.com", // list of receivers
 				    subject: "Hello", // Subject line
 				    text: "Hello world" // plaintext body
-				    //html: "<b>Hello world ✔</b>" // html body
 				});
+
+				res.redirect('/')
+
+
 
 			});
 		});
