@@ -8,6 +8,7 @@ var express = require("express"),
 	LocalStrategy = require('passport-local').Strategy,
 	bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10,
+    mail = require("nodemailer").mail,
 	app = express(),
 	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
   		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
@@ -32,7 +33,7 @@ passport.use(new LocalStrategy(
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    collection.findOne({ uName: username }, function(err, user) {
-		    	if (err) res.render('error.jade');
+		    	if (err) return res.render('error.jade');
 		    	if (!user) {
 		    		return done(null, false, { message: 'Incorrect username.' });
 		    	}
@@ -132,9 +133,36 @@ app.post('/regUser', function(req, res){
 	});
 });
 
+app.post('/forgotPass', function(req, res){
 
+	res.render('recoverPassword.jade');
 
+});
 
+app.post('/emailNewPassword', function(req, res){
+
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.body.username }, function(err, user){
+		    	if (err) return res.render('error.jade');
+		    	if (!user)
+		    		return res.render('error.jade');
+
+				mail({
+				    from: "Fred Foo <foo@blurdybloop.com>", // sender address
+				    to: "herpderp, mills.wj@gmail.com", // list of receivers
+				    subject: "Hello", // Subject line
+				    text: "Hello world" // plaintext body
+				    //html: "<b>Hello world ✔</b>" // html body
+				});
+
+			});
+		});
+	});
+})
 
 
 
