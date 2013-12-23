@@ -29,14 +29,23 @@ passport.use(new LocalStrategy(
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    collection.findOne({ uName: username }, function(err, user) {
-		      if (err) { return done(err); }
-		      if (!user) {
-		        return done(null, false, { message: 'Incorrect username.' });
-		      }
-		      if (user.Pass != password) {
-		        return done(null, false, { message: 'Incorrect password.' });
-		      }
-		      return done(null, user);
+		    	if (err) { return done(err); }
+		    	if (!user) {
+		    		return done(null, false, { message: 'Incorrect username.' });
+		    	}
+
+			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+			    	if(err) res.render('login.jade');
+			        // hash the password along with our new salt
+			        bcrypt.hash(password, salt, function(err, hash) {
+			        	if(err) res.render('login.jade');
+
+					    if (user.Pass != password) {
+					      return done(null, false, { message: 'Incorrect password.' });
+					    }
+					    return done(null, user);
+			        });
+			    });
 		    });
 		});
 	});
