@@ -1,4 +1,6 @@
-// require all the things
+////////////////////////////////////////////////////
+//setup/////////////////////////////////////////////
+////////////////////////////////////////////////////
 var express = require("express"),
 	logfmt = require("logfmt"),
 	mongo = require('mongodb'),
@@ -18,6 +20,10 @@ app.use(express.bodyParser());
 app.use(express.session({ secret: 'SECRET' }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+//////////////////////////////////////////////////////
+//user auth///////////////////////////////////////////
+//////////////////////////////////////////////////////
 
 //configure the passport authentication
 passport.use(new LocalStrategy(
@@ -51,6 +57,10 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+/////////////////////////////////////////////////////
+//get requests///////////////////////////////////////
+/////////////////////////////////////////////////////
+
 //landing page
 app.get('/', function(req, res) {
 	res.render('login.jade');
@@ -61,16 +71,20 @@ app.get('/passedLogin', function(req, res) {
 	res.render('index.jade', {name: req.user.uName});
 });
 
-//validate login attempt
-app.post('/login',
- 	passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/'})
-);
-
 //logout
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
+
+////////////////////////////////////////////////////////
+//post requests/////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+//validate login attempt
+app.post('/login',
+ 	passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/'})
+);
 
 //register a new user
 app.post('/regUser', function(req, res){
@@ -83,13 +97,15 @@ app.post('/regUser', function(req, res){
 		    		res.render('login.jade');
 		    	//make sure the password was entered correctly twice
 		    	if(req.body.pass != req.body.repass)
-		    		return done(null, false, { message: "Passwords don't match."} );
-		        // hash the password along with our new salt
-		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-		        	if(err) res.render('login.jade');
-					collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
-					res.render('login.jade');
-		        });
+		    		res.render('login.jade');
+		    	else{
+			        // hash the password along with our new salt
+			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+			        	if(err) res.render('login.jade');
+						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
+						res.render('login.jade');
+			        });
+			    }
 		    });
 		});
 	});
