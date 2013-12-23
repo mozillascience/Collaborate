@@ -82,9 +82,7 @@ app.get('/logout', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login',
- 	passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/'})
-);
+app.post('/login', passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/'}) );
 
 //register a new user
 app.post('/regUser', function(req, res){
@@ -99,14 +97,16 @@ app.post('/regUser', function(req, res){
 		    	else if(req.body.pass != req.body.repass)
 		    		res.render('login.jade');
 		    	else{
-			        // hash the password along with our new salt, register it in the db, and log the new user in:
+			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 			        	if(err) res.render('login.jade');
 			        	else{
+			        		//register new user in the db:
 							collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
+							//log the new user in:
 							req.login(user, function(err) {
 								if (err) return next(err);
-								return res.redirect('/passedLogin');
+									passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/'});
 							});
 						}
 			        });
