@@ -67,7 +67,7 @@ app.get('/', function(req, res) {
 
 //landing page - bad user / pass combo
 app.get('/badCredentials', function(req, res){
-	res.render('login.jade' {loginMessage: 'Whooops!  Bad user / pass combo, try again plz:'})
+	res.render('login.jade', {loginMessage: 'Whooops!  Bad user / pass combo, try again plz:'})
 });
 
 //main page
