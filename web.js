@@ -150,18 +150,15 @@ app.post('/emailNewPassword', function(req, res){
 		    	if (err) return res.render('error.jade');
 		    	if (!user)
 		    		return res.render('error.jade');
-
+/*
 				mail({
 				    from: "Fred Foo <foo@blurdybloop.com>", // sender address
 				    to: "herpderp, mills.wj@gmail.com", // list of receivers
 				    subject: "Hello", // Subject line
 				    text: "Hello world" // plaintext body
 				});
-
+*/
 				res.redirect('/')
-
-
-
 			});
 		});
 	});
