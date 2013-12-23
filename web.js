@@ -22,14 +22,14 @@ passport.use(new LocalStrategy(
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
-		    collection.findOne({ username: username }, function(err, user) {
+		    collection.findOne({ uName: username }, function(err, user) {
 		      if (err) { return done(err); }
 		      if (!user) {
 		        return done(null, false, { message: 'Incorrect username.' });
 		      }
-		      if (!user.validPassword(password)) {
-		        return done(null, false, { message: 'Incorrect password.' });
-		      }
+		      //if (!user.validPassword(password)) {
+		      //  return done(null, false, { message: 'Incorrect password.' });
+		      //}
 		      return done(null, user);
 		    });
 		});
