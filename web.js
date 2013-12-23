@@ -14,10 +14,11 @@ var mongoUri = process.env.MONGOLAB_URI ||
 //set up the app
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname));
+app.use(express.cookieParser());
 app.use(express.bodyParser());
+app.use(express.session({ secret: 'SECRET' }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.cookieParser());
 
 //configure the passport authentication
 passport.use(new LocalStrategy(
