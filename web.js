@@ -147,17 +147,35 @@ app.post('/emailNewPassword', function(req, res){
 
 			//find the user
 			collection.findOne({ uName: req.body.username }, function(err, user){
+				var newPass;
+
 		    	if (err) return res.render('error.jade');
 		    	if (!user)
 		    		return res.render('error.jade');
-/*
+
+		    	//generate a new password, bunch of random characters
+		    	newPass = (Math.random() + 1).toString(36);
+
+			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+			    	if(err) return res.render('error.jade');
+
+				        // hash the password along with our new salt:
+				        bcrypt.hash(newPass, salt, function(err, hash) {
+				        	if(err) return res.render('error.jade');
+
+				        	//update db
+				        	user.update{Pass : hash}
+							
+				        });
+			    });
+
 				mail({
 				    from: "Fred Foo <foo@blurdybloop.com>", // sender address
 				    to: "herpderp, mills.wj@gmail.com", // list of receivers
 				    subject: "Hello", // Subject line
-				    text: "Hello world" // plaintext body
+				    text: newPass // plaintext body
 				});
-*/
+
 				res.redirect('/')
 			});
 		});
