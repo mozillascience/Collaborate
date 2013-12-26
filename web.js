@@ -76,15 +76,31 @@ app.get('/userTaken', function(req, res){
 	res.render('login.jade', {loginMessage: null, registerMessage: 'Too late!  That username is already taken - choose again!'})
 });
 
-//main page
-app.get('/passedLogin', function(req, res) {
-	res.render('index.jade', {name: req.user.uName});
-});
-
 //logout
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
+});
+
+//user profile page
+app.get('/userProfile', function(req, res){
+
+	res.render('userProfile.jade', {});
+
+});
+
+//user's matches
+app.get('/userMatches', function(req, res){
+
+	res.render('userMatches.jade', {});
+
+});
+
+//search page
+app.get('/userSearch', function(req, res){
+
+	res.render('userSearch.jade', {});
+
 });
 
 ////////////////////////////////////////////////////////
@@ -92,7 +108,7 @@ app.get('/logout', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/passedLogin', failureRedirect: '/badCredentials'}) );
+app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches', failureRedirect: '/badCredentials'}) );
 
 //register a new user
 app.post('/regUser', function(req, res){
@@ -180,7 +196,10 @@ app.post('/emailNewPassword', function(req, res){
 			});
 		});
 	});
-})
+});
+
+
+
 
 
 
