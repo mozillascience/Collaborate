@@ -82,6 +82,13 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
+//set up a new user profile
+app.get('/setupNewUser', function(req, res){
+
+	res.render('chooseClass.jade', {});
+
+});
+
 //user profile page
 app.get('/userProfile', function(req, res){
 
@@ -138,7 +145,7 @@ app.post('/regUser', function(req, res){
 
 							req.login(user, function(err) {
 							  if (err) return res.render('error.jade');
-							  return res.redirect('/passedLogin');
+							  return res.redirect('/setupNewUser');
 							});
 						});
 						
@@ -149,12 +156,14 @@ app.post('/regUser', function(req, res){
 	});
 });
 
+//go to the password recovery page
 app.post('/forgotPass', function(req, res){
 
 	res.render('recoverPassword.jade');
 
 });
 
+//password recovery - generate a random password, hash it, update the db, and mail it to the user
 app.post('/emailNewPassword', function(req, res){
 
 	//open link to the database
@@ -198,9 +207,39 @@ app.post('/emailNewPassword', function(req, res){
 	});
 });
 
+//go to new scientist setup page
+app.post('/newScientist', function(req, res){
 
+	res.render('setupScientist.jade', {});
 
+});
 
+//go to new developer setup page
+app.post('/newDeveloper', function(req, res){
+
+	res.render('setupDeveloper.jade', {});
+
+});
+
+app.post('/recordNewScientist', function(req, res){
+
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.body.username }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	collection.update({uName : user.uName}, {$set:{discipline : req.body.discipline, language : req.body.language}}, function(){});
+
+				res.redirect('/userMatches')
+			});
+		});
+	});	
+
+});
 
 
 

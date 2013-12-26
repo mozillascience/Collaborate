@@ -3,7 +3,7 @@ html
   head
 
   body
-    h1 My Matches
+    h1 My Profile
 
     form(method='get', action='userMatches')
       input(type='submit', value='My Matches')
@@ -13,3 +13,10 @@ html
 
     form(method='get', action='userSearch')
       input(type='submit', value='Search')
+
+    form(method='post', action='updateProfile')
+      select(name='class')
+        option Scientist
+        option Software Developer
+
+      
