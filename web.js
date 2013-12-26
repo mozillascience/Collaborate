@@ -92,7 +92,7 @@ app.get('/setupNewUser', function(req, res){
 //user profile page
 app.get('/userProfile', function(req, res){
 
-	res.render('userProfile.jade', {});
+	res.render('userProfile.jade', {scientist: req.user.scientist, developer:req.user.developer});
 
 });
 
@@ -210,18 +210,50 @@ app.post('/emailNewPassword', function(req, res){
 //go to new scientist setup page
 app.post('/newScientist', function(req, res){
 
-	res.render('setupScientist.jade', {});
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
 
+			//find the user
+			collection.findOne({ uName: req.user.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	collection.update({uName : user.uName}, {$set:{ scientist: true,
+		    													developer: false
+		    												  }
+		    											}, function(){});
+
+				return res.render('setupScientist.jade', {});
+			});
+		});
+	});
 });
 
 //go to new developer setup page
 app.post('/newDeveloper', function(req, res){
 
-	res.render('setupDeveloper.jade', {});
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
 
+			//find the user
+			collection.findOne({ uName: req.user.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	collection.update({uName : user.uName}, {$set:{ scientist: false,
+		    													developer: true
+		    												  }
+		    											}, function(){});
+
+				return res.render('setupDeveloper.jade', {});
+			});
+		});
+	});
 });
 
-app.post('/recordNewScientist', function(req, res){
+app.post('/recordUpdate', function(req, res){
 
 	//open link to the database
 	mongo.Db.connect(mongoUri, function(err, db) {
@@ -232,26 +264,10 @@ app.post('/recordNewScientist', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
-		    	collection.update({uName : user.uName}, {$set:{discipline : req.body.discipline, language : req.body.language}}, function(){});
-
-				res.redirect('/userMatches')
-			});
-		});
-	});	
-});
-
-app.post('/recordNewDeveloper', function(req, res){
-
-	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-
-			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
-
-		    	if (err || !user) return res.render('error.jade');
-
-		    	collection.update({uName : user.uName}, {$set:{discipline : req.body.discipline, language : req.body.language}}, function(){});
+		    	collection.update({uName : user.uName}, {$set:{	discipline : req.body.discipline, 
+		    													language : req.body.language
+		    												  }
+		    											}, function(){});
 
 				res.redirect('/userMatches')
 			});
@@ -261,71 +277,7 @@ app.post('/recordNewDeveloper', function(req, res){
 
 
 
-app.post('/dinoStart', function(req, res){
 
-	res.render('dinoInput.jade', {});
-
-});
-
-app.post('/roboStart', function(req, res){
-
-	res.render('roboInput.jade', {});
-
-});
-
-app.post('/dinoSubmit', function(req, res){
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('dinos', function(er, collection) {
-			collection.insert({'Name': req.body.Name, 'Feature': req.body.feature, 'Wants': req.body.wants}, {safe: true}, function(er,rs) {});
-		});
-	});
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('robos', function(er, collection) {
-			collection.find({Language : req.body.wants}).toArray(function(err, robos){
-
-				if(robos.length == 0)
-					res.render('dinoReport.jade', {name: 'Sorry friend, no one matches your dino demands :('})
-				else if (robos.length == 1)
-					res.render('dinoReport.jade', {name: robos[0].Name+' is perfect for you!'})
-				else
-					res.render('dinoReport.jade', {name: 'there are so many matches you dont even know'})
-
-			});
-		});
-	});
-
-});
-
-app.post('/roboSubmit', function(req, res){
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('robos', function(er, collection) {
-			collection.insert({'Name': req.body.Name, 'Language': req.body.language, 'Wants':req.body.wants}, {safe: true}, function(er,rs) {});
-		});
-	});
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('dinos', function(er, collection) {
-			collection.find({Feature : req.body.wants}).toArray(function(err, dinos){							
-
-				if(dinos.length == 0)
-					res.render('dinoReport.jade', {name: '404: NO DINOS FOUND, CONTACT YOUR DINO PROVIDER'})
-				else if (dinos.length == 1)
-					res.render('dinoReport.jade', {name: dinos[0].Name+' satisfies all criteria.'})
-				else
-					res.render('dinoReport.jade', {name: 'TOO MANY MATCHES, DINO OVERFLOW'})
-
-			});
-		});
-	});
-
-});
-
-app.post('/home', function(req, res) {
-	res.render('index.jade', {name: req.user.uName});
-});
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
