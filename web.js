@@ -238,7 +238,6 @@ app.post('/recordNewScientist', function(req, res){
 			});
 		});
 	});	
-
 });
 
 
