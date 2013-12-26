@@ -164,7 +164,7 @@ app.post('/emailNewPassword', function(req, res){
 				        	if(err) return res.render('error.jade');
 
 				        	//update db
-				        	collection.update({uName : user.uName}, {Pass : hash})
+				        	collection.update({uName : user.uName}, $set:{Pass : hash})
 							
 				        });
 			    });
