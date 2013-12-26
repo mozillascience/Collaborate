@@ -240,7 +240,24 @@ app.post('/recordNewScientist', function(req, res){
 	});	
 });
 
+app.post('/recordNewDeveloper', function(req, res){
 
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.user.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	collection.update({uName : user.uName}, {$set:{discipline : req.body.discipline, language : req.body.language}}, function(){});
+
+				res.redirect('/userMatches')
+			});
+		});
+	});	
+});
 
 
 
