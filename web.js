@@ -228,7 +228,7 @@ app.post('/recordNewScientist', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user
-			collection.findOne({ uName: req.body.username }, function(err, user){
+			collection.findOne({ uName: req.user.uName }, function(err, user){
 
 		    	if (err || !user) return res.render('error.jade');
 
