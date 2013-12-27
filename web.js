@@ -275,16 +275,22 @@ app.post('/recordUpdate', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
+		    	//update the local user object
+		    	user.discipline = req.body.discipline;
+		    	user.language = req.body.language;
+
+		    	//update the DB and carry on to main user pages
 		    	collection.update(	{uName : user.uName}, 
 		    						{$set:{	discipline : req.body.discipline, 
 		    								language : req.body.language}
 		    						}, 
 		    						function(){
 								    	//update req.user object
-										req.login(user, function(err) {
-										  if (err) return res.render('error.jade');
-										  return res.redirect('/userMatches');
-										});
+										//req.login(user, function(err) {
+										//  if (err) return res.render('error.jade');
+										  //return res.redirect('/userMatches');
+										//});
+		    							res.render('userMatches.jade', {user:user})
 		    						});
 			});
 		});
