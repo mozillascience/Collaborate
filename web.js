@@ -140,7 +140,7 @@ app.post('/regUser', function(req, res){
 						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
 
 						//drag info around by hand pre-serialization:
-						req.userinfo = {'uName': req.body.uName, 'Pass': hash};
+						res.userinfo = {'uName': req.body.uName, 'Pass': hash};
 						return res.render('chooseClass.jade');
 
 						/*
