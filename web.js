@@ -91,7 +91,7 @@ app.get('/setupNewUser', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
-
+console.log(req.user)
 	res.render('userProfile.jade', {user: req.user});
 
 });
