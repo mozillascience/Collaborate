@@ -6,7 +6,7 @@ html
     h1= user.uName
 
     form(method='post' action='recordUpdate')
-      if scientist
+      if user.scientist
         label What is your discipline?
         br
         input(type='checkbox', name='discipline[]', value='Divination')
@@ -32,7 +32,7 @@ html
         label Jade
         br
 
-      if developer
+      if user.developer
         label What languages are you comfortable with?
         br
         input(type='checkbox', name='language[]', value='Haskell')
