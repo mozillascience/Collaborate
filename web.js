@@ -91,7 +91,7 @@ app.get('/setupNewUser', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
-console.log(req.user)
+
 	res.render('userProfile.jade', {user: req.user});
 
 });
@@ -168,16 +168,16 @@ app.post('/newScientist', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
+                //update the local user object
+                req.user.scientist = true;
+                req.user.developer = false;
+
 		    	collection.update(	{uName : user.uName}, 
 		    						{$set:{ scientist: true,
 		    								developer: false}
 		    						}, 
 		    						function(){
-										//re-login to update req.user object
-										req.login(user, function(err) {
-										  if (err) return res.render('error.jade');
-										  return res.render('setupUser.jade', {scientist: true, developer:false});
-										});
+										  return res.render('setupUser.jade', {user:req.user});
 		    						});
 			});
 		});
@@ -228,16 +228,13 @@ app.post('/recordUpdate', function(req, res){
 		    	req.user.discipline = req.body.discipline;
 		    	req.user.language = req.body.language;
 
-		    	//update the DB, log the user in and carry on to main user pages
+		    	//update the DB and carry on to main user pages
 		    	collection.update(	{uName : user.uName}, 
 		    						{$set:{	discipline : req.body.discipline, 
 		    								language : req.body.language}
 		    						}, 
 		    						function(){
-										//req.login(user, function(err) {
-										//  if (err) return res.render('error.jade');
-										  return res.redirect('/userMatches');
-										//});
+										return res.redirect('/userMatches');									
 		    						});
 			});
 		});
