@@ -19,13 +19,13 @@ html
       if user.scientist
         label What is your discipline?
         br
-        input(type='checkbox', name='discipline[]', value='Divination')
+        input(type='checkbox', name='discipline[]', value='Divination', checked=user.Divination===true)
         label Divination
         br
-        input(type='checkbox', name='discipline[]', value='Evokation')
+        input(type='checkbox', name='discipline[]', value='Evokation', checked=user.Evokation===true)
         label Evokation
         br
-        input(type='checkbox', name='discipline[]', value='Necromancy')
+        input(type='checkbox', name='discipline[]', value='Necromancy', checked=user.Necromancy===true)
         label Necromancy
         br
         br
@@ -35,36 +35,36 @@ html
         input(type='checkbox', name='language[]', value='Haskell', checked=user.Haskell===true)
         label Haskell
         br
-        input(type='checkbox', name='language[]', value='Visual BASIC')
+        input(type='checkbox', name='language[]', value='Visual BASIC', checked=user.VisualBASIC===true)
         label Visual BASIC
         br
-        input(type='checkbox', name='language[]', value='Jade')
+        input(type='checkbox', name='language[]', value='Jade', checked=user.Jade===true)
         label Jade
         br
 
       if user.developer
         label What languages are you comfortable with?
         br
-        input(type='checkbox', name='language[]', value='Haskell')
+        input(type='checkbox', name='language[]', value='Haskell', checked=user.Haskell===true)
         label Haskell
         br
-        input(type='checkbox', name='language[]', value='Visual BASIC')
+        input(type='checkbox', name='language[]', value='Visual BASIC', checked=user.VisualBASIC===true)
         label Visual BASIC
         br
-        input(type='checkbox', name='language[]', value='Jade')
+        input(type='checkbox', name='language[]', value='Jade', checked=user.Jade===true)
         label Jade
         br
         br
 
         label What sciences interest you?
         br
-        input(type='checkbox', name='discipline[]', value='Divination')
+        input(type='checkbox', name='discipline[]', value='Divination', checked=user.Divination===true)
         label Divination
         br
-        input(type='checkbox', name='discipline[]', value='Evokation')
+        input(type='checkbox', name='discipline[]', value='Evokation', checked=user.Evokation===true)
         label Evokation
         br
-        input(type='checkbox', name='discipline[]', value='Necromancy')
+        input(type='checkbox', name='discipline[]', value='Necromancy', checked=user.Necromancy===true)
         label Necromancy
         br
 

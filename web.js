@@ -95,10 +95,15 @@ app.get('/userProfile', function(req, res){
 	var i,
 		user = req.user;
 
+	//break checkbox groups out into booleans to smooth things out on the Jade side:
 	for(i=0; i<user.language.length; i++){
 		user[user.language[i]] = true;
 	}
+	for(i=0; i<user.discipline.length; i++){
+		user[user.discipline[i]] = true;
+	}
 	delete user.language;
+	delete user.discipline;
 
 	res.render('userProfile.jade', {user: user});
 
