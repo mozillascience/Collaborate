@@ -17,68 +17,59 @@ html
 
     form(method='post' action='recordUpdate')
       if user.scientist
-        label What is your discipline?
+        label What is your discipline? user.discipline[0]
         br
-        input(id='Divination', type='checkbox', name='discipline[]', value='Divination')
+        input(type='checkbox', name='discipline[]', value='Divination')
         label Divination
         br
-        input(id='Evokation', type='checkbox', name='discipline[]', value='Evokation')
+        input(type='checkbox', name='discipline[]', value='Evokation')
         label Evokation
         br
-        input(id='Necromancy', type='checkbox', name='discipline[]', value='Necromancy')
+        input(type='checkbox', name='discipline[]', value='Necromancy')
         label Necromancy
         br
         br
 
         label What language would you like to work in?
         br
-        input(id='Haskell', type='checkbox', name='language[]', value='Haskell')
+        input(type='checkbox', name='language[]', value='Haskell')
         label Haskell
         br
-        input(id='VisualBASIC', type='checkbox', name='language[]', value='Visual BASIC')
+        input(type='checkbox', name='language[]', value='Visual BASIC')
         label Visual BASIC
         br
-        input(id='Jade', type='checkbox', name='language[]', value='Jade')
+        input(type='checkbox', name='language[]', value='Jade')
         label Jade
         br
 
       if user.developer
         label What languages are you comfortable with?
         br
-        input(id='Haskell', type='checkbox', name='language[]', value='Haskell')
+        input(type='checkbox', name='language[]', value='Haskell')
         label Haskell
         br
-        input(id='VisualBASIC', type='checkbox', name='language[]', value='Visual BASIC')
+        input(type='checkbox', name='language[]', value='Visual BASIC')
         label Visual BASIC
         br
-        input(id='Jade', type='checkbox', name='language[]', value='Jade')
+        input(type='checkbox', name='language[]', value='Jade')
         label Jade
         br
         br
 
         label What sciences interest you?
         br
-        input(id='Divination', type='checkbox', name='discipline[]', value='Divination')
+        input(type='checkbox', name='discipline[]', value='Divination')
         label Divination
         br
-        input(id='Evokation', type='checkbox', name='discipline[]', value='Evokation')
+        input(type='checkbox', name='discipline[]', value='Evokation')
         label Evokation
         br
-        input(id='Necromancy', type='checkbox', name='discipline[]', value='Necromancy')
+        input(type='checkbox', name='discipline[]', value='Necromancy')
         label Necromancy
         br
 
       input(type='submit', value='Update Profile')
 
-    script.
-      var i;
-      console.log(user)
-      for(i=0; i<user.discipline.length; i++){
-        document.getElementById(user.discipline[i]).checked = true;
-      }
-      for(i=0; i<user.language.length; i++){
-        document.getElementById(user.language[i]).checked = true;
-      }
 
 
 
