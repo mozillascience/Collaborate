@@ -247,6 +247,11 @@ app.post('/newDeveloper', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
+                //update the local user object
+                user.scientist = false;
+                user.developer = true;
+
+                //write the new data to the DB and carry on to user setup
 		    	collection.update(	{uName : user.uName}, 
 		    						{$set:{ scientist: false,
 		    								developer: true}
