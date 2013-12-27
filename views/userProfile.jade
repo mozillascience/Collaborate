@@ -4,7 +4,7 @@ html
   head
 
   body
-    h1= user.Necromancy
+    h1 My Profile
 
     form(method='get', action='userMatches')
       input(type='submit', value='My Matches')
@@ -25,14 +25,14 @@ html
         input(type='checkbox', name='discipline[]', value='Evokation')
         label Evokation
         br
-        input(type='checkbox', name='discipline[]', value='Necromancy', checked=user.Necromancy==true)
+        input(type='checkbox', name='discipline[]', value='Necromancy')
         label Necromancy
         br
         br
 
         label What language would you like to work in?
         br
-        input(type='checkbox', name='language[]', value='Haskell')
+        input(type='checkbox', name='language[]', value='Haskell', checked=user.Haskell===true)
         label Haskell
         br
         input(type='checkbox', name='language[]', value='Visual BASIC')
