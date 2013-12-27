@@ -2,6 +2,7 @@
 //setup/////////////////////////////////////////////
 ////////////////////////////////////////////////////
 var express = require("express"),
+    expose = require("express-expose")
 	logfmt = require("logfmt"),
 	mongo = require('mongodb'),
 	passport = require('passport'),
@@ -91,7 +92,7 @@ app.get('/setupNewUser', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
-
+    app.expose(req.user)
 	res.render('userProfile.jade', {user: req.user});
 
 });
