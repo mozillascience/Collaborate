@@ -143,20 +143,16 @@ app.post('/regUser', function(req, res){
 						req.cookies.userinfo = {'uName': req.body.uName, 'Pass': hash};
 						return res.render('chooseClass.jade');
 
-						/*
 						//log the new user in:
 						collection.findOne({uName: req.body.uName}, function(err, user){
 							if(err) return res.render('error.jade');
 
-
-							//req.login(user, function(err) {
-							//  if (err) return res.render('error.jade');
-							//  return res.redirect('/setupNewUser');
-							//});
-							return res.render('chooseClass.jade', {user:user});
+							req.login(user, function(err) {
+							  if (err) return res.render('error.jade');
+							  return res.redirect('/setupNewUser');
+							});
 
 						});
-						*/
 			        });
 		    	});
 		    });
@@ -200,13 +196,13 @@ app.post('/newDeveloper', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user
-			collection.findOne({ uName: req.cookies.userinfo.uName }, function(err, user){
+			collection.findOne({ uName: req.user.uName }, function(err, user){
 
 		    	if (err || !user) return res.render('error.jade');
 
                 //update the local user object
-                user.scientist = false;
-                user.developer = true;
+                req.user.scientist = false;
+                req.user.developer = true;
 
                 //write the new data to the DB and carry on to user setup
 		    	collection.update(	{uName : user.uName}, 
@@ -214,7 +210,7 @@ app.post('/newDeveloper', function(req, res){
 		    								developer: true}
 		    						}, 
 		    						function(){
-										  return res.render('setupUser.jade', {user:user});
+										  return res.render('setupUser.jade', {user:req.user});
 		    						});
 			});
 		});
@@ -233,8 +229,8 @@ app.post('/recordUpdate', function(req, res){
 		    	if (err || !user) return res.render('error.jade');
 
 		    	//update the local user object
-		    	user.discipline = req.body.discipline;
-		    	user.language = req.body.language;
+		    	req.user.discipline = req.body.discipline;
+		    	req.user.language = req.body.language;
 
 		    	//update the DB, log the user in and carry on to main user pages
 		    	collection.update(	{uName : user.uName}, 
@@ -242,10 +238,10 @@ app.post('/recordUpdate', function(req, res){
 		    								language : req.body.language}
 		    						}, 
 		    						function(){
-										req.login(user, function(err) {
-										  if (err) return res.render('error.jade');
+										//req.login(user, function(err) {
+										//  if (err) return res.render('error.jade');
 										  return res.redirect('/userMatches');
-										});
+										//});
 		    						});
 			});
 		});
