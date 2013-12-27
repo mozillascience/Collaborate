@@ -125,7 +125,7 @@ app.post('/regUser', function(req, res){
 
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		    	if(err) return res.render('error.jade');
-		    	//make sure the password was entered correctly twice
+		    	//make sure the password was entered the same way twice
 		    	if(req.body.pass != req.body.repass) return res.render('login.jade');
 	
 				//reject new account if the username is already taken	    	
@@ -137,11 +137,20 @@ app.post('/regUser', function(req, res){
 			        	if(err) return res.render('error.jade');
 
 		        		//register new user in the db:
-						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(er,rs) {});
+						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {
+							if(err) return res.render('error.jade');
 
+							//drag info around by hand pre-serialization:
+							req.userinfo = {'uName': req.body.uName, 'Pass': hash};
+							return res.render('chooseClass.jade');
+
+						});
+
+						/*
 						//log the new user in:
 						collection.findOne({uName: req.body.uName}, function(err, user){
 							if(err) return res.render('error.jade');
+
 
 							//req.login(user, function(err) {
 							//  if (err) return res.render('error.jade');
@@ -150,13 +159,104 @@ app.post('/regUser', function(req, res){
 							return res.render('chooseClass.jade', {user:user});
 
 						});
-						
+						*/
 			        });
 		    	});
 		    });
 		});
 	});
 });
+
+//register user as scientist and go to new scientist setup page
+app.post('/newScientist', function(req, res){
+
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.user.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{ scientist: true,
+		    								developer: false}
+		    						}, 
+		    						function(){
+										//re-login to update req.user object
+										req.login(user, function(err) {
+										  if (err) return res.render('error.jade');
+										  return res.render('setupUser.jade', {scientist: true, developer:false});
+										});
+		    						});
+			});
+		});
+	});
+});
+
+//register user as developer and go to new developer setup page
+app.post('/newDeveloper', function(req, res){
+
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.userinfo.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+                //update the local user object
+                user.scientist = false;
+                user.developer = true;
+
+                //write the new data to the DB and carry on to user setup
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{ scientist: false,
+		    								developer: true}
+		    						}, 
+		    						function(){
+										  return res.render('setupUser.jade', {user:user});
+		    						});
+			});
+		});
+	});
+});
+
+app.post('/recordUpdate', function(req, res){
+
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.user.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	//update the local user object
+		    	user.discipline = req.body.discipline;
+		    	user.language = req.body.language;
+
+		    	//update the DB, log the user in and carry on to main user pages
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{	discipline : req.body.discipline, 
+		    								language : req.body.language}
+		    						}, 
+		    						function(){
+										req.login(user, function(err) {
+										  if (err) return res.render('error.jade');
+										  return res.redirect('/userMatches');
+										});
+		    						});
+			});
+		});
+	});	
+});
+
+
+
 
 //go to the password recovery page
 app.post('/forgotPass', function(req, res){
@@ -209,93 +309,7 @@ app.post('/emailNewPassword', function(req, res){
 	});
 });
 
-//register user as scientist and go to new scientist setup page
-app.post('/newScientist', function(req, res){
 
-	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-
-			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
-
-		    	if (err || !user) return res.render('error.jade');
-
-		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{ scientist: true,
-		    								developer: false}
-		    						}, 
-		    						function(){
-										//re-login to update req.user object
-										req.login(user, function(err) {
-										  if (err) return res.render('error.jade');
-										  return res.render('setupUser.jade', {scientist: true, developer:false});
-										});
-		    						});
-			});
-		});
-	});
-});
-
-//register user as developer and go to new developer setup page
-app.post('/newDeveloper', function(req, res){
-
-	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-
-			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
-
-		    	if (err || !user) return res.render('error.jade');
-
-                //update the local user object
-                user.scientist = false;
-                user.developer = true;
-
-                //write the new data to the DB and carry on to user setup
-		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{ scientist: false,
-		    								developer: true}
-		    						}, 
-		    						function(){
-										  return res.render('setupUser.jade', {user:user});
-		    						});
-			});
-		});
-	});
-});
-
-app.post('/recordUpdate', function(req, res){
-
-	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-
-			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
-
-		    	if (err || !user) return res.render('error.jade');
-
-		    	//update the local user object
-		    	user.discipline = req.body.discipline;
-		    	user.language = req.body.language;
-
-		    	//update the DB, log the user in and carry on to main user pages
-		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{	discipline : req.body.discipline, 
-		    								language : req.body.language}
-		    						}, 
-		    						function(){
-										req.login(user, function(err) {
-										  if (err) return res.render('error.jade');
-										  return res.redirect('/userMatches');
-										});
-		    						});
-			});
-		});
-	});	
-});
 
 
 
