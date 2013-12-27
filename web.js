@@ -207,7 +207,7 @@ app.post('/emailNewPassword', function(req, res){
 	});
 });
 
-//go to new scientist setup page
+//register user as scientist and go to new scientist setup page
 app.post('/newScientist', function(req, res){
 
 	//open link to the database
@@ -224,13 +224,15 @@ app.post('/newScientist', function(req, res){
 		    												  }
 		    											}, function(){});
 
-				return res.render('setupScientist.jade', {});
+
+
+				return res.render('setupUser.jade', {});
 			});
 		});
 	});
 });
 
-//go to new developer setup page
+//register user as developer and go to new developer setup page
 app.post('/newDeveloper', function(req, res){
 
 	//open link to the database
@@ -247,7 +249,16 @@ app.post('/newDeveloper', function(req, res){
 		    												  }
 		    											}, function(){});
 
-				return res.render('setupDeveloper.jade', {});
+
+				//log the new user in:
+
+					req.login(user, function(err) {
+					  if (err) return res.render('error.jade');
+					  return res.render('setupUser.jade', {scientist: false, developer:true});
+					});
+				
+
+//				return res.render('setupDeveloper.jade', {});
 			});
 		});
 	});
@@ -269,7 +280,12 @@ app.post('/recordUpdate', function(req, res){
 		    												  }
 		    											}, function(){});
 
-				res.redirect('/userMatches')
+					req.login(user, function(err) {
+					  if (err) return res.render('error.jade');
+					  return res.redirect('/userMatches');
+					});
+
+				//res.redirect('/userMatches')
 			});
 		});
 	});	
