@@ -257,11 +257,7 @@ app.post('/newDeveloper', function(req, res){
 		    								developer: true}
 		    						}, 
 		    						function(){
-										//re-login to update req.user object
-										req.login(user, function(err) {
-										  if (err) return res.render('error.jade');
-										  return res.render('setupUser.jade', {/*scientist: false, developer:true,*/ user:user});
-										});
+										  return res.render('setupUser.jade', {user:user});
 		    						});
 			});
 		});
