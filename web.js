@@ -2,7 +2,6 @@
 //setup/////////////////////////////////////////////
 ////////////////////////////////////////////////////
 var express = require("express"),
-    expose = require("express-expose")
 	logfmt = require("logfmt"),
 	mongo = require('mongodb'),
 	passport = require('passport'),
@@ -92,8 +91,16 @@ app.get('/setupNewUser', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
-    app.expose('var some = "variable";', 'USER')
-	res.render('userProfile.jade', {user: req.user});
+
+	var i,
+		user = req.user;
+
+	for(i=0; i<user.languages.length; i++){
+		user[user.languages[i]] = true;
+	}
+	delete user.languages;
+
+	res.render('userProfile.jade', {user: user});
 
 });
 
