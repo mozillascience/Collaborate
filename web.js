@@ -143,10 +143,12 @@ app.post('/regUser', function(req, res){
 						collection.findOne({uName: req.body.uName}, function(err, user){
 							if(err) return res.render('error.jade');
 
-							req.login(user, function(err) {
-							  if (err) return res.render('error.jade');
-							  return res.redirect('/setupNewUser');
-							});
+							//req.login(user, function(err) {
+							//  if (err) return res.render('error.jade');
+							//  return res.redirect('/setupNewUser');
+							//});
+							return res.render('chooseClass.jade', {user:user});
+
 						});
 						
 			        });
@@ -279,18 +281,16 @@ app.post('/recordUpdate', function(req, res){
 		    	user.discipline = req.body.discipline;
 		    	user.language = req.body.language;
 
-		    	//update the DB and carry on to main user pages
+		    	//update the DB, log the user in and carry on to main user pages
 		    	collection.update(	{uName : user.uName}, 
 		    						{$set:{	discipline : req.body.discipline, 
 		    								language : req.body.language}
 		    						}, 
 		    						function(){
-								    	//update req.user object
-										//req.login(user, function(err) {
-										//  if (err) return res.render('error.jade');
-										  //return res.redirect('/userMatches');
-										//});
-		    							res.render('userMatches.jade', {user:user})
+										req.login(user, function(err) {
+										  if (err) return res.render('error.jade');
+										  return res.redirect('/userMatches');
+										});
 		    						});
 			});
 		});
