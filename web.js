@@ -99,7 +99,7 @@ console.log(req.user)
 //user's matches
 app.get('/userMatches', function(req, res){
 
-	res.render('userMatches.jade', {});
+	res.render('userMatches.jade');
 
 });
 
@@ -219,16 +219,17 @@ app.post('/newScientist', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
-		    	collection.update({uName : user.uName}, {$set:{ scientist: true,
-		    													developer: false
-		    												  }
-		    											}, function(){
-															//re-login to update req.user object
-															req.login(user, function(err) {
-															  if (err) return res.render('error.jade');
-															  return res.render('setupUser.jade', {scientist: true, developer:false});
-															});
-		    											});
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{ scientist: true,
+		    								developer: false}
+		    						}, 
+		    						function(){
+										//re-login to update req.user object
+										req.login(user, function(err) {
+										  if (err) return res.render('error.jade');
+										  return res.render('setupUser.jade', {scientist: true, developer:false});
+										});
+		    						});
 			});
 		});
 	});
@@ -246,16 +247,17 @@ app.post('/newDeveloper', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
-		    	collection.update({uName : user.uName}, {$set:{ scientist: false,
-		    													developer: true
-		    												  }
-		    											}, function(){
-															//re-login to update req.user object
-															req.login(user, function(err) {
-															  if (err) return res.render('error.jade');
-															  return res.render('setupUser.jade', {scientist: false, developer:true});
-															});
-		    											});
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{ scientist: false,
+		    								developer: true}
+		    						}, 
+		    						function(){
+										//re-login to update req.user object
+										req.login(user, function(err) {
+										  if (err) return res.render('error.jade');
+										  return res.render('setupUser.jade', {scientist: false, developer:true, user:user});
+										});
+		    						});
 			});
 		});
 	});
@@ -272,16 +274,17 @@ app.post('/recordUpdate', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
-		    	collection.update({uName : user.uName}, {$set:{	discipline : req.body.discipline, 
-		    													language : req.body.language
-		    												  }
-		    											}, function(){
-													    	//update req.user object
-															req.login(user, function(err) {
-															  if (err) return res.render('error.jade');
-															  return res.redirect('/userMatches');
-															});
-		    											});
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{	discipline : req.body.discipline, 
+		    								language : req.body.language}
+		    						}, 
+		    						function(){
+								    	//update req.user object
+										req.login(user, function(err) {
+										  if (err) return res.render('error.jade');
+										  return res.redirect('/userMatches');
+										});
+		    						});
 			});
 		});
 	});	
