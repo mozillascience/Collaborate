@@ -140,7 +140,7 @@ app.post('/regUser', function(req, res){
 						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
 
 						//drag info around by hand pre-serialization:
-						res.userinfo = {'uName': req.body.uName, 'Pass': hash};
+						req.cookies.userinfo = {'uName': req.body.uName, 'Pass': hash};
 						return res.render('chooseClass.jade');
 
 						/*
@@ -200,7 +200,7 @@ app.post('/newDeveloper', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user
-			collection.findOne({ uName: req.userinfo.uName }, function(err, user){
+			collection.findOne({ uName: req.cookies.userinfo.uName }, function(err, user){
 
 		    	if (err || !user) return res.render('error.jade');
 
