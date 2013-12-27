@@ -91,14 +91,14 @@ app.get('/setupNewUser', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
-
+console.log(req.user)
 	res.render('userProfile.jade', {user: req.user});
 
 });
 
 //user's matches
 app.get('/userMatches', function(req, res){
-console.log(req.user)
+
 	res.render('userMatches.jade', {});
 
 });
@@ -222,13 +222,13 @@ app.post('/newScientist', function(req, res){
 		    	collection.update({uName : user.uName}, {$set:{ scientist: true,
 		    													developer: false
 		    												  }
-		    											}, function(){});
-
-				//re-login to update req.user object
-				req.login(user, function(err) {
-				  if (err) return res.render('error.jade');
-				  return res.render('setupUser.jade', {scientist: true, developer:false});
-				});
+		    											}, function(){
+															//re-login to update req.user object
+															req.login(user, function(err) {
+															  if (err) return res.render('error.jade');
+															  return res.render('setupUser.jade', {scientist: true, developer:false});
+															});
+		    											});
 			});
 		});
 	});
@@ -249,13 +249,13 @@ app.post('/newDeveloper', function(req, res){
 		    	collection.update({uName : user.uName}, {$set:{ scientist: false,
 		    													developer: true
 		    												  }
-		    											}, function(){});
-
-				//re-login to update req.user object
-				req.login(user, function(err) {
-				  if (err) return res.render('error.jade');
-				  return res.render('setupUser.jade', {scientist: false, developer:true});
-				});
+		    											}, function(){
+															//re-login to update req.user object
+															req.login(user, function(err) {
+															  if (err) return res.render('error.jade');
+															  return res.render('setupUser.jade', {scientist: false, developer:true});
+															});
+		    											});
 			});
 		});
 	});
@@ -275,13 +275,13 @@ app.post('/recordUpdate', function(req, res){
 		    	collection.update({uName : user.uName}, {$set:{	discipline : req.body.discipline, 
 		    													language : req.body.language
 		    												  }
-		    											}, function(){});
-
-		    	//update req.user object
-				req.login(user, function(err) {
-				  if (err) return res.render('error.jade');
-				  return res.redirect('/userMatches');
-				});
+		    											}, function(){
+													    	//update req.user object
+															req.login(user, function(err) {
+															  if (err) return res.render('error.jade');
+															  return res.redirect('/userMatches');
+															});
+		    											});
 			});
 		});
 	});	
