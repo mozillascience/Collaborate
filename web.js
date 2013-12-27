@@ -92,7 +92,7 @@ app.get('/setupNewUser', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
-    app.expose('var foo="fie"', 'USER')
+    app.expose('var some = "variable";', 'USER')
 	res.render('userProfile.jade', {user: req.user});
 
 });
