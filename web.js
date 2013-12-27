@@ -137,14 +137,11 @@ app.post('/regUser', function(req, res){
 			        	if(err) return res.render('error.jade');
 
 		        		//register new user in the db:
-						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {
-							if(err) return res.render('error.jade');
+						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
 
-							//drag info around by hand pre-serialization:
-							req.userinfo = {'uName': req.body.uName, 'Pass': hash};
-							return res.render('chooseClass.jade');
-
-						});
+						//drag info around by hand pre-serialization:
+						req.userinfo = {'uName': req.body.uName, 'Pass': hash};
+						return res.render('chooseClass.jade');
 
 						/*
 						//log the new user in:
