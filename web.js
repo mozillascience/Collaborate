@@ -224,9 +224,11 @@ app.post('/newScientist', function(req, res){
 		    												  }
 		    											}, function(){});
 
-
-
-				return res.render('setupUser.jade', {});
+				//re-login to update req.user object
+				req.login(user, function(err) {
+				  if (err) return res.render('error.jade');
+				  return res.render('setupUser.jade', {scientist: true, developer:false});
+				});
 			});
 		});
 	});
@@ -249,16 +251,11 @@ app.post('/newDeveloper', function(req, res){
 		    												  }
 		    											}, function(){});
 
-
-				//log the new user in:
-
-					req.login(user, function(err) {
-					  if (err) return res.render('error.jade');
-					  return res.render('setupUser.jade', {scientist: false, developer:true});
-					});
-				
-
-//				return res.render('setupDeveloper.jade', {});
+				//re-login to update req.user object
+				req.login(user, function(err) {
+				  if (err) return res.render('error.jade');
+				  return res.render('setupUser.jade', {scientist: false, developer:true});
+				});
 			});
 		});
 	});
@@ -280,12 +277,11 @@ app.post('/recordUpdate', function(req, res){
 		    												  }
 		    											}, function(){});
 
-					req.login(user, function(err) {
-					  if (err) return res.render('error.jade');
-					  return res.redirect('/userMatches');
-					});
-
-				//res.redirect('/userMatches')
+		    	//update req.user object
+				req.login(user, function(err) {
+				  if (err) return res.render('error.jade');
+				  return res.redirect('/userMatches');
+				});
 			});
 		});
 	});	

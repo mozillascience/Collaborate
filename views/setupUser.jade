@@ -6,28 +6,24 @@ html
     form(method='post' action='recordUpdate')
       if scientist
         label What is your discipline?
-        select(name='discipline')
-          option Divination
-          option Evokation
-          option Necromancy
+        input(name='discipline[]', value='Divination')
+        input(name='discipline[]', value='Evokation')
+        input(name='discipline[]', value='Necromancy')
 
         label What language would you like to work in?
-        select(name='language')
-          option Haskell
-          option Visual BASIC
-          option Jade
+        input(name='language[]', value='Haskell')
+        input(name='language[]', value='Visual BASIC')
+        input(name='language[]', value='Jade')
 
       if developer
         label What languages are you comfortable with?
-        select(name='language')
-          option Haskell
-          option Visual BASIC
-          option Jade
+        input(name='language[]', value='Haskell')
+        input(name='language[]', value='Visual BASIC')
+        input(name='language[]', value='Jade')
 
         label What sciences interest you?
-        select(name='discipline')
-          option Divination
-          option Evokation
-          option Necromancy
+        input(name='discipline[]', value='Divination')
+        input(name='discipline[]', value='Evokation')
+        input(name='discipline[]', value='Necromancy')
 
       input(type='submit', value='Update Profile')
