@@ -94,11 +94,11 @@ app.get('/userProfile', function(req, res){
 
 	var i,
 		user = req.user;
-console.log(user)
-	for(i=0; i<user.languages.length; i++){
-		user[user.languages[i]] = true;
+
+	for(i=0; i<user.language.length; i++){
+		user[user.language[i]] = true;
 	}
-	delete user.languages;
+	delete user.language;
 
 	res.render('userProfile.jade', {user: user});
 
