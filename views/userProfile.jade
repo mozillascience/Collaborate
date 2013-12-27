@@ -3,6 +3,8 @@ html
 
   head
 
+  blah= 
+
   body
     h1 My Profile
 
@@ -17,7 +19,7 @@ html
 
     form(method='post' action='recordUpdate')
       if user.scientist
-        label What is your discipline? user.discipline[0]
+        label What is your discipline? #{user.discipline[0]}
         br
         input(type='checkbox', name='discipline[]', value='Divination')
         label Divination
