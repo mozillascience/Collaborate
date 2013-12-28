@@ -39,8 +39,10 @@ passport.use(new LocalStrategy(
 		    	}
 			    bcrypt.compare(password, user.Pass, function(err, isMatch) {
 			        if (err) res.render('error.jade');
-			        console.log(isMatch)
-			        return done(null, user)
+			        if(isMatch)
+				        return done(null, user)
+				    else
+				    	return done(null, false, { message: 'Bad Password.' });
 			    });
 		    });
 		});
