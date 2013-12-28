@@ -308,8 +308,34 @@ app.post('/emailNewPassword', function(req, res){
 	});
 });
 
+//go to the change password form
+app.post('/changePasswordForm', function(req, res){
 
+	res.render('changePassword.jade');
 
+});
+
+//validate and register the new password
+app.post('/updatePassword', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+		    	if(err) return res.render('error.jade');
+		    	//make sure the password was entered the same way twice
+		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade');
+
+		        // hash the password along with our new salt:
+		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+		        	if(err) return res.render('error.jade');
+
+	        		//register new user in the db:
+					collection.insert({'uName': req.user.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
+		        });
+		    });
+		});
+	});
+});
 
 
 
