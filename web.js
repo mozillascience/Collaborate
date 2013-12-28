@@ -39,7 +39,7 @@ passport.use(new LocalStrategy(
 		    	}
 			    bcrypt.compare(password, user.Pass, function(err, isMatch) {
 			        if (err) res.render('error.jade');
-			        console.log(password + ' ?= ' + user.Pass)
+			        console.log(isMatch)
 			        return done(null, user)
 			    });
 		    });
