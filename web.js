@@ -329,10 +329,10 @@ app.post('/updatePassword', function(req, res){
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 		        	if(err) return res.render('error.jade');
 
-	        		//register new user in the db:
-					collection.insert({'uName': req.user.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
-
-					return res.redirect('/userProfile')
+	        		//register new password in the db:
+	        		collection.update({uName : req.user.uName}, {$set:{Pass : hash}}, function(){
+	        			return res.redirect('/userProfile');
+	        		});
 		        });
 		    });
 		});
