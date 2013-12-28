@@ -311,7 +311,7 @@ app.post('/emailNewPassword', function(req, res){
 //go to the change password form
 app.post('/changePasswordForm', function(req, res){
 
-	res.render('changePassword.jade');
+	return res.render('changePassword.jade');
 
 });
 
@@ -331,6 +331,8 @@ app.post('/updatePassword', function(req, res){
 
 	        		//register new user in the db:
 					collection.insert({'uName': req.user.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
+
+					return res.redirect('/userProfile')
 		        });
 		    });
 		});
