@@ -37,10 +37,9 @@ passport.use(new LocalStrategy(
 		    	if (!user) {
 		    		return done(null, false, { message: 'Incorrect username.' });
 		    	}
-		    	console.log(password + ' ?= ' + user.Pass)
 			    bcrypt.compare(password, user.Pass, function(err, isMatch) {
 			        if (err) res.render('error.jade');
-
+			        console.log(password + ' ?= ' + user.Pass)
 			        return done(null, user)
 			    });
 		    });
