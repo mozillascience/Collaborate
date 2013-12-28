@@ -331,7 +331,7 @@ app.post('/updatePassword', function(req, res){
 
 	        		//register new password in the db:
 	        		collection.update({uName : req.user.uName}, {$set:{Pass : hash}}, function(){
-	        			return res.redirect('/userProfile');
+	        			return res.redirect('/userMatches');
 	        		});
 		        });
 		    });
