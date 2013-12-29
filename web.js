@@ -96,7 +96,7 @@ app.get('/userProfile', function(req, res){
 
 	var i,
 		user = req.user;
-console.log(user.uName)
+console.log(user.language)
 	//break checkbox groups out into booleans to smooth things out on the Jade side:
 	for(i=0; i<user.language.length; i++){
 		user[user.language[i]] = true;
