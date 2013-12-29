@@ -119,6 +119,8 @@ app.get('/userMatches', function(req, res){
 			//reject new account if the username is already taken	    	
 	    	collection.find( { $where: function(){isMatch(req.user, obj)} } ).toArray(function(err, matches){
 
+	    		console.log(matches.length)
+
 	    		res.render('userMatches.jade');
 
 	    	});
