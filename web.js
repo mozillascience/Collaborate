@@ -95,7 +95,7 @@ app.get('/setupNewUser', function(req, res){
 app.get('/userProfile', function(req, res){
 
 	var i,
-		user = req.user;
+		user = JSON.parse(JSON.stringify(req.user));
 console.log(user.language)
 	//break checkbox groups out into booleans to smooth things out on the Jade side:
 	for(i=0; i<user.language.length; i++){
