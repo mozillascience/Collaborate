@@ -72,43 +72,45 @@ app.get('/', function(req, res) {
 
 app.get('/', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
-		db.system.js.save(
-			{_id: "isMatch",
-			 value: function(user1, user2){
+		db.collection('system.js', function(er, collection) {
+			collection.save(
+				{_id: "isMatch",
+				 value: function(user1, user2){
 
-					//given two arrays, return true iff they share at least one element
-					function arrayIntersect(arr1, arr2){
-						var i, j;
+						//given two arrays, return true iff they share at least one element
+						function arrayIntersect(arr1, arr2){
+							var i, j;
 
-						//walk through all arrays and compare all elements; bail with return true as soon as any match is found
-						for(i=0; i<arr1.length; i++){
-							for(j=0; j<arr2.length; j++){
-								if(arr1[i] === arr2[j]) return true;
+							//walk through all arrays and compare all elements; bail with return true as soon as any match is found
+							for(i=0; i<arr1.length; i++){
+								for(j=0; j<arr2.length; j++){
+									if(arr1[i] === arr2[j]) return true;
+								}
 							}
-						}
 
-						//nope:
-						return false;
-					};
+							//nope:
+							return false;
+						};
 
-					//bail if both users have the same profession
-					if( (user1.scientist && user2.scientist) || (!user1.scientist && !user2.scientist) ) return false;
-					if( (user1.developer && user2.developer) || (!user1.developer && !user2.developer) ) return false;
+						//bail if both users have the same profession
+						if( (user1.scientist && user2.scientist) || (!user1.scientist && !user2.scientist) ) return false;
+						if( (user1.developer && user2.developer) || (!user1.developer && !user2.developer) ) return false;
 
-					//look for a language match
-					if( !arrayIntersect(user1.language, user2.language) ) return false;
+						//look for a language match
+						if( !arrayIntersect(user1.language, user2.language) ) return false;
 
-					//look for a discipline match
-					if( !arrayIntersect(user1.discipline, user2.discipline) ) return false;	
+						//look for a discipline match
+						if( !arrayIntersect(user1.discipline, user2.discipline) ) return false;	
 
-					//all arrays intersect, a match is found!
+						//all arrays intersect, a match is found!
 
-					return true;
-
+						return true;
+	
+					}
 				}
-			}
-		)
-		res.render('login.jade', {loginMessage: null, registerMessage: null});
+			)
+			res.render('login.jade', {loginMessage: null, registerMessage: null});
+		});
 	});
 });
 
