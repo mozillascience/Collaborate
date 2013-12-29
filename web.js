@@ -117,7 +117,7 @@ app.get('/userMatches', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 			//reject new account if the username is already taken	    	
-	    	collection.find( { $where: function(){isMatch(req.user, obj)} } ).toArray(function(err, matches){
+	    	collection.find( { $where: function(){ /*isMatch(req.user, obj)*/ return false } } ).toArray(function(err, matches){
 
 	    		for(i=0; i<matches.length; i++)
 	    			console.log(matches[i].uName)
@@ -381,6 +381,7 @@ app.post('/deleteProfile', function(req, res){
 //compare two users, return bool indicating match
 function isMatch(user1, user2){
 return false
+	/*
 	//bail if both users have the same profession
 	if( (user1.scientist && user2.scientist) || (!user1.scientist && !user2.scientist) ) return false;
 	if( (user1.developer && user2.developer) || (!user1.developer && !user2.developer) ) return false;
@@ -393,7 +394,7 @@ return false
 
 	//all arrays intersect, a match is found!
 	return true;
-
+	*/
 }
 
 //given two arrays, return true iff they share at least one element
