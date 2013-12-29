@@ -140,8 +140,9 @@ app.get('/userMatches', function(req, res){
 	    	collection.find( {$where: "isMatch(req.user, obj)"} ).toArray(function(err, matches){
 	    	//collection.find( {uName: req.user.uName } ).toArray(function(err, matches){
 
-	    		for(i=0; i<matches.length; i++)
-	    			console.log(matches[i].uName)
+	    		console.log(matches)
+	    		//for(i=0; i<matches.length; i++)
+	    		//	console.log(matches[i].uName)
 
 	    		res.render('userMatches.jade');
 
@@ -401,8 +402,7 @@ app.post('/deleteProfile', function(req, res){
 
 //compare two users, return bool indicating match
 function isMatch(user1, user2){
-return false
-	/*
+
 	//bail if both users have the same profession
 	if( (user1.scientist && user2.scientist) || (!user1.scientist && !user2.scientist) ) return false;
 	if( (user1.developer && user2.developer) || (!user1.developer && !user2.developer) ) return false;
@@ -415,7 +415,7 @@ return false
 
 	//all arrays intersect, a match is found!
 	return true;
-	*/
+	
 }
 
 //given two arrays, return true iff they share at least one element
