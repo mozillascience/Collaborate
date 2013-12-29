@@ -96,7 +96,7 @@ app.get('/userProfile', function(req, res){
 
 	var i,
 		user = JSON.parse(JSON.stringify(req.user));
-console.log(user.language)
+
 	//break checkbox groups out into booleans to smooth things out on the Jade side:
 	for(i=0; i<user.language.length; i++){
 		user[user.language[i]] = true;
@@ -256,9 +256,6 @@ app.post('/recordUpdate', function(req, res){
 	});	
 });
 
-
-
-
 //go to the password recovery page
 app.post('/forgotPass', function(req, res){
 
@@ -341,6 +338,29 @@ app.post('/updatePassword', function(req, res){
 	});
 });
 
+//delete the profile of the currently logged in user
+app.post('/deleteProfile', function(req, res){
+
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.user.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	//logout
+		    	req.logout();
+
+		    	//dump user from DB and return to landing page:
+		    	collection.remove({uName : user.uName}, true, function(){
+		    		return res.redirect('/');
+		    	});									
+			});
+		});
+	});	
+});
 
 
 
