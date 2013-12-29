@@ -62,17 +62,18 @@ passport.deserializeUser(function(obj, done) {
 /////////////////////////////////////////////////////
 //get requests///////////////////////////////////////
 /////////////////////////////////////////////////////
-
+/*
 //landing page
 app.get('/', function(req, res) {
 	res.render('login.jade', {loginMessage: null, registerMessage: null});
 });
-
+*/
 //hack to implement mongo server side JS - run once only:
-/*
+
 app.get('/', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('system.js', function(er, collection) {
+			/*
 			collection.save(
 				{_id: "isMatch",
 				 value: function(user1, user2){
@@ -108,13 +109,13 @@ app.get('/', function(req, res){
 	
 					}
 				},
-			function(err, res){
-				//res.render('login.jade', {loginMessage: null, registerMessage: null});	
-			});
+			function(err, res){});
+			*/
+			collection.save( {_id: 'dummy', value: function(){return true} }, function(err, res){} );
 		});
 	});
 });
-*/
+
 
 //landing page - bad user / pass combo
 app.get('/badCredentials', function(req, res){
