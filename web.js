@@ -381,9 +381,9 @@ app.post('/deleteProfile', function(req, res){
 //compare two users, return bool indicating match
 function isMatch(user1, user2){
 
-	//match scientists with developers:
-	if(user1.scientist == user2.scientist) return false;
-	if(user1.developer == user2.developer) return false;
+	//bail if both users have the same profession
+	if( (user1.scientist && user2.scientist) || (!user1.scientist && !user2.scientist) ) return false;
+	if( (user1.developer && user2.developer) || (!user1.developer && !user2.developer) ) return false;
 
 	//look for a language match
 	if( !arrayIntersect(user1.language, user2.language) ) return false;
