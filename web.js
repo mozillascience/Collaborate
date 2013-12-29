@@ -107,9 +107,10 @@ app.get('/', function(req, res){
 						return true;
 	
 					}
-				}
-			)
-			res.render('login.jade', {loginMessage: null, registerMessage: null});
+				},
+			function(err, res){
+				res.render('login.jade', {loginMessage: null, registerMessage: null});	
+			});
 		});
 	});
 });
