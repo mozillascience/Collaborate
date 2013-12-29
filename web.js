@@ -112,12 +112,32 @@ app.get('/userProfile', function(req, res){
 });
 
 //user's matches
+/*
 app.get('/userMatches', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 			//reject new account if the username is already taken	    	
-	    	collection.find( { $where: function(){ /*isMatch(req.user, obj)*/ return false } } ).toArray(function(err, matches){
+	    	collection.find( { $where: function(){ isMatch(req.user, obj) } } ).toArray(function(err, matches){
+
+	    		for(i=0; i<matches.length; i++)
+	    			console.log(matches[i].uName)
+
+	    		res.render('userMatches.jade');
+
+	    	});
+		});
+	});
+});
+*/
+
+app.get('/userMatches', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+			//reject new account if the username is already taken	    	
+	    	//collection.find( { $where: function(){ return false } } ).toArray(function(err, matches){
+	    	collection.find( {uName: req.user.uName } ).toArray(function(err, matches){
 
 	    		for(i=0; i<matches.length; i++)
 	    			console.log(matches[i].uName)
