@@ -109,7 +109,7 @@ app.get('/', function(req, res){
 					}
 				},
 			function(err, res){
-				res.render('login.jade', {loginMessage: null, registerMessage: null});	
+				//res.render('login.jade', {loginMessage: null, registerMessage: null});	
 			});
 		});
 	});
