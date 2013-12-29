@@ -117,7 +117,7 @@ app.get('/userMatches', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 			//reject new account if the username is already taken	    	
-	    	collection.find( function(){isMatch(req.user, obj)} ).toArray(function(err, matches){
+	    	collection.find( { $where: function(){isMatch(req.user, obj)} } ).toArray(function(err, matches){
 
 	    		res.render('userMatches.jade');
 
