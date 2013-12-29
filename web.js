@@ -9,7 +9,6 @@ var express = require("express"),
 	bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10,
     mail = require("nodemailer").mail,
-    helpers = require("utils"),
 	app = express(),
 	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
   		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
@@ -65,8 +64,52 @@ passport.deserializeUser(function(obj, done) {
 /////////////////////////////////////////////////////
 
 //landing page
+/*
 app.get('/', function(req, res) {
 	res.render('login.jade', {loginMessage: null, registerMessage: null});
+});
+*/
+
+app.get('/', function(req, res){
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.system.js.save(
+			{_id: "isMatch",
+			 value: function(user1, user2){
+
+					//given two arrays, return true iff they share at least one element
+					function arrayIntersect(arr1, arr2){
+						var i, j;
+
+						//walk through all arrays and compare all elements; bail with return true as soon as any match is found
+						for(i=0; i<arr1.length; i++){
+							for(j=0; j<arr2.length; j++){
+								if(arr1[i] === arr2[j]) return true;
+							}
+						}
+
+						//nope:
+						return false;
+					};
+
+					//bail if both users have the same profession
+					if( (user1.scientist && user2.scientist) || (!user1.scientist && !user2.scientist) ) return false;
+					if( (user1.developer && user2.developer) || (!user1.developer && !user2.developer) ) return false;
+
+					//look for a language match
+					if( !arrayIntersect(user1.language, user2.language) ) return false;
+
+					//look for a discipline match
+					if( !arrayIntersect(user1.discipline, user2.discipline) ) return false;	
+
+					//all arrays intersect, a match is found!
+
+					return true;
+
+				}
+			}
+		)
+		res.render('login.jade', {loginMessage: null, registerMessage: null});
+	});
 });
 
 //landing page - bad user / pass combo
