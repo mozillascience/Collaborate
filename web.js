@@ -137,7 +137,8 @@ app.get('/userMatches', function(req, res){
 		db.collection('Users', function(er, collection) {
 			//reject new account if the username is already taken	    	
 	    	//collection.find( { $where: function(){ return false } } ).toArray(function(err, matches){
-	    	collection.find( {uName: req.user.uName } ).toArray(function(err, matches){
+	    	collection.find( "false" ).toArray(function(err, matches){
+	    	//collection.find( {uName: req.user.uName } ).toArray(function(err, matches){
 
 	    		for(i=0; i<matches.length; i++)
 	    			console.log(matches[i].uName)
