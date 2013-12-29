@@ -20,6 +20,7 @@ function isMatch(user1, user2){
 	return true;
 	
 }
+exports.isMatch = isMatch;
 
 //given two arrays, return true iff they share at least one element
 function arrayIntersect(arr1, arr2){
@@ -35,3 +36,4 @@ function arrayIntersect(arr1, arr2){
 	//nope:
 	return false;
 }
+exports.arrayIntersect = arrayIntersect;
