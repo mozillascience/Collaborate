@@ -119,7 +119,7 @@ app.get('/userMatches', function(req, res){
 			//reject new account if the username is already taken	    	
 	    	collection.find( function(){isMatch(req.user, this)} ).toArray(function(err, matches){
 
-	    		var i
+	    		var i;
 	    		for(i=0; i<matches.length; i++)
 	    			console.log(matches.uName)
 
@@ -382,6 +382,10 @@ app.post('/deleteProfile', function(req, res){
 //compare two users, return bool indicating match
 function isMatch(user1, user2){
 
+console.log('user1 = '+user1)
+console.log('user2 = '+user2)
+return true
+/*
 	//match scientists with developers:
 	if(user1.scientist == user2.scientist) return false;
 	if(user1.developer == user2.developer) return false;
@@ -394,6 +398,7 @@ function isMatch(user1, user2){
 
 	//all arrays intersect, a match is found!
 	return true;
+*/
 }
 
 //given two arrays, return true iff they share at least one element
