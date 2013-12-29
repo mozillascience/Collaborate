@@ -119,15 +119,11 @@ app.get('/userMatches', function(req, res){
 			//reject new account if the username is already taken	    	
 	    	collection.find( function(){isMatch(req.user, obj)} ).toArray(function(err, matches){
 
-	    		var i;
-	    		for(i=0; i<matches.length; i++)
-	    			console.log(matches.uName)
+	    		res.render('userMatches.jade');
 
 	    	});
 		});
 	});
-
-	res.render('userMatches.jade');
 
 });
 
