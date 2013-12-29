@@ -114,6 +114,19 @@ app.get('/userProfile', function(req, res){
 //user's matches
 app.get('/userMatches', function(req, res){
 
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+			//reject new account if the username is already taken	    	
+	    	collection.find(isMatch(req.user, this)).toArray(function(err, matches){
+
+	    		var i
+	    		for(i=0; i<matches.length; i++)
+	    			console.log(matches.uName)
+
+	    	});
+		});
+	});
+
 	res.render('userMatches.jade');
 
 });
@@ -361,6 +374,42 @@ app.post('/deleteProfile', function(req, res){
 		});
 	});	
 });
+
+////////////////////////////////////////////////////////
+//helper functions//////////////////////////////////////
+////////////////////////////////////////////////////////
+
+//compare two users, return bool indicating match
+function isMatch(user1, user2){
+
+	//match scientists with developers:
+	if(user1.scientist == user2.scientist) return false;
+	if(user1.developer == user2.developer) return false;
+
+	//look for a language match
+	if( !arrayIntersect(user1.language, user2.language) ) return false;
+
+	//look for a discipline match
+	if( !arrayIntersect(user1.discipline, user2.discipline) ) return false;	
+
+	//all arrays intersect, a match is found!
+	return true;
+}
+
+//given two arrays, return true iff they share at least one element
+function arrayIntersect(arr1, arr2){
+	var i, j;
+
+	//walk through all arrays and compare all elements; bail with return true as soon as any match is found
+	for(i=0; i<arr1.length; i++){
+		for(j=0; j<arr2.length; j++){
+			if(arr1[i] === arr2[j]) return true;
+		}
+	}
+
+	//nope:
+	return false;
+}
 
 
 
