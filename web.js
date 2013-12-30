@@ -165,8 +165,7 @@ app.get('/userProfile', function(req, res){
 app.get('/userMatches', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-			//reject new account if the username is already taken	    	
+		db.collection('Users', function(er, collection) {    	
 	    	collection.find( { $where: function(){ isMatch(req.user, obj) } } ).toArray(function(err, matches){
 
 	    		for(i=0; i<matches.length; i++)
@@ -183,10 +182,9 @@ app.get('/userMatches', function(req, res){
 app.get('/userMatches', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-			//reject new account if the username is already taken	    	
+		db.collection('Users', function(er, collection) {	    	
 	    	//collection.find( { $where: function(){ return false } } ).toArray(function(err, matches){
-	    	collection.find( {$where: function(){return false} } ).toArray(function(err, matches){
+	    	collection.find( {$where: "isMatch()" } ).toArray(function(err, matches){
 	    	//collection.find( {uName: req.user.uName } ).toArray(function(err, matches){
 
 	    		console.log(matches)
