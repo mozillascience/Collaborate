@@ -165,7 +165,7 @@ app.get('/userMatches', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
-
+	    		console.log(matches)
 	    		res.render('userMatches.jade', {match: matches, nMatch: matches.length}); //explicit length record since JS in Jade is kind of awkward
 
 	    	});
