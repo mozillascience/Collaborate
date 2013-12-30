@@ -13,3 +13,8 @@ html
 
     form(method='get', action='userSearch')
       input(type='submit', value='Search')
+
+
+    - for(var i=0; i<nMatches; i++) {
+      div= match[i].uName
+    - }
