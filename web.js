@@ -181,6 +181,8 @@ app.get('/userMatches', function(req, res){
 
 app.get('/userMatches', function(req, res){
 
+console.log(JSON.stringify(function(){return false}))
+
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	    	
 	    	//collection.find( { $where: function(){ return false } } ).toArray(function(err, matches){
