@@ -17,7 +17,10 @@ html
     form(method='post', action='search')
       label Profession
       input(type='radio', name='profession', value='scientist')
+      label Scientist
+      br
       input(type='radio', name='profession', value='developer')
+      label Developer
       br
       br
 
@@ -61,3 +64,7 @@ html
         div= searchResults[i].language
         div= searchResults[i].discipline
       - }
+
+      - if(searchResults.length == 0) {
+          p No matches... YET
+      - } 
