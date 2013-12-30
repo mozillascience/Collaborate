@@ -68,55 +68,6 @@ app.get('/', function(req, res) {
 	res.render('login.jade', {loginMessage: null, registerMessage: null});
 });
 
-/*
-//hack to implement mongo server side JS - run once only:
-app.get('/', function(req, res){
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('system.js', function(er, collection) {
-			
-			collection.save(
-				{_id: "isMatch",
-				 value: function(user1, user2){
-
-						//given two arrays, return true iff they share at least one element
-						function arrayIntersect(arr1, arr2){
-							var i, j;
-
-							//walk through all arrays and compare all elements; bail with return true as soon as any match is found
-							for(i=0; i<arr1.length; i++){
-								for(j=0; j<arr2.length; j++){
-									if(arr1[i] === arr2[j]) return true;
-								}
-							}
-
-							//nope:
-							return false;
-						};
-
-						//bail if both users have the same profession
-						if( (user1.scientist && user2.scientist) || (!user1.scientist && !user2.scientist) ) return false;
-						if( (user1.developer && user2.developer) || (!user1.developer && !user2.developer) ) return false;
-
-						//look for a language match
-						if( !arrayIntersect(user1.language, user2.language) ) return false;
-
-						//look for a discipline match
-						if( !arrayIntersect(user1.discipline, user2.discipline) ) return false;	
-
-						//all arrays intersect, a match is found!
-
-						return true;
-	
-					}
-				},
-			function(err, res){});
-			
-			collection.save( {_id: 'dummy', value: function(){return true} }, function(err, res){} );
-		});
-	});
-});
-*/
-
 //landing page - bad user / pass combo
 app.get('/badCredentials', function(req, res){
 	res.render('login.jade', {loginMessage: 'Whooops!  Bad user / pass combo, try again plz:', registerMessage: null})
@@ -165,8 +116,8 @@ app.get('/userMatches', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
-	    		console.log(matches)
-	    		res.render('userMatches.jade', {match: matches, nMatch: matches.length}); //explicit length record since JS in Jade is kind of awkward
+	    		
+	    		res.render('userMatches.jade', {match: matches});
 
 	    	});
 		});
@@ -284,6 +235,7 @@ app.post('/newDeveloper', function(req, res){
 	});
 });
 
+//update a user's profile
 app.post('/recordUpdate', function(req, res){
 
 	//open link to the database
@@ -416,6 +368,22 @@ app.post('/deleteProfile', function(req, res){
 			});
 		});
 	});	
+});
+
+app.post('/search', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {	
+			var scientist = (req.body.profession == 'scientist') ? true : false;
+
+	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
+	    		
+	    		res.render('userSearch.jade', {searchResults: matches});
+
+	    	});
+		});
+	});
+
 });
 
 var port = process.env.PORT || 5000;

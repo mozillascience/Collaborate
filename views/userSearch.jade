@@ -14,3 +14,50 @@ html
     form(method='get', action='userSearch')
       input(type='submit', value='Search')
 
+    form(method='post', action='search')
+      label Profession
+      input(type='radio', name='profession', value='scientist')
+      input(type='radio', name='profession', value='developer')
+      br
+      br
+
+      label Discipline
+      br
+      input(type='checkbox', name='discipline[]', value='Divination')
+      label Divination
+      br
+      input(type='checkbox', name='discipline[]', value='Evokation')
+      label Evokation
+      br
+      input(type='checkbox', name='discipline[]', value='Necromancy')
+      label Necromancy
+      br
+      br
+
+      label Language
+      br
+      input(type='checkbox', name='language[]', value='Haskell')
+      label Haskell
+      br
+      input(type='checkbox', name='language[]', value='Visual BASIC')
+      label Visual BASIC
+      br
+      input(type='checkbox', name='language[]', value='Jade')
+      label Jade
+      br
+      br
+
+      input(type='submit', value='Search Users')
+
+    if searchResults
+      h1 Search Results
+
+      - for(var i=0; i<searchResults.length; i++) {
+        h3= searchResults[i].uName
+        if searchResults[i].scientist
+          div= Profession: Scientist
+        if searchResults[i].developer
+          div= Profession: Developer
+        div= searchResults[i].language
+        div= searchResults[i].discipline
+      - }
