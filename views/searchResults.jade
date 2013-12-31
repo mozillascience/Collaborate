@@ -27,3 +27,7 @@ html
     - if(searchResults.length == 0) {
         p No matches... YET
     - } 
+
+    - for(var j=0; j<Math.ceil(searchResults.length/10); j++ ){
+      a(href='/searchResults?page='j) j
+    - }
