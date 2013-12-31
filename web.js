@@ -93,7 +93,7 @@ app.get('/setupNewUser', function(req, res){
 
 app.get('/searchResults', function(req, res){
 
-	res.render('searchResults.jade', {searchResults: searchBuffer, page: req.query.page, nPages: Math.ceil(searchBuffer.length/10)} )
+	res.render('searchResults.jade', {searchResults: searchBuffer, page: req.query.page, nPages: Math.ceil(searchBuffer.length/10)} );
 
 });
 
@@ -122,8 +122,9 @@ app.get('/userMatches', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
-	    		
-	    		res.render('userMatches.jade', {match: matches});
+	    		matchBuffer = matches;
+	    		res.render('userMatches.jade', {match: matches, page: req.query.page, nPages: Math.ceil(matchBuffer.length/10)} );
+	    		//res.redirect('/searchResults?page=0' );
 
 	    	});
 		});
@@ -384,7 +385,6 @@ app.post('/search', function(req, res){
 
 	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
 	    		searchBuffer = matches;
-	    		//res.render('searchResults.jade', {searchResults: matches, thisPage: 0, nPages: Math.ceil(matches.length/10) });
 	    		res.redirect('/searchResults?page=0' );
 
 	    	});

@@ -5,7 +5,7 @@ html
   body
     h1 My Matches
 
-    form(method='get', action='userMatches')
+    form(method='get', action='userMatches/?page=0')
       input(type='submit', value='My Matches')
 
     form(method='get', action='userProfile')
@@ -15,8 +15,18 @@ html
       input(type='submit', value='Search')
 
 
-    - for(var i=0; i<match.length; i++) {
+    - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
       h3= match[i].uName
       div= match[i].language
       div= match[i].discipline
     - }
+
+    - if(match.length == 0) {
+        p No matches... YET
+    - } 
+
+    -if(match.length > 10)
+      h3 more matches
+      - for(var j=0; j<Math.ceil(match.length/10); j++ ){
+        a(href='/userMatches?page='+j) #{j}
+      - }
