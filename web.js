@@ -144,7 +144,7 @@ app.get('/userSearch', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches', failureRedirect: '/badCredentials'}) );
+app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/badCredentials'}) );
 
 //register a new user
 app.post('/regUser', function(req, res){
