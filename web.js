@@ -378,7 +378,7 @@ app.post('/search', function(req, res){
 
 	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
 	    		
-	    		res.render('userSearch.jade', {searchResults: matches});
+	    		res.render('searchResults.jade', {searchResults: matches});
 
 	    	});
 		});
