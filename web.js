@@ -91,6 +91,12 @@ app.get('/setupNewUser', function(req, res){
 
 });
 
+app.get('/searchResults', function(req, res){
+
+	res.render('searchResults.jade', )
+
+});
+
 //user profile page
 app.get('/userProfile', function(req, res){
 
@@ -128,7 +134,7 @@ app.get('/userMatches', function(req, res){
 //search page
 app.get('/userSearch', function(req, res){
 
-	res.render('userSearch.jade', {});
+	res.render('userSearch.jade', {searchResults: searchBuffer});
 
 });
 
@@ -377,8 +383,9 @@ app.post('/search', function(req, res){
 			var scientist = (req.body.profession == 'scientist') ? true : false;
 
 	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
-	    		
-	    		res.render('searchResults.jade', {searchResults: matches});
+	    		searchBuffer = matches;
+	    		//res.render('searchResults.jade', {searchResults: matches, thisPage: 0, nPages: Math.ceil(matches.length/10) });
+	    		res.redirect('/searchResults?page=0&nPages='+Math.ceil(matches.length/10) );
 
 	    	});
 		});
