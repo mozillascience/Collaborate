@@ -93,7 +93,7 @@ app.get('/setupNewUser', function(req, res){
 
 app.get('/searchResults', function(req, res){
 
-	res.render('searchResults.jade', )
+	res.render('searchResults.jade', {searchResults: searchBuffer} )
 
 });
 
@@ -134,7 +134,7 @@ app.get('/userMatches', function(req, res){
 //search page
 app.get('/userSearch', function(req, res){
 
-	res.render('userSearch.jade', {searchResults: searchBuffer});
+	res.render('userSearch.jade');
 
 });
 
