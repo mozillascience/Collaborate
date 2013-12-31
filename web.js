@@ -93,7 +93,7 @@ app.get('/setupNewUser', function(req, res){
 
 app.get('/searchResults', function(req, res){
 
-	res.render('searchResults.jade', {searchResults: searchBuffer} )
+	res.render('searchResults.jade', {searchResults: searchBuffer, page: req.query.page, nPages: Math.ceil(searchBuffer.length/10)} )
 
 });
 
@@ -385,7 +385,7 @@ app.post('/search', function(req, res){
 	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
 	    		searchBuffer = matches;
 	    		//res.render('searchResults.jade', {searchResults: matches, thisPage: 0, nPages: Math.ceil(matches.length/10) });
-	    		res.redirect('/searchResults?page=0&nPages='+Math.ceil(matches.length/10) );
+	    		res.redirect('/searchResults?page=0' );
 
 	    	});
 		});
