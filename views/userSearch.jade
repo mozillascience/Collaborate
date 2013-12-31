@@ -51,20 +51,3 @@ html
       br
 
       input(type='submit', value='Search Users')
-
-    if searchResults
-      h1 Search Results
-
-      - for(var i=0; i<searchResults.length; i++) {
-        h3= searchResults[i].uName
-        if searchResults[i].scientist
-          div Scientist
-        if searchResults[i].developer
-          div Developer
-        div= searchResults[i].language
-        div= searchResults[i].discipline
-      - }
-
-      - if(searchResults.length == 0) {
-          p No matches... YET
-      - } 
