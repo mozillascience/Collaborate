@@ -11,7 +11,8 @@ var express = require("express"),
     mail = require("nodemailer").mail,
 	app = express(),
 	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
-  		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
+  		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917',
+  	searchBuffer = {}; //namespace to hold user searches
 
 //set up the app
 app.set('views', __dirname + '/views');
@@ -28,35 +29,37 @@ app.use(passport.session());
 
 //configure the passport authentication
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-		    collection.findOne({ uName: username }, function(err, user) {
-		    	if (err) return res.render('error.jade');
-		    	if (!user) {
-		    		return done(null, false, { message: 'Incorrect username.' });
-		    	}
-			    bcrypt.compare(password, user.Pass, function(err, isMatch) {
-			        if (err) res.render('error.jade');
-			        if(isMatch)
-				        return done(null, user)
-				    else
-				    	return done(null, false, { message: 'Bad Password.' });
+    function(username, password, done) {
+		mongo.Db.connect(mongoUri, function(err, db) {
+			db.collection('Users', function(er, collection) {
+			    collection.findOne({ uName: username }, function(err, user) {
+			    	if (err) return res.render('error.jade');
+			    	if (!user) {
+			    		return done(null, false, { message: 'Incorrect username.' });
+			    	}
+				    bcrypt.compare(password, user.Pass, function(err, isMatch) {
+				        if (err) res.render('error.jade');
+				        if(isMatch)
+					        return done(null, user)
+					    else
+					    	return done(null, false, { message: 'Bad Password.' });
+				    });
 			    });
-		    });
+			});
 		});
-	});
-  }
+    };
 ));
 
 //passport serialize / deserialize magics
 passport.serializeUser(function(user, done) {
-  done(null, user);
+	done(null, user);
 });
 
 passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+
+	console.log(obj)
+
+	done(null, obj);
 });
 
 /////////////////////////////////////////////////////
@@ -93,7 +96,7 @@ app.get('/setupNewUser', function(req, res){
 
 app.get('/searchResults', function(req, res){
 
-	res.render('searchResults.jade', {searchResults: searchBuffer, page: req.query.page, nPages: Math.ceil(searchBuffer.length/10)} );
+	res.render('searchResults.jade', {searchResults: searchBuffer[req.user['_id']], page: req.query.page, nPages: Math.ceil(searchBuffer[req.user['_id']].length/10)} );
 
 });
 
@@ -384,7 +387,7 @@ app.post('/search', function(req, res){
 			var scientist = (req.body.profession == 'scientist') ? true : false;
 
 	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
-	    		searchBuffer = matches;
+	    		searchBuffer[req.user['_id']] = matches;
 	    		res.redirect('/searchResults?page=0' );
 
 	    	});
