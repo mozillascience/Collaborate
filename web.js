@@ -425,7 +425,7 @@ app.post('/sendEmail', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user to get their email - this way email is never exposed in the browser
-			collection.findOne({ _id.$oid: req.body._id }, function(err, user){
+			collection.findOne({ uName: req.body.uName }, function(err, user){
 console.log(user)
 				mail({
 				    from: "Interdisciplinary Programming <noreply@interdisciplinaryprogramming.com>", // sender address

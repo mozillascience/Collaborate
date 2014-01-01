@@ -15,7 +15,7 @@ html
 
     h1 Contact #{user.uName}
     form(method='post', action='sendEmail')
-      input(type='text', name='_id', value=user._id, style='display:none')
+      input(type='text', name='uName', value=user.uName, style='display:none')
       label Subject
       br
       input(type='text', name='subject')
