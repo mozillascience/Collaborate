@@ -158,7 +158,7 @@ app.get('/contactUser', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {uName: req.query.username}, function(err, user){
-	    		res.render('contactUser.jade', {user: user, thisUser: req.user});
+	    		res.render('contactUser.jade', {user: user});
 	    	});
 		});
 	});
@@ -338,7 +338,7 @@ app.post('/emailNewPassword', function(req, res){
 				    from: "Fred Foo <foo@blurdybloop.com>", // sender address
 				    to: "herpderp, mills.wj@gmail.com", // list of receivers
 				    subject: "Hello", // Subject line
-				    text: newPass // plaintext body
+				    text: newPass // body
 				});
 
 				res.redirect('/')
@@ -402,6 +402,7 @@ app.post('/deleteProfile', function(req, res){
 	});	
 });
 
+//run a search using the given parameters
 app.post('/search', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
@@ -415,7 +416,28 @@ app.post('/search', function(req, res){
 	    	});
 		});
 	});
+});
 
+//send an email to the user indicated by _id, and the initiating user
+app.post('/sendEmail', function(req, res){
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user to get their email - this way email is never exposed in the browser
+			collection.findOne({ _id: req.body._id }, function(err, user){
+
+				mail({
+				    from: "Interdisciplinary Programming <noreply@interdisciplinaryprogramming.com>", // sender address
+				    to: user.email + ', ' + req.user.email // list of receivers
+				    subject: req.body.subject, // Subject line
+				    text: req.body.body // body
+				});
+
+				res.redirect('/userMatches/?page=0')
+			});
+		});
+	});
 });
 
 var port = process.env.PORT || 5000;
