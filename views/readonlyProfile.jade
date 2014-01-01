@@ -1,0 +1,20 @@
+doctype html5
+html
+
+  head
+
+  body
+    form(method='get', action='userMatches?page=0')
+      input(type='submit', value='My Matches')
+
+    form(method='get', action='userProfile')
+      input(type='submit', value='My Profile')
+
+    form(method='get', action='userSearch')
+      input(type='submit', value='Search')
+
+    h1 #{user.uName} Profile
+
+    p= user.uName
+    p= user.discipline
+    p= user.language

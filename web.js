@@ -12,7 +12,8 @@ var express = require("express"),
 	app = express(),
 	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
   		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917',
-  	searchBuffer = {}; //namespace to hold user searches
+  	searchBuffer = {}, //namespace to hold user searches
+  	matchBuffer = {}; //namespace to hold user matches
 
 //set up the app
 app.set('views', __dirname + '/views');
@@ -57,6 +58,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(obj, done) {
 
+	console.log('Deserializing...')
 	console.log(obj)
 
 	done(null, obj);
@@ -125,10 +127,8 @@ app.get('/userMatches', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
-	    		matchBuffer = matches;
-	    		res.render('userMatches.jade', {match: matches, page: req.query.page, nPages: Math.ceil(matchBuffer.length/10)} );
-	    		//res.redirect('/searchResults?page=0' );
-
+	    		matchBuffer[req.user['_id']] = matches;
+	    		res.render('userMatches.jade', {match: matches, page: req.query.page, nPages: Math.ceil(matchBuffer[req.user['_id']].length/10)} );
 	    	});
 		});
 	});
@@ -139,6 +139,19 @@ app.get('/userMatches', function(req, res){
 app.get('/userSearch', function(req, res){
 
 	res.render('userSearch.jade');
+
+});
+
+//view another user's profile
+app.get('/viewProfile', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {	    	
+	    	collection.findOne( {uName: req.body.userID} ).toArray(function(err, user){
+	    		res.render('readonlyProfile.jade', {user: user});
+	    	});
+		});
+	});
 
 });
 
