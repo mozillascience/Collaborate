@@ -15,6 +15,9 @@ html
 
     h1 #{user.uName} Profile
 
+    form(method='get', action='contactUser')
+      button(value=user.uName, name='username') Contact #{user.uName}
+
     p= user.uName
     p= user.discipline
     p= user.language

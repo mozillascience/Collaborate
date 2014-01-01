@@ -119,6 +119,7 @@ app.get('/userProfile', function(req, res){
 
 });
 
+//show the first 10 user matches, with links to subsequnt batches of 10
 app.get('/userMatches', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
@@ -144,13 +145,23 @@ app.get('/viewProfile', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
-		    console.log('query: ' + req.query.userID)	    	
 	    	collection.findOne( {uName: req.query.userID}, function(err, user){
 	    		res.render('readonlyProfile.jade', {user: user});
 	    	});
 		});
 	});
+});
 
+//show the page to contact a user
+app.get('/contactUser', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+	    	collection.findOne( {uName: req.query.username}, function(err, user){
+	    		res.render('contactUser.jade', {user: user, thisUser: req.user});
+	    	});
+		});
+	});
 });
 
 ////////////////////////////////////////////////////////
