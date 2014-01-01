@@ -145,7 +145,7 @@ app.get('/viewProfile', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    console.log('query: ' + req.query.userID)	    	
-	    	collection.findOne( {uName: req.query.userID} ).toArray(function(err, user){
+	    	collection.find( {uName: req.query.userID} ).toArray(function(err, user){
 	    		res.render('readonlyProfile.jade', {user: user});
 	    	});
 		});
