@@ -278,7 +278,7 @@ app.post('/recordUpdate', function(req, res){
 		    								language : req.body.language}
 		    						}, 
 		    						function(){
-										return res.redirect('/userMatches');									
+										return res.redirect('/userMatches?page=0');									
 		    						});
 			});
 		});
@@ -359,7 +359,7 @@ app.post('/updatePassword', function(req, res){
 
 	        		//register new password in the db:
 	        		collection.update({uName : req.user.uName}, {$set:{Pass : hash}}, function(){
-	        			return res.redirect('/userMatches');
+	        			return res.redirect('/userMatches?page=0');
 	        		});
 		        });
 		    });
