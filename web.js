@@ -429,7 +429,7 @@ app.post('/sendEmail', function(req, res){
 
 				mail({
 				    from: "Interdisciplinary Programming <noreply@interdisciplinaryprogramming.com>", // sender address
-				    to: user.email + ', ' + req.user.email // list of receivers
+				    to: user.email + ', ' + req.user.email, // list of receivers
 				    subject: req.body.subject, // Subject line
 				    text: req.body.body // body
 				});
