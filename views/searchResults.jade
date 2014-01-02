@@ -18,7 +18,6 @@ html
       h3= searchResults[i].uName
       - if(hasContacted.indexOf(searchResults[i].uName) != -1 )
         div You have already contacted this user.
-      //- console.log(hasContacted.indexOf(searchResults[i].uName) )
       form(method='get', action='viewProfile')
         button(value=searchResults[i].uName, name='userID') View Profile
       if searchResults[i].scientist

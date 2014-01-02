@@ -128,7 +128,10 @@ app.get('/userMatches', function(req, res){
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
 	    		matchBuffer[req.user['_id']] = matches;
-	    		res.render('userMatches.jade', {match: matches, page: req.query.page, nPages: Math.ceil(matchBuffer[req.user['_id']].length/10)} );
+	    		res.render('userMatches.jade', {match: matches, 
+	    										page: req.query.page, 
+	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10)},
+	    										hasContacted: req.user.hasContacted );
 	    	});
 		});
 	});
