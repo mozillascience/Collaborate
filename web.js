@@ -130,12 +130,11 @@ app.get('/userMatches', function(req, res){
 	    		matchBuffer[req.user['_id']] = matches;
 	    		res.render('userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
-	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10)},
-	    										hasContacted: req.user.hasContacted );
+	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
+	    										hasContacted: req.user.hasContacted )};
 	    	});
 		});
 	});
-
 });
 
 //search page
