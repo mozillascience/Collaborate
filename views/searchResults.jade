@@ -16,9 +16,9 @@ html
 
     - for(var i=page*10; i<Math.min(searchResults.length, (page+1)*10); i++) {
       h3= searchResults[i].uName
-      //- if(hasContacted.indexOf(searchResults[i]).uName != -1 )
-      //  div You have already contacted this user.
-      - console.log(hasContacted.indexOf(searchResults[i]).uName)
+      - if(hasContacted.indexOf(searchResults[i].uName) != -1 )
+        div You have already contacted this user.
+      //- console.log(hasContacted.indexOf(searchResults[i].uName) )
       form(method='get', action='viewProfile')
         button(value=searchResults[i].uName, name='userID') View Profile
       if searchResults[i].scientist
