@@ -438,7 +438,7 @@ app.post('/sendEmail', function(req, res){
 				//make a note in the initiating user's database that they've now contacted this user
 				collection.findOne({uName: req.user.uName}, function(err, user){
 			    	collection.update(	{uName : user.uName}, 
-			    						{$addToSet:{hasContacted : req.user.uName} }, 
+			    						{$addToSet:{hasContacted : req.body.uName} }, 
 			    						function(){
 											return res.redirect('/userMatches?page=0');									
 			    						});
