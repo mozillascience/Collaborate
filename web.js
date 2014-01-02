@@ -117,7 +117,7 @@ app.get('/searchResults', function(req, res){
 //user profile page
 app.get('/userProfile', function(req, res){
 
-	res.render('userProfile.jade', {user: req.user, diciplines: disciplines, languages: languages});
+	res.render('userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
 
 });
 
