@@ -31,7 +31,7 @@ html
         br
         - for(i=0; i<languages.length; i++){
           - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-          input(type='checkbox', name='language[]', value=languages[i], checked=true )
+          input(type='checkbox', name='language[]', value=languages[i], checked=check )
           label= languages[i]
           br
         - }
@@ -43,7 +43,7 @@ html
         br
         - for(i=0; i<languages.length; i++){
           - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-          input(type='checkbox', name='language[]', value=languages[i], checked=true )
+          input(type='checkbox', name='language[]', value=languages[i], checked=check )
           label= languages[i]
           br
         - }
@@ -53,7 +53,7 @@ html
         br
         - for(i=0; i<disciplines.length; i++){
           - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-          input(type='checkbox', name='discipline[]', value=disciplines[i], checked=true )
+          input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
           label= disciplines[i]
           br
         - }
