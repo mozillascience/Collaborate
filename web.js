@@ -13,7 +13,19 @@ var express = require("express"),
 	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
   		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917',
   	searchBuffer = {}, //namespace to hold user searches
-  	matchBuffer = {}; //namespace to hold user matches
+  	matchBuffer = {}, //namespace to hold user matches
+  	//global list of default discipline options
+  	disciplines = 	[ 	'Divination',
+  						'Evokation',
+  						'Necromancy'
+  					],
+  	//global list of default language options
+  	languages = [ 	'Haskell',
+  					'Visual BASIC',
+  					'Jade'
+  				];
+
+
 
 //set up the app
 app.set('views', __dirname + '/views');
@@ -105,20 +117,7 @@ app.get('/searchResults', function(req, res){
 //user profile page
 app.get('/userProfile', function(req, res){
 
-	var i,
-		user = JSON.parse(JSON.stringify(req.user));
-
-	//break checkbox groups out into booleans to smooth things out on the Jade side:
-	for(i=0; i<user.language.length; i++){
-		user[user.language[i]] = true;
-	}
-	for(i=0; i<user.discipline.length; i++){
-		user[user.discipline[i]] = true;
-	}
-	delete user.language;
-	delete user.discipline;
-
-	res.render('userProfile.jade', {user: user});
+	res.render('userProfile.jade', {user: req.user, diciplines: disciplines, languages: languages});
 
 });
 
