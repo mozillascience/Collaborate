@@ -9,53 +9,35 @@ html
       if user.scientist
         label What is your discipline?
         br
-        input(type='checkbox', name='discipline[]', value='Divination')
-        label Divination
-        br
-        input(type='checkbox', name='discipline[]', value='Evokation')
-        label Evokation
-        br
-        input(type='checkbox', name='discipline[]', value='Necromancy')
-        label Necromancy
-        br
+        - for(var i=0; i<disciplines.length; i++){
+          input(type='checkbox', name='discipline[]', value=disciplines[i])
+          br
+        - }
         br
 
         label What language would you like to work in?
         br
-        input(type='checkbox', name='language[]', value='Haskell')
-        label Haskell
-        br
-        input(type='checkbox', name='language[]', value='Visual BASIC')
-        label Visual BASIC
-        br
-        input(type='checkbox', name='language[]', value='Jade')
-        label Jade
+        - for(i=0; i<languages.length; i++){
+          input(type='checkbox', name='language[]', value=languages[i])
+          br
+        - }
         br
 
       if user.developer
         label What languages are you comfortable with?
         br
-        input(type='checkbox', name='language[]', value='Haskell')
-        label Haskell
-        br
-        input(type='checkbox', name='language[]', value='Visual BASIC')
-        label Visual BASIC
-        br
-        input(type='checkbox', name='language[]', value='Jade')
-        label Jade
-        br
+        - for(i=0; i<languages.length; i++){
+          input(type='checkbox', name='language[]', value=languages[i])
+          br
+        - }
         br
 
         label What sciences interest you?
         br
-        input(type='checkbox', name='discipline[]', value='Divination')
-        label Divination
-        br
-        input(type='checkbox', name='discipline[]', value='Evokation')
-        label Evokation
-        br
-        input(type='checkbox', name='discipline[]', value='Necromancy')
-        label Necromancy
+        - for(var i=0; i<disciplines.length; i++){
+          input(type='checkbox', name='discipline[]', value=disciplines[i])
+          br
+        - }
         br
 
       label email

@@ -237,7 +237,7 @@ app.post('/newUser', function(req, res){
 		    								developer: !req.body.scientist}
 		    						}, 
 		    						function(){
-										  return res.render('setupUser.jade', {user:req.user});
+										  return res.render('setupUser.jade', {user:req.user, disciplines: disciplines, languages: languages});
 		    						});
 			});
 		});
