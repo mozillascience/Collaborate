@@ -20,8 +20,7 @@ html
         label What is your discipline?
         br
         - for(var i=0; i<disciplines.length; i++){
-          //- var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
-          - var check = true
+          - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
           input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
           label= disciplines[i]
           br
