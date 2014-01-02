@@ -131,7 +131,7 @@ app.get('/userMatches', function(req, res){
 	    		res.render('userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
 	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
-	    										hasContacted: req.user.hasContacted )};
+	    										hasContacted: req.user.hasContacted};
 	    	});
 		});
 	});
