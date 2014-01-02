@@ -95,8 +95,10 @@ app.get('/setupNewUser', function(req, res){
 
 app.get('/searchResults', function(req, res){
 
-	res.render('searchResults.jade', {searchResults: searchBuffer[req.user['_id']], page: req.query.page, nPages: Math.ceil(searchBuffer[req.user['_id']].length/10)} );
-
+	res.render('searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
+										page: req.query.page, 
+										nPages: Math.ceil(searchBuffer[req.user['_id']].length/10), 
+										hasContacted: req.user.hasContacted} );
 });
 
 //user profile page
@@ -411,7 +413,7 @@ app.post('/search', function(req, res){
 
 	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
 	    		searchBuffer[req.user['_id']] = matches;
-	    		res.redirect('/searchResults?page=0', {hasContacted: req.user.hasContacted} );
+	    		res.redirect('/searchResults?page=0');
 
 	    	});
 		});
