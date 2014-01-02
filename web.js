@@ -426,7 +426,8 @@ app.post('/sendEmail', function(req, res){
 
 			//find the user to get their email - this way email is never exposed in the browser
 			collection.findOne({ uName: req.body.uName }, function(err, user){
-console.log(user)
+
+				//send the mail
 				mail({
 				    from: "Interdisciplinary Programming <noreply@interdisciplinaryprogramming.com>", // sender address
 				    to: user.email + ', ' + req.user.email, // list of receivers
@@ -434,7 +435,14 @@ console.log(user)
 				    text: req.body.body // body
 				});
 
-				res.redirect('/userMatches/?page=0')
+				//make a note in the initiating user's database that they've now contacted this user
+				collection.findOne({uName: req.user.uName}, function(err, user){
+			    	collection.update(	{uName : user.uName}, 
+			    						{$addToSet:{hasContacted : req.user.uName} }, 
+			    						function(){
+											return res.redirect('/userMatches?page=0');									
+			    						});
+				});
 			});
 		});
 	});
