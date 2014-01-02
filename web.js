@@ -67,17 +67,16 @@ passport.deserializeUser(function(obj, done) {
 
 //landing page
 app.get('/', function(req, res) {
-	res.render('login.jade', {loginMessage: null, registerMessage: null});
-});
+	var loginError = null,
+		registerError = null;
 
-//landing page - bad user / pass combo
-app.get('/badCredentials', function(req, res){
-	res.render('login.jade', {loginMessage: 'Whooops!  Bad user / pass combo, try again plz:', registerMessage: null})
-});
+	if(req.query.loginError === 1)
+		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
 
-//landing page - username already taken
-app.get('/userTaken', function(req, res){
-	res.render('login.jade', {loginMessage: null, registerMessage: 'Too late!  That username is already taken - choose again!'})
+	if(req.query.registerError === 1)
+		registerError = 'Too late!  That username is already taken - choose again!';
+
+	res.render('login.jade', {loginMessage: loginError, registerMessage: registerError});
 });
 
 //logout
@@ -174,7 +173,7 @@ app.get('/contactUser', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/badCredentials'}) );
+app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/?loginError=1'}) );
 
 //register a new user
 app.post('/regUser', function(req, res){
@@ -189,7 +188,7 @@ app.post('/regUser', function(req, res){
 	
 				//reject new account if the username is already taken	    	
 		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
-		    		if(accounts.length != 0) return res.redirect('/userTaken');
+		    		if(accounts.length != 0) return res.redirect('/?registerError=1');
 
 			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
@@ -215,66 +214,9 @@ app.post('/regUser', function(req, res){
 	});
 });
 
-//register user as scientist and go to new scientist setup page
-app.post('/newScientist', function(req, res){
-
-	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-
-			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
-
-		    	if (err || !user) return res.render('error.jade');
-
-                //update the local user object
-                req.user.scientist = true;
-                req.user.developer = false;
-
-		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{ scientist: true,
-		    								developer: false}
-		    						}, 
-		    						function(){
-										  return res.render('setupUser.jade', {user:req.user});
-		    						});
-			});
-		});
-	});
-});
-
-//register user as developer and go to new developer setup page
-app.post('/newDeveloper', function(req, res){
-
-	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-
-			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
-
-		    	if (err || !user) return res.render('error.jade');
-
-                //update the local user object
-                req.user.scientist = false;
-                req.user.developer = true;
-
-                //write the new data to the DB and carry on to user setup
-		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{ scientist: false,
-		    								developer: true}
-		    						}, 
-		    						function(){
-										  return res.render('setupUser.jade', {user:req.user});
-		    						});
-			});
-		});
-	});
-});
-
 //register user and go to setup page
 app.post('/newUser', function(req, res){
-console.log(req.body.scientist)
+
 	//open link to the database
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
