@@ -70,10 +70,10 @@ app.get('/', function(req, res) {
 	var loginError = null,
 		registerError = null;
 
-	if(req.query.loginError === 1)
+	if(req.query.loginError == 1)
 		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
 
-	if(req.query.registerError === 1)
+	if(req.query.registerError == 1)
 		registerError = 'Too late!  That username is already taken - choose again!';
 
 	res.render('login.jade', {loginMessage: loginError, registerMessage: registerError});
