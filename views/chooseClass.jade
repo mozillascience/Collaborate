@@ -5,8 +5,11 @@ html
   body
     h1 Are you a Scientist or a Software Developer?
 
-    form(method='post', action='newScientist')
+    form(method='post', action='newUser')
+      input(type='checkbox', name='scientist', checked='true', style='display:none')
       input(type='submit', value='Scientist')
 
-    form(method='post', action='newDeveloper')
+    form(method='post', action='newUser')
+      input(type='checkbox', name='scientist', checked='false', style='display:none')
       input(type='submit', value='Developer')
+

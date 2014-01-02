@@ -272,6 +272,35 @@ app.post('/newDeveloper', function(req, res){
 	});
 });
 
+//register user and go to setup page
+app.post('/newUser', function(req, res){
+console.log(res.body.scientist)
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ uName: req.user.uName }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+                //update the local user object
+                req.user.scientist = res.body.scientist;
+                req.user.developer = !res.body.scientist;
+
+                //write the new data to the DB and carry on to user setup
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{ scientist: res.body.scientist,
+		    								developer: !res.body.scientist}
+		    						}, 
+		    						function(){
+										  return res.render('setupUser.jade', {user:req.user});
+		    						});
+			});
+		});
+	});
+});
+
 //update a user's profile
 app.post('/recordUpdate', function(req, res){
 
@@ -294,7 +323,7 @@ app.post('/recordUpdate', function(req, res){
 		    						{$set:{	discipline : req.body.discipline, 
 		    								language : req.body.language,
 		    								email : req.body.email}
-		    						}, 
+		    						},
 		    						function(){
 										return res.redirect('/userMatches?page=0');									
 		    						});
