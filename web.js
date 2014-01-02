@@ -75,6 +75,8 @@ app.get('/', function(req, res) {
 
 	if(req.query.registerError == 1)
 		registerError = 'Too late!  That username is already taken - choose again!';
+	if(req.query.registerError == 2)
+		registerError = "Passwords don't match - try again!"
 
 	res.render('login.jade', {loginMessage: loginError, registerMessage: registerError});
 });
@@ -184,7 +186,7 @@ app.post('/regUser', function(req, res){
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		    	if(err) return res.render('error.jade');
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.render('login.jade');
+		    	if(req.body.pass != req.body.repass) return res.redirect('/?registerError=2');
 	
 				//reject new account if the username is already taken	    	
 		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
