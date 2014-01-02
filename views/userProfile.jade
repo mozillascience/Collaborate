@@ -21,8 +21,8 @@ html
         br
         - for(var i=0; i<disciplines.length; i++){
           //- var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
-          input(type='checkbox', name='discipline[]', value=#{disciplines[i]}, checked=true )
-          label disciplines[i]
+          input(type='checkbox', name='discipline[]', value=disciplines[i], checked=true )
+          label= disciplines[i]
           br
         - }
         br
@@ -32,7 +32,7 @@ html
         - for(i=0; i<languages.length; i++){
           //- var check = user.language.indexOf( #{languages[i]} ) == -1 ? false : true
           input(type='checkbox', name='language[]', value=languages[i], checked=true )
-          label languages[i]
+          label= languages[i]
           br
         - }
         br
@@ -44,7 +44,7 @@ html
         - for(i=0; i<languages.length; i++){
           //- var check = user.language.indexOf( #{languages[i]} ) == -1 ? false : true
           input(type='checkbox', name='language[]', value=languages[i], checked=true )
-          label languages[i]
+          label= languages[i]
           br
         - }
         br
@@ -54,7 +54,7 @@ html
         - for(i=0; i<disciplines.length; i++){
           //- var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
           input(type='checkbox', name='discipline[]', value=disciplines[i], checked=true )
-          label disciplines[i]
+          label= disciplines[i]
           br
         - }
         br
