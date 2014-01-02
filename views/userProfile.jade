@@ -21,7 +21,7 @@ html
         br
         - for(var i=0; i<disciplines.length; i++){
           //- var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
-          input(type='checkbox', name='discipline[]', value=disciplines[i] )
+          input(type='checkbox', name='discipline[]', value=#{disciplines[i]}, checked=true )
           label disciplines[i]
           br
         - }
