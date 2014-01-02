@@ -226,7 +226,7 @@ app.post('/newUser', function(req, res){
 			collection.findOne({ uName: req.user.uName }, function(err, user){
 
 		    	if (err || !user) return res.render('error.jade');
-
+console.log([req.body.scientist, !req.body.scientist, !!req.body.scientist])
                 //update the local user object
                 req.user.scientist = !!req.body.scientist;
                 req.user.developer = !req.body.scientist;
