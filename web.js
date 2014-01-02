@@ -132,9 +132,11 @@ app.get('/userMatches', function(req, res){
 	    										page: req.query.page, 
 	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
 	    										hasContacted: req.user.hasContacted});
-		});
+	    	});
+	    });
 	});
 });
+
 
 //search page
 app.get('/userSearch', function(req, res){
