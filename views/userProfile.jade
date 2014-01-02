@@ -20,8 +20,8 @@ html
         label What is your discipline?
         br
         - for(var i=0; i<disciplines.length; i++){
-          - var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
-          input(type='checkbox', name='discipline[]', value=disciplines[i], checked= check )
+          //- var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
+          input(type='checkbox', name='discipline[]', value=disciplines[i], checked= true )
           br
           label disciplines[i]
           br
@@ -31,8 +31,8 @@ html
         label What language would you like to work in?
         br
         - for(var i=0; i<languages.length; i++){
-          - var check = user.language.indexOf( #{languages[i]} ) == -1 ? false : true
-          input(type='checkbox', name='language[]', value=languages[i], checked= check )
+          //- var check = user.language.indexOf( #{languages[i]} ) == -1 ? false : true
+          input(type='checkbox', name='language[]', value=languages[i], checked= true )
           br
           label languages[i]
           br
@@ -44,8 +44,8 @@ html
         label What languages are you comfortable with?
         br
         - for(var i=0; i<languages.length; i++){
-          - var check = user.language.indexOf( #{languages[i]} ) == -1 ? false : true
-          input(type='checkbox', name='language[]', value=languages[i], checked= check )
+          //- var check = user.language.indexOf( #{languages[i]} ) == -1 ? false : true
+          input(type='checkbox', name='language[]', value=languages[i], checked= true )
           br
           label languages[i]
           br
@@ -55,8 +55,8 @@ html
         label What sciences interest you?
         br
         - for(var i=0; i<disciplines.length; i++){
-          - var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
-          input(type='checkbox', name='discipline[]', value=disciplines[i], checked= check )
+          //- var check = user.discipline.indexOf( #{disciplines[i]} ) == -1 ? false : true
+          input(type='checkbox', name='discipline[]', value=disciplines[i], checked= true )
           br
           label disciplines[i]
           br
