@@ -285,12 +285,12 @@ console.log(req.body.scientist)
 		    	if (err || !user) return res.render('error.jade');
 
                 //update the local user object
-                req.user.scientist = req.body.scientist;
+                req.user.scientist = !!req.body.scientist;
                 req.user.developer = !req.body.scientist;
 
                 //write the new data to the DB and carry on to user setup
 		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{ scientist: req.body.scientist,
+		    						{$set:{ scientist: !!req.body.scientist,
 		    								developer: !req.body.scientist}
 		    						}, 
 		    						function(){
