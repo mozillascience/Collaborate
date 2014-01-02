@@ -274,7 +274,7 @@ app.post('/newDeveloper', function(req, res){
 
 //register user and go to setup page
 app.post('/newUser', function(req, res){
-console.log(res.body.scientist)
+console.log(req.body.scientist)
 	//open link to the database
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
@@ -285,13 +285,13 @@ console.log(res.body.scientist)
 		    	if (err || !user) return res.render('error.jade');
 
                 //update the local user object
-                req.user.scientist = res.body.scientist;
-                req.user.developer = !res.body.scientist;
+                req.user.scientist = req.body.scientist;
+                req.user.developer = !req.body.scientist;
 
                 //write the new data to the DB and carry on to user setup
 		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{ scientist: res.body.scientist,
-		    								developer: !res.body.scientist}
+		    						{$set:{ scientist: req.body.scientist,
+		    								developer: !req.body.scientist}
 		    						}, 
 		    						function(){
 										  return res.render('setupUser.jade', {user:req.user});
