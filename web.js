@@ -226,15 +226,19 @@ app.post('/newUser', function(req, res){
 			collection.findOne({ uName: req.user.uName }, function(err, user){
 
 		    	if (err || !user) return res.render('error.jade');
-console.log([req.body.scientist, !req.body.scientist, !!req.body.scientist])
+
                 //update the local user object
                 req.user.scientist = !!req.body.scientist;
                 req.user.developer = !req.body.scientist;
+                req.user.hadsContacted = [];
 
                 //write the new data to the DB and carry on to user setup
 		    	collection.update(	{uName : user.uName}, 
 		    						{$set:{ scientist: !!req.body.scientist,
-		    								developer: !req.body.scientist}
+		    								developer: !req.body.scientist,
+		    								hasContacted : []
+
+		    							}
 		    						}, 
 		    						function(){
 										  return res.render('setupUser.jade', {user:req.user, disciplines: disciplines, languages: languages});
