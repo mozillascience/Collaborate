@@ -230,7 +230,7 @@ app.post('/newUser', function(req, res){
                 //update the local user object
                 req.user.scientist = !!req.body.scientist;
                 req.user.developer = !req.body.scientist;
-                req.user.hadsContacted = [];
+                req.user.hasContacted = [];
 
                 //write the new data to the DB and carry on to user setup
 		    	collection.update(	{uName : user.uName}, 
