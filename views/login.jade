@@ -15,15 +15,3 @@ html
 
     form(method='post', action='forgotPass')
       input(type='submit', value='I forgot my password :(')
-
-    h1 Register New User
-
-    p= registerMessage
-    form(method='post', action='regUser')
-      label User
-      input(type='text' name='uName')
-      label Pass
-      input(type='password' name='pass')
-      label Re-Pass
-      input(type='password' name='repass')
-      input(type='submit' value='Register User')

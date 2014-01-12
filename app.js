@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////
 //setup/////////////////////////////////////////////
 ////////////////////////////////////////////////////
-var express = require("express"),
-	logfmt = require("logfmt"),
+var express = require("express"), 
+	logfmt = require("logfmt"), // this module does x
 	mongo = require('mongodb'),
 	passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,
@@ -78,6 +78,7 @@ passport.deserializeUser(function(obj, done) {
 /////////////////////////////////////////////////////
 
 //landing page
+/*
 app.get('/', function(req, res) {
 	var loginError = null,
 		registerError = null;
@@ -92,6 +93,33 @@ app.get('/', function(req, res) {
 
 	res.render('login.jade', {loginMessage: loginError, registerMessage: registerError});
 });
+*/
+
+app.get('/', function(req, res){
+	res.render('landing.jade');
+});
+
+app.get('/login', function(req, res) {
+	var loginError = null;
+
+	if(req.query.loginError == 1)
+		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
+
+	res.render('login.jade', loginMessage: loginError})
+});
+
+app.get('/register', function(req, res){
+	var registerError = null;
+
+	if(req.query.registerError == 1)
+		registerError = 'Too late!  That username is already taken - choose again!';
+	if(req.query.registerError == 2)
+		registerError = "Passwords don't match - try again!"
+
+	res.render('register.jade', {registerMessage: registerError});
+});
+
+
 
 //logout
 app.get('/logout', function(req, res){
