@@ -105,7 +105,7 @@ app.get('/login', function(req, res) {
 	if(req.query.loginError == 1)
 		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
 
-	res.render('login.jade', loginMessage: loginError})
+	res.render('login.jade', {loginMessage: loginError})
 });
 
 app.get('/register', function(req, res){
