@@ -1,0 +1,16 @@
+doctype html5
+html
+  head
+
+  body
+    h1 Register New User
+
+    p= registerMessage
+    form(method='post', action='regUser')
+      label User
+      input(type='text' name='uName')
+      label Pass
+      input(type='password' name='pass')
+      label Re-Pass
+      input(type='password' name='repass')
+      input(type='submit' value='Register User')
