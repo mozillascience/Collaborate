@@ -97,19 +97,11 @@ app.get('/register', function(req, res){
 	var registerError = null;
 
 	if(req.query.registerError == 1)
-		registerError = 'Too late!  That username is already taken - choose again!';
+		registerError = 'There is already a user registered at that address.  Did you forget your password?';
 	if(req.query.registerError == 2)
 		registerError = "Passwords don't match - try again!"
 
 	res.render('register.jade', {registerMessage: registerError});
-});
-
-
-
-//logout
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
 });
 
 //set up a new user profile
@@ -119,6 +111,13 @@ app.get('/setupNewUser', function(req, res){
 
 });
 
+//logout
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+//show a page of search results
 app.get('/searchResults', function(req, res){
 
 	res.render('searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
@@ -200,8 +199,8 @@ app.post('/regUser', function(req, res){
 		    	//make sure the password was entered the same way twice
 		    	if(req.body.pass != req.body.repass) return res.redirect('/?registerError=2');
 	
-				//reject new account if the username is already taken	    	
-		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
+				//reject new account if email is already taken	    	
+		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
 		    		if(accounts.length != 0) return res.redirect('/?registerError=1');
 
 			        // hash the password along with our new salt:
@@ -209,17 +208,16 @@ app.post('/regUser', function(req, res){
 			        	if(err) return res.render('error.jade');
 
 		        		//register new user in the db:
-						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
+						collection.insert({'email': req.body.email, 'Pass': hash}, {safe: true}, function(err,res) {});
 
 						//log the new user in:
-						collection.findOne({uName: req.body.uName}, function(err, user){
+						collection.findOne({email: req.body.email}, function(err, user){
 							if(err) return res.render('error.jade');
 
 							req.login(user, function(err) {
 							  if (err) return res.render('error.jade');
 							  return res.redirect('/setupNewUser');
 							});
-
 						});
 			        });
 		    	});
@@ -236,7 +234,7 @@ app.post('/newUser', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
+			collection.findOne({ email: req.user.email }, function(err, user){
 
 		    	if (err || !user) return res.render('error.jade');
 
@@ -246,7 +244,7 @@ app.post('/newUser', function(req, res){
                 req.user.hasContacted = [];
 
                 //write the new data to the DB and carry on to user setup
-		    	collection.update(	{uName : user.uName}, 
+		    	collection.update(	{email : user.email}, 
 		    						{$set:{ scientist: !!req.body.scientist,
 		    								developer: !req.body.scientist,
 		    								hasContacted : []
@@ -254,7 +252,7 @@ app.post('/newUser', function(req, res){
 		    							}
 		    						}, 
 		    						function(){
-										  return res.render('setupUser.jade', {user:req.user, disciplines: disciplines, languages: languages});
+										  return res.render('setupUser.jade', {email:req.email, disciplines: disciplines, languages: languages});
 		    						});
 			});
 		});
@@ -269,24 +267,40 @@ app.post('/recordUpdate', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
+			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.render('error.jade');;
 
-		    	//update the local user object
-		    	req.user.discipline = req.body.discipline;
-		    	req.user.language = req.body.language;
-		    	req.user.email = req.body.email;
+		    	//register the username if present - only on profile creation
+		    	if(req.body.uName){
+			    	//update the local user object
+			    	req.user.discipline = req.body.discipline;
+			    	req.user.language = req.body.language
+			    	req.user.uName = req.body.uName;
 
-		    	//update the DB and carry on to main user pages
-		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{	discipline : req.body.discipline, 
-		    								language : req.body.language,
-		    								email : req.body.email}
-		    						},
-		    						function(){
-										return res.redirect('/userMatches?page=0');									
-		    						});
+			    	//update the DB and carry on to main user pages
+			    	collection.update(	{email : user.email}, 
+			    						{$set:{	discipline : req.body.discipline, 
+			    								language : req.body.language,
+			    								uName : req.body.uName}
+			    						},
+			    						function(){
+											return res.redirect('/userMatches?page=0');									
+			    						});
+			    } else{ //no uName, just a regular update
+			    	//update the local user object
+			    	req.user.discipline = req.body.discipline;
+			    	req.user.language = req.body.language
+
+			    	//update the DB and carry on to main user pages
+			    	collection.update(	{email : user.email}, 
+			    						{$set:{	discipline : req.body.discipline, 
+			    								language : req.body.language}
+			    						},
+			    						function(){
+											return res.redirect('/userMatches?page=0');									
+			    						});
+			    }
 			});
 		});
 	});	

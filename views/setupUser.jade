@@ -3,7 +3,7 @@ html
   head
 
   body
-    h1= user.uName
+    h1= user.email
 
     form(method='post' action='recordUpdate')
       if user.scientist
@@ -44,7 +44,7 @@ html
         - }
         br
 
-      label email
-      input(type='email', name='email')
+      label user name
+      input(type='text', name='uName')
 
       input(type='submit', value='Update Profile')
