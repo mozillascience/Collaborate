@@ -78,27 +78,11 @@ passport.deserializeUser(function(obj, done) {
 /////////////////////////////////////////////////////
 
 //landing page
-/*
-app.get('/', function(req, res) {
-	var loginError = null,
-		registerError = null;
-
-	if(req.query.loginError == 1)
-		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
-
-	if(req.query.registerError == 1)
-		registerError = 'Too late!  That username is already taken - choose again!';
-	if(req.query.registerError == 2)
-		registerError = "Passwords don't match - try again!"
-
-	res.render('login.jade', {loginMessage: loginError, registerMessage: registerError});
-});
-*/
-
 app.get('/', function(req, res){
 	res.render('landing.jade');
 });
 
+//login
 app.get('/login', function(req, res) {
 	var loginError = null;
 
@@ -108,6 +92,7 @@ app.get('/login', function(req, res) {
 	res.render('login.jade', {loginMessage: loginError})
 });
 
+//register
 app.get('/register', function(req, res){
 	var registerError = null;
 
@@ -119,19 +104,51 @@ app.get('/register', function(req, res){
 	res.render('register.jade', {registerMessage: registerError});
 });
 
+//register a new user
+app.get('/regNewUser', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+		    	if(err) return res.render('error.jade');
+		    	//make sure the password was entered the same way twice
+		    	if(req.body.pass != req.body.repass) return res.redirect('/?registerError=2');
+	
+				//reject new account if the username is already taken	    	
+		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
+		    		if(accounts.length != 0) return res.redirect('/?registerError=1');
+
+			        // hash the password along with our new salt:
+			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+			        	if(err) return res.render('error.jade');
+
+		        		//register new user in the db:
+						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
+
+						//log the new user in:
+						collection.findOne({uName: req.body.uName}, function(err, user){
+							if(err) return res.render('error.jade');
+
+							req.login(user, function(err) {
+							  if (err) return res.render('error.jade');
+							  return res.render('/chooseClass.jade');
+							});
+						});
+			        });
+		    	});
+		    });
+		});
+	});
+});
+
+
 
 
 //logout
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
-});
-
-//set up a new user profile
-app.get('/setupNewUser', function(req, res){
-
-	res.render('chooseClass.jade', {});
-
 });
 
 app.get('/searchResults', function(req, res){
@@ -197,54 +214,8 @@ app.get('/contactUser', function(req, res){
 	});
 });
 
-////////////////////////////////////////////////////////
-//post requests/////////////////////////////////////////
-////////////////////////////////////////////////////////
-
-//validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/?loginError=1'}) );
-
-//register a new user
-app.post('/regUser', function(req, res){
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {
-
-		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.render('error.jade');
-		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.redirect('/?registerError=2');
-	
-				//reject new account if the username is already taken	    	
-		    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
-		    		if(accounts.length != 0) return res.redirect('/?registerError=1');
-
-			        // hash the password along with our new salt:
-			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-			        	if(err) return res.render('error.jade');
-
-		        		//register new user in the db:
-						collection.insert({'uName': req.body.uName, 'Pass': hash}, {safe: true}, function(err,res) {});
-
-						//log the new user in:
-						collection.findOne({uName: req.body.uName}, function(err, user){
-							if(err) return res.render('error.jade');
-
-							req.login(user, function(err) {
-							  if (err) return res.render('error.jade');
-							  return res.redirect('/setupNewUser');
-							});
-
-						});
-			        });
-		    	});
-		    });
-		});
-	});
-});
-
 //register user and go to setup page
-app.post('/newUser', function(req, res){
+app.get('/newUser', function(req, res){
 
 	//open link to the database
 	mongo.Db.connect(mongoUri, function(err, db) {
@@ -275,6 +246,13 @@ app.post('/newUser', function(req, res){
 		});
 	});
 });
+
+////////////////////////////////////////////////////////
+//post requests/////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+//validate login attempt
+app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/?loginError=1'}) );
 
 //update a user's profile
 app.post('/recordUpdate', function(req, res){
