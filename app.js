@@ -287,15 +287,17 @@ app.post('/recordUpdate', function(req, res){
 			    						function(){
 											return res.redirect('/userMatches?page=0');									
 			    						});
-			    } else{ //no uName, just a regular update
+			    } else{ //no uName, just a regular update - but in this case email can change
 			    	//update the local user object
 			    	req.user.discipline = req.body.discipline;
-			    	req.user.language = req.body.language
+			    	req.user.language = req.body.language;
+			    	req.user.email = req.body.email;
 
 			    	//update the DB and carry on to main user pages
-			    	collection.update(	{email : user.email}, 
+			    	collection.update(	{uName : user.uName}, 
 			    						{$set:{	discipline : req.body.discipline, 
-			    								language : req.body.language}
+			    								language : req.body.language,
+			    								email : req.body.email}
 			    						},
 			    						function(){
 											return res.redirect('/userMatches?page=0');									
