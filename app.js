@@ -252,7 +252,7 @@ app.post('/newUser', function(req, res){
 		    							}
 		    						}, 
 		    						function(){
-										  return res.render('setupUser.jade', {email:req.email, disciplines: disciplines, languages: languages});
+										  return res.render('setupUser.jade', {email:user.email, disciplines: disciplines, languages: languages});
 		    						});
 			});
 		});
