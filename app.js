@@ -186,7 +186,7 @@ app.get('/contactUser', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/?loginError=1'}) );
+app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/login/?loginError=1'}) );
 
 //register a new user
 app.post('/regUser', function(req, res){
@@ -197,11 +197,11 @@ app.post('/regUser', function(req, res){
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		    	if(err) return res.render('error.jade');
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.redirect('/?registerError=2');
+		    	if(req.body.pass != req.body.repass) return res.redirect('/register/?registerError=2');
 	
 				//reject new account if email is already taken	    	
 		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
-		    		if(accounts.length != 0) return res.redirect('/?registerError=1');
+		    		if(accounts.length != 0) return res.redirect('/register/?registerError=1');
 
 			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
