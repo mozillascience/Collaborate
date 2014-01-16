@@ -1,22 +1,24 @@
 ////////////////////////////////////////////////////
 //setup/////////////////////////////////////////////
 ////////////////////////////////////////////////////
-var express = require("express"),		//express
-	mongo = require('mongodb'),			//database
-	passport = require('passport'),		//handles user authentication
-	LocalStrategy = require('passport-local').Strategy,
-	bcrypt = require('bcrypt'),			//hashes passwords before putting them in DB
-    SALT_WORK_FACTOR = 10,				//how many times to scramble a pass before returning the final hash?
-    mail = require("nodemailer").mail,	//handles sending mail from the server side - no emails exposed in browser
-	app = express(),
-	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
-  		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917',
-  	searchBuffer = {}, 					//namespace to hold user searches
-  	matchBuffer = {}, 					//namespace to hold user matches
-  	options = require('./options.js'),
-  	//don't want to carry the options. prefix around forever:
-  	disciplines = options.disciplines,
-  	languages = options.languages;
+
+//globals///////////////////////////////////////////
+express = require("express"),		//express
+mongo = require('mongodb'),			//database
+passport = require('passport'),		//handles user authentication
+LocalStrategy = require('passport-local').Strategy,
+bcrypt = require('bcrypt'),			//hashes passwords before putting them in DB
+SALT_WORK_FACTOR = 10,				//how many times to scramble a pass before returning the final hash?
+mail = require("nodemailer").mail,	//handles sending mail from the server side - no emails exposed in browser
+app = express(),
+mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
+  	'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917',
+searchBuffer = {}, 					//namespace to hold user searches
+matchBuffer = {}, 					//namespace to hold user matches
+options = require('./options.js'),
+//don't want to carry the options. prefix around forever:
+disciplines = options.disciplines,
+languages = options.languages;
 
 //set up the app
 app.set('views', __dirname + '/views');
@@ -28,7 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //attatch the routes to the app object
-require('./routes')(app);
+require('./routes');
 
 //////////////////////////////////////////////////////
 //user auth///////////////////////////////////////////
