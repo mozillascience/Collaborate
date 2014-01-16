@@ -345,12 +345,14 @@ app.post('/search', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	
 			var scientist = (req.body.profession == 'scientist') ? true : false;
-
-	    	collection.find( {scientist: scientist, language : {$in: req.body.language}, discipline : {$in: req.body.discipline}} ).toArray(function(err, matches){
-	    		searchBuffer[req.user['_id']] = matches;
-	    		res.redirect('/searchResults?page=0');
-
-	    	});
+console.log('language reutrns ' + req.body.language)
+	    	collection.find( {	scientist: scientist, 
+	    						language : {$in: ((req.body.language == []) ? languages : req.body.language)}, 
+	    						discipline : {$in: req.body.discipline}
+	    					} ).toArray(function(err, matches){
+	    							searchBuffer[req.user['_id']] = matches;
+	    							return res.redirect('/searchResults?page=0');
+	    						});
 		});
 	});
 });
