@@ -1,29 +1,24 @@
 ////////////////////////////////////////////////////
 //setup/////////////////////////////////////////////
 ////////////////////////////////////////////////////
-var express = require("express"), 
-	logfmt = require("logfmt"), // this module does x
-	mongo = require('mongodb'),
-	passport = require('passport'),
+var express = require("express"),		//express
+	//logfmt = require("logfmt"), // this module does x
+	mongo = require('mongodb'),			//database
+	passport = require('passport'),		//handles user authentication
 	LocalStrategy = require('passport-local').Strategy,
-	bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10,
-    mail = require("nodemailer").mail,
+	bcrypt = require('bcrypt'),			//hashes passwords before putting them in DB
+    SALT_WORK_FACTOR = 10,				//how many times to scramble a pass before returning the final hash?
+    mail = require("nodemailer").mail,	//handles sending mail from the server side - no emails exposed in browser
 	app = express(),
 	mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
   		'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917',
-  	searchBuffer = {}, //namespace to hold user searches
-  	matchBuffer = {}, //namespace to hold user matches
+  	searchBuffer = {}, 					//namespace to hold user searches
+  	matchBuffer = {}, 					//namespace to hold user matches
+  	options = require('./options.js')
   	//global list of default discipline options
-  	disciplines = 	[ 	'Divination',
-  						'Evokation',
-  						'Necromancy'
-  					],
+  	disciplines = options.disciplines;
   	//global list of default language options
-  	languages = [ 	'Haskell',
-  					'Visual BASIC',
-  					'Jade'
-  				];
+  	languages = options.languages
 
 
 
