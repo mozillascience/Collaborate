@@ -344,7 +344,7 @@ app.post('/search', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	
-			var scientist = (req.body.profession == 'scientist') ? true : false,
+			var scientist = (req.body.profession == 'scientist') ? true : false;
 
 	    	collection.find( {	scientist: scientist, 
 	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
