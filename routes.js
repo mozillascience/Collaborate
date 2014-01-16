@@ -78,7 +78,7 @@ app.get('/userMatches', function(req, res){
 //search page
 app.get('/userSearch', function(req, res){
 
-	res.render('userSearch.jade');
+	res.render('userSearch.jade', {languages: languages, disciplines: disciplines});
 
 });
 

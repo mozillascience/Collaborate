@@ -26,27 +26,23 @@ html
 
       label Discipline
       br
-      input(type='checkbox', name='discipline[]', value='Divination' required)
-      label Divination
-      br
-      input(type='checkbox', name='discipline[]', value='Evokation' required)
-      label Evokation
-      br
-      input(type='checkbox', name='discipline[]', value='Necromancy' required)
-      label Necromancy
+      - for(var i=0; i<disciplines.length; i++){
+        - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+        input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
+        label= disciplines[i]
+        br
+      - }
       br
       br
 
       label Language
       br
-      input(type='checkbox', name='language[]', value='Haskell')
-      label Haskell
-      br
-      input(type='checkbox', name='language[]', value='Visual BASIC')
-      label Visual BASIC
-      br
-      input(type='checkbox', name='language[]', value='Jade')
-      label Jade
+      - for(i=0; i<languages.length; i++){
+        - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+        input(type='checkbox', name='language[]', value=languages[i], checked=check )
+        label= languages[i]
+        br
+      - }
       br
       br
 
