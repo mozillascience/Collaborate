@@ -346,9 +346,10 @@ app.post('/search', function(req, res){
 		db.collection('Users', function(er, collection) {	
 			var scientist = (req.body.profession == 'scientist') ? true : false;
 
-	    	collection.find( {	scientist: scientist, 
+	    	collection.find( {	scientist: scientist,
+	    						//for checkbox groups, blank === match anything
 	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
-	    						discipline : {$in: req.body.discipline}
+	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
 	    					} ).toArray(function(err, matches){
 	    							searchBuffer[req.user['_id']] = matches;
 	    							return res.redirect('/searchResults?page=0');
