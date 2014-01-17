@@ -223,8 +223,8 @@ app.post('/recordUpdate', function(req, res){
 			    						});
 			    } else{ //no uName, just a regular update - but in this case email can change
 			    	//update the local user object
-			    	req.user.discipline = req.body.discipline;
-			    	req.user.language = req.body.language;
+			    	req.user.discipline = req.body.discipline || req.user.discipline;
+			    	req.user.language = req.body.language || req.user.language;
 			    	req.user.email = req.body.email;
 
 		    		//insist all fields have at least one option selected
