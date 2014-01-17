@@ -198,15 +198,16 @@ app.post('/recordUpdate', function(req, res){
 
 		    	//register the username if present - only on profile creation
 		    	if(req.body.uName){
-		    		//insist all fields have at least one option selected
-		    		if(!req.body.discipline){
-		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
-		    		}
 
 			    	//update the local user object
 			    	req.user.discipline = req.body.discipline;
 			    	req.user.language = req.body.language
 			    	req.user.uName = req.body.uName;
+
+		    		//insist all fields have at least one option selected
+		    		if(!req.body.discipline){
+		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+		    		}
 
 			    	//update the DB and carry on to main user pages
 			    	collection.update(	{email : user.email}, 
