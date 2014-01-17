@@ -208,6 +208,9 @@ app.post('/recordUpdate', function(req, res){
 		    		if(!req.body.discipline){
 		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 		    		}
+		    		if(!req.body.language){
+		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+		    		}
 
 			    	//update the DB and carry on to main user pages
 			    	collection.update(	{email : user.email}, 
@@ -223,6 +226,14 @@ app.post('/recordUpdate', function(req, res){
 			    	req.user.discipline = req.body.discipline;
 			    	req.user.language = req.body.language;
 			    	req.user.email = req.body.email;
+
+		    		//insist all fields have at least one option selected
+		    		if(!req.body.discipline){
+		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+		    		}
+		    		if(!req.body.language){
+		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+		    		}
 
 			    	//update the DB and carry on to main user pages
 			    	collection.update(	{uName : user.uName}, 
