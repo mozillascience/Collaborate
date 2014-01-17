@@ -198,9 +198,8 @@ app.post('/recordUpdate', function(req, res){
 
 		    	//register the username if present - only on profile creation
 		    	if(req.body.uName){
-		    		console.log('discipline = ' + req.body.discipline)
 		    		//insist all fields have at least one option selected
-		    		if(req.body.discipline == []){
+		    		if(!req.body.discipline){
 		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 		    		}
 
