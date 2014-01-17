@@ -17,6 +17,8 @@ html
 
     form(method='post' action='recordUpdate')
       if user.scientist
+        if disciplineError
+          p= disciplineError
         label What is your discipline?
         br
         - for(var i=0; i<disciplines.length; i++){
@@ -27,6 +29,8 @@ html
         - }
         br
 
+        if languageError
+          p= languageError
         label What language would you like to work in?
         br
         - for(i=0; i<languages.length; i++){
@@ -39,6 +43,8 @@ html
 
 
       if user.developer
+        if languageError
+          p= languageError
         label What languages are you comfortable with?
         br
         - for(i=0; i<languages.length; i++){
@@ -49,6 +55,8 @@ html
         - }
         br
 
+        if disciplineError
+          p= disciplineError
         label What sciences interest you?
         br
         - for(i=0; i<disciplines.length; i++){

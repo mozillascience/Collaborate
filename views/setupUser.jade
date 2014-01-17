@@ -22,6 +22,8 @@ html
         - }
         br
 
+        if languageError
+          p= languageError
         label What language would you like to work in?
         br
         - for(i=0; i<languages.length; i++){
@@ -36,6 +38,8 @@ html
         br
 
       if user.developer
+        if languageError
+          p= languageError
         label What languages are you comfortable with?
         br
         - for(i=0; i<languages.length; i++){
