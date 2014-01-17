@@ -12,7 +12,11 @@ html
         label What is your discipline?
         br
         - for(var i=0; i<disciplines.length; i++){
-          input(type='checkbox', name='discipline[]', value=disciplines[i])
+          if user.discipline
+            - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+          else
+            - var check = false
+          input(type='checkbox', name='discipline[]', value=disciplines[i] checked = check)
           label= disciplines[i]
           br
         - }
@@ -21,7 +25,11 @@ html
         label What language would you like to work in?
         br
         - for(i=0; i<languages.length; i++){
-          input(type='checkbox', name='language[]', value=languages[i])
+          if user.language
+            - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+          else
+            - var check = false
+          input(type='checkbox', name='language[]', value=languages[i], checked = check)
           label= languages[i]
           br
         - }
@@ -31,7 +39,11 @@ html
         label What languages are you comfortable with?
         br
         - for(i=0; i<languages.length; i++){
-          input(type='checkbox', name='language[]', value=languages[i])
+          if user.language
+            - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+          else
+            - var check = false
+          input(type='checkbox', name='language[]', value=languages[i], checked = check)
           label= languages[i]
           br
         - }
@@ -42,7 +54,11 @@ html
         label What sciences interest you?
         br
         - for(var i=0; i<disciplines.length; i++){
-          input(type='checkbox', name='discipline[]', value=disciplines[i])
+          if user.discipline
+            - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+          else
+            - var check = false
+          input(type='checkbox', name='discipline[]', value=disciplines[i] checked = check)
           label= disciplines[i]
           br
         - }
