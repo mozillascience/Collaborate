@@ -7,6 +7,8 @@ html
 
     form(method='post' action='recordUpdate')
       if user.scientist
+        if disciplineError
+          p= disciplineError
         label What is your discipline?
         br
         - for(var i=0; i<disciplines.length; i++){
@@ -35,6 +37,8 @@ html
         - }
         br
 
+        if disciplineError
+          p= disciplineError
         label What sciences interest you?
         br
         - for(var i=0; i<disciplines.length; i++){

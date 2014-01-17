@@ -194,10 +194,15 @@ app.post('/recordUpdate', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');;
+		    	if (err || !user) return res.render('error.jade');
 
 		    	//register the username if present - only on profile creation
 		    	if(req.body.uName){
+		    		//insist all fields have at least one option selected
+		    		if(req.body.discipline == []){
+		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+		    		}
+
 			    	//update the local user object
 			    	req.user.discipline = req.body.discipline;
 			    	req.user.language = req.body.language
