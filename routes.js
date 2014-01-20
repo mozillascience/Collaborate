@@ -132,6 +132,13 @@ app.get('/changePasswordForm', function(req, res){
 
 });
 
+//go to the password recovery page
+app.get('/forgotPass', function(req, res){
+
+	res.render('recoverPassword.jade');
+
+});
+
 ////////////////////////////////////////////////////////
 //post requests/////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -274,13 +281,6 @@ app.post('/recordUpdate', function(req, res){
 			});
 		});
 	});	
-});
-
-//go to the password recovery page
-app.post('/forgotPass', function(req, res){
-
-	res.render('recoverPassword.jade');
-
 });
 
 //password recovery - generate a random password, hash it, update the db, and mail it to the user
