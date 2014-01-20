@@ -29,17 +29,11 @@ app.get('/register', function(req, res){
 	res.render('register.jade', {registerMessage: registerError});
 });
 
-//set up a new user profile
+//show page to set up a new user profile
 app.get('/setupNewUser', function(req, res){
 
 	res.render('chooseClass.jade', {});
 
-});
-
-//logout
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
 });
 
 //show a page of search results
@@ -145,6 +139,12 @@ app.get('/forgotPass', function(req, res){
 
 //validate login attempt
 app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/login/?loginError=1'}) );
+
+//logout
+app.post('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 //register a new user
 app.post('/regUser', function(req, res){
