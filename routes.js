@@ -125,6 +125,13 @@ app.get('/search', function(req, res){
 	});
 });
 
+//go to the change password form
+app.get('/changePasswordForm', function(req, res){
+
+	return res.render('changePassword.jade');
+
+});
+
 ////////////////////////////////////////////////////////
 //post requests/////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -318,13 +325,6 @@ app.post('/emailNewPassword', function(req, res){
 			});
 		});
 	});
-});
-
-//go to the change password form
-app.post('/changePasswordForm', function(req, res){
-
-	return res.render('changePassword.jade');
-
 });
 
 //validate and register the new password
