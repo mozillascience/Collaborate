@@ -106,6 +106,25 @@ app.get('/contactUser', function(req, res){
 	});
 });
 
+//run a search using the given parameters
+app.get('/search', function(req, res){
+
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {	
+			var scientist = (req.body.profession == 'scientist') ? true : false;
+
+	    	collection.find( {	scientist: scientist,
+	    						//for checkbox groups, blank === match anything
+	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
+	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
+	    					} ).toArray(function(err, matches){
+	    							searchBuffer[req.user['_id']] = matches;
+	    							return res.redirect('/searchResults?page=0');
+	    						});
+		});
+	});
+});
+
 ////////////////////////////////////////////////////////
 //post requests/////////////////////////////////////////
 ////////////////////////////////////////////////////////
@@ -354,25 +373,6 @@ app.post('/deleteProfile', function(req, res){
 			});
 		});
 	});	
-});
-
-//run a search using the given parameters
-app.post('/search', function(req, res){
-
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('Users', function(er, collection) {	
-			var scientist = (req.body.profession == 'scientist') ? true : false;
-
-	    	collection.find( {	scientist: scientist,
-	    						//for checkbox groups, blank === match anything
-	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
-	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
-	    					} ).toArray(function(err, matches){
-	    							searchBuffer[req.user['_id']] = matches;
-	    							return res.redirect('/searchResults?page=0');
-	    						});
-		});
-	});
 });
 
 //send an email to the user indicated by _id, and the initiating user
