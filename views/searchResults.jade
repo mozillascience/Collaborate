@@ -5,7 +5,7 @@ html
     include mixins.jade
 
   body
-    +internalHeader('Search Results')
+    +internalHeader(searchResults.length)
 
     - for(var i=page*10; i<Math.min(searchResults.length, (page+1)*10); i++) {
       +userStub(searchResults[i].uName, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline)
@@ -15,7 +15,6 @@ html
         p No matches... YET
     - } 
 
-    console.log(searchResults.length)
     -if(searchResults.length > 10)
       h3 more results
       - for(var j=0; j<Math.ceil(searchResults.length/10); j++ ){
