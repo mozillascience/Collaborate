@@ -106,14 +106,13 @@ app.get('/search', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	
 			var scientist = (req.body.profession == 'scientist') ? true : false;
-
+console.log(req.body.profession)
 	    	collection.find( {	scientist: scientist,
 	    						//for checkbox groups, blank === match anything
 	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
 	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
 	    					} ).toArray(function(err, matches){
 	    							searchBuffer[req.user['_id']] = matches;
-	    							console.log(matches.length)
 	    							return res.redirect('/searchResults?page=0');
 	    						});
 		});
