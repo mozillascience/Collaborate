@@ -101,7 +101,7 @@ app.get('/contactUser', function(req, res){
 });
 
 //run a search using the given parameters
-app.get('/search', function(req, res){
+app.post('/search', function(req, res){
 
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	
