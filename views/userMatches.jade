@@ -7,13 +7,7 @@ html
     +internalHeader('My Matches')
 
     - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
-      h3= match[i].uName
-      - if(hasContacted.indexOf(match[i].uName) != -1 )
-        div You have already contacted this user.
-      form(method='get', action='viewProfile')
-        button(value=match[i].uName, name='userID') View Profile
-      div= match[i].language
-      div= match[i].discipline
+      +userStub(match[i].uName, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline)
     - }
 
     - if(match.length == 0) {
