@@ -106,7 +106,7 @@ app.get('/search', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	
 			var scientist = (req.body.profession == 'scientist') ? true : false;
-console.log(req.body.profession)
+console.log(req.body)
 	    	collection.find( {	scientist: scientist,
 	    						//for checkbox groups, blank === match anything
 	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
