@@ -9,3 +9,18 @@ mixin internalHeader(title)
 
   form(method='get', action='userSearch')
     input(type='submit', value='Search')
+
+
+
+mixin userStub(name, hasContacted, isScientist, isDeveloper, language, discipline)
+  h3= name
+  - if(hasContacted.indexOf(name) != -1 )
+    div You have already contacted this user.
+  form(method='get', action='viewProfile')
+    button(value=name, name='userID') View Profile
+  if isScientist
+    div Scientist
+  if isDeveloper
+    div Developer
+  div= language
+  div= discipline

@@ -7,17 +7,7 @@ html
     +internalHeader('Search Results')
 
     - for(var i=page*10; i<Math.min(searchResults.length, (page+1)*10); i++) {
-      h3= searchResults[i].uName
-      - if(hasContacted.indexOf(searchResults[i].uName) != -1 )
-        div You have already contacted this user.
-      form(method='get', action='viewProfile')
-        button(value=searchResults[i].uName, name='userID') View Profile
-      if searchResults[i].scientist
-        div Scientist
-      if searchResults[i].developer
-        div Developer
-      div= searchResults[i].language
-      div= searchResults[i].discipline
+      +userStub(searchResults[i].uName, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline)
     - }
 
     - if(searchResults.length == 0) {
