@@ -1,5 +1,5 @@
-mixin internalHeader()
-  h1 My Matches
+mixin internalHeader(title)
+  h1= title
 
   form(method='get', action='userMatches')
     button(value=0, name='page') My Matches

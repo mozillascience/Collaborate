@@ -4,7 +4,7 @@ html
     include internalHeader.jade
 
   body
-    +internalHeader()
+    +internalHeader('My Matches')
 
     - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
       h3= match[i].uName

@@ -4,16 +4,7 @@ html
   head
 
   body
-    h1 My Profile
-
-    form(method='get', action='userMatches')
-      button(value=0, name='page') My Matches
-
-    form(method='get', action='userProfile')
-      input(type='submit', value='My Profile')
-
-    form(method='get', action='userSearch')
-      input(type='submit', value='Search')
+    +internalHeader('My Profile')
 
     form(method='post' action='recordUpdate')
       if user.scientist
@@ -76,7 +67,7 @@ html
     form(method='get', action='changePasswordForm')
       input(type='submit', value='Change Password')
 
-    form(method='post', action='logout')
+    form(method='get', action='logout')
       input(type='submit', value='Logout')
 
     form(method='post', action='deleteProfile')
