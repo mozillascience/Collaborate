@@ -1,10 +1,10 @@
 doctype html5
 html
   head
-    include /views/internalHeader.jade
+    include views/internalHeader.jade
 
   body
-    +internalHeader('My Matches')
+    +internalHeader()
 
     - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
       h3= match[i].uName
