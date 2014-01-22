@@ -1,0 +1,11 @@
+mixin internalHeader(title)
+	h1 My Matches
+
+	form(method='get', action='userMatches')
+	  button(value=0, name='page') My Matches
+
+	form(method='get', action='userProfile')
+	  input(type='submit', value='My Profile')
+
+	form(method='get', action='userSearch')
+	  input(type='submit', value='Search')

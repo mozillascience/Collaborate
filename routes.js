@@ -7,7 +7,7 @@ app.get('/', function(req, res){
 	res.render('landing.jade');
 });
 
-//login
+//show login page
 app.get('/login', function(req, res) {
 	var loginError = null;
 
@@ -17,7 +17,7 @@ app.get('/login', function(req, res) {
 	res.render('login.jade', {loginMessage: loginError})
 });
 
-//register
+//show registration page
 app.get('/register', function(req, res){
 	var registerError = null;
 

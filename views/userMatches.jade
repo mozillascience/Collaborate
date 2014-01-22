@@ -1,19 +1,10 @@
 doctype html5
 html
   head
+    include /views/internalHeader.jade
 
   body
-    h1 My Matches
-
-    form(method='get', action='userMatches')
-      button(value=0, name='page') My Matches
-
-    form(method='get', action='userProfile')
-      input(type='submit', value='My Profile')
-
-    form(method='get', action='userSearch')
-      input(type='submit', value='Search')
-
+    +internalHeader('My Matches')
 
     - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
       h3= match[i].uName
