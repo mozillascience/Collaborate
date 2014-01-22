@@ -1,26 +1,28 @@
 mixin internalHeader(title)
-  h1= title
+  div.internalHeader
+    h1= title
 
-  form(method='get', action='userMatches')
-    button(value=0, name='page') My Matches
+    form(method='get', action='userMatches')
+      button(value=0, name='page') My Matches
 
-  form(method='get', action='userProfile')
-    input(type='submit', value='My Profile')
+    form(method='get', action='userProfile')
+      input(type='submit', value='My Profile')
 
-  form(method='get', action='userSearch')
-    input(type='submit', value='Search')
+    form(method='get', action='userSearch')
+      input(type='submit', value='Search')
 
 
 
 mixin userStub(name, hasContacted, isScientist, isDeveloper, language, discipline)
-  h3= name
-  - if(hasContacted.indexOf(name) != -1 )
-    div You have already contacted this user.
-  form(method='get', action='viewProfile')
-    button(value=name, name='userID') View Profile
-  if isScientist
-    div Scientist
-  if isDeveloper
-    div Developer
-  div= language
-  div= discipline
+  div.userStub
+    h3= name
+    - if(hasContacted.indexOf(name) != -1 )
+      div You have already contacted this user.
+    form(method='get', action='viewProfile')
+      button(value=name, name='userID') View Profile
+    if isScientist
+      div Scientist
+    if isDeveloper
+      div Developer
+    div= language
+    div= discipline
