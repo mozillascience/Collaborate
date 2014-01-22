@@ -113,6 +113,7 @@ app.get('/search', function(req, res){
 	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
 	    					} ).toArray(function(err, matches){
 	    							searchBuffer[req.user['_id']] = matches;
+	    							console.log(matches.length)
 	    							return res.redirect('/searchResults?page=0');
 	    						});
 		});

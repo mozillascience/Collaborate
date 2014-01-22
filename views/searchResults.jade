@@ -5,7 +5,7 @@ html
     include mixins.jade
 
   body
-    +internalHeader(searchResults.length)
+    +internalHeader('Search Results')
 
     - for(var i=page*10; i<Math.min(searchResults.length, (page+1)*10); i++) {
       +userStub(searchResults[i].uName, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline)
