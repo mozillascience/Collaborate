@@ -67,6 +67,14 @@ div.userStub{
 	background-color: #8e44ad
 }
 
+div.footer{
+	background-color: #3498db
+}
+
+h1.splashTitle{
+	background-color: #16a085
+}
+
 /*Landing page*/
 div#landingWrapper{
 	text-align: center;

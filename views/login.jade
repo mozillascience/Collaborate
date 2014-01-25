@@ -1,17 +1,26 @@
 doctype html5
 html
   head
+    link(rel='stylesheet', href='/style.css')
+    include mixins.jade
 
   body
-    h1 Login
+    +splashTitle()
 
-    p= loginMessage
-    form(method='post', action='login')
-      label User
-      input(type='text' name='username')
-      label Pass
-      input(type='password' name='password')
-      input(type='submit' value='Log In')
+    div.wrapper
+      h1 Login
 
-    form(method='get', action='forgotPass')
-      input(type='submit', value='I forgot my password :(')
+      p= loginMessage
+      form(method='post', action='login')
+        label User
+        input(type='text' name='username')
+        label Pass
+        input(type='password' name='password')
+        input(type='submit' value='Log In')
+
+      form(method='get', action='forgotPass')
+        input(type='submit', value='I forgot my password :(')
+
+      div.push
+
+    +footer()
