@@ -67,6 +67,31 @@ div.userStub{
 	background-color: #8e44ad
 }
 
+/*Landing page*/
+div#landingWrapper{
+	text-align: center;
+}
+
+h1.splashTitle{
+	font-size: 200%;
+}
+
+div.containter{
+	display:inline-block;
+}
+
+div.leftBlock{
+	float:left;
+}
+
+div.rightBlock{
+	float:right;
+}
+
+input.bigButton{
+	width:10em;
+	height:4em;
+}
 
 /*Wrapper, push and footer*/
 div.footer{
