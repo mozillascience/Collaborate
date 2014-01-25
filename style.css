@@ -101,6 +101,11 @@ p.splashText{
 	font-size: 200%;
 }
 
+div#landingWrapper div.userStub{
+	text-align: left;
+	margin: 1em 20% 1em 20% 1em;
+}
+
 /*Wrapper, push and footer*/
 div.footer{
 	border-top:1px solid #000000;
