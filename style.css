@@ -83,6 +83,7 @@ div#landingWrapper{
 h1.splashTitle{
 	font-size: 300%;
 	margin-bottom:1em;
+	text-align: center;
 }
 
 div.container{
@@ -136,6 +137,15 @@ div#landingWrapper div.userStub{
 
 div#landingWrapper div.userStub form{
 	display: none;
+}
+
+/*mixins*/
+div.internalHeader form{
+	float:left;
+}
+
+div.internalHeader h1{
+	float:right;
 }
 
 /*Wrapper, push and footer*/
