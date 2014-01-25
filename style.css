@@ -78,16 +78,17 @@ h1.splashTitle{
 
 div.container{
 	display:inline-block;
-	margin-left:20%;
-	margin-right:20%;
+	width:60%;
 }
 
 div.leftBlock{
 	float:left;
+	width:20%;
 }
 
 div.rightBlock{
 	float:right;
+	width:80%;
 }
 
 input.bigButton{
