@@ -78,6 +78,8 @@ h1.splashTitle{
 
 div.container{
 	display:inline-block;
+	margin-left:20%;
+	margin-right:20%;
 }
 
 div.leftBlock{
