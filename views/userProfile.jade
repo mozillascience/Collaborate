@@ -5,71 +5,74 @@ html
     include mixins.jade
 
   body
-    +internalHeader('My Profile')
+    div.wrapper
+      +splashTitle()
+      +internalHeader('My Profile')
 
-    form(method='post' action='recordUpdate')
-      if user.scientist
-        if disciplineError
-          p= disciplineError
-        label What is your discipline?
-        br
-        - for(var i=0; i<disciplines.length; i++){
-          - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-          input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
-          label= disciplines[i]
+      form(method='post' action='recordUpdate')
+        if user.scientist
+          if disciplineError
+            p= disciplineError
+          label What is your discipline?
           br
-        - }
-        br
-
-        if languageError
-          p= languageError
-        label What language would you like to work in?
-        br
-        - for(i=0; i<languages.length; i++){
-          - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-          input(type='checkbox', name='language[]', value=languages[i], checked=check )
-          label= languages[i]
+          - for(var i=0; i<disciplines.length; i++){
+            - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+            input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
+            label= disciplines[i]
+            br
+          - }
           br
-        - }
-        br
 
-
-      if user.developer
-        if languageError
-          p= languageError
-        label What languages are you comfortable with?
-        br
-        - for(i=0; i<languages.length; i++){
-          - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-          input(type='checkbox', name='language[]', value=languages[i], checked=check )
-          label= languages[i]
+          if languageError
+            p= languageError
+          label What language would you like to work in?
           br
-        - }
-        br
-
-        if disciplineError
-          p= disciplineError
-        label What sciences interest you?
-        br
-        - for(i=0; i<disciplines.length; i++){
-          - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-          input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
-          label= disciplines[i]
+          - for(i=0; i<languages.length; i++){
+            - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+            input(type='checkbox', name='language[]', value=languages[i], checked=check )
+            label= languages[i]
+            br
+          - }
           br
-        - }
+
+
+        if user.developer
+          if languageError
+            p= languageError
+          label What languages are you comfortable with?
+          br
+          - for(i=0; i<languages.length; i++){
+            - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+            input(type='checkbox', name='language[]', value=languages[i], checked=check )
+            label= languages[i]
+            br
+          - }
+          br
+
+          if disciplineError
+            p= disciplineError
+          label What sciences interest you?
+          br
+          - for(i=0; i<disciplines.length; i++){
+            - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+            input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
+            label= disciplines[i]
+            br
+          - }
+          br
+
         br
+        label email
+        input(type='email', name='email', value=user.email required)
 
-      br
-      label email
-      input(type='email', name='email', value=user.email required)
+        input(type='submit', value='Update Profile')
 
-      input(type='submit', value='Update Profile')
+      form(method='get', action='changePasswordForm')
+        input(type='submit', value='Change Password')
 
-    form(method='get', action='changePasswordForm')
-      input(type='submit', value='Change Password')
+      form(method='post', action='deleteProfile')
+        input(type='submit', value='Delete My Profile')
 
-    form(method='get', action='logout')
-      input(type='submit', value='Logout')
+      div.push
 
-    form(method='post', action='deleteProfile')
-      input(type='submit', value='Delete My Profile')
+    +footer()

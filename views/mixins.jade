@@ -11,6 +11,9 @@ mixin internalHeader(title)
     form(method='get', action='userSearch')
       input(type='submit', value='Search')
 
+    form(method='get', action='logout')
+      input(type='submit', value='Logout')
+
 
 
 mixin userStub(name, hasContacted, isScientist, isDeveloper, language, discipline)
