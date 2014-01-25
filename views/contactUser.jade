@@ -6,18 +6,24 @@ html
     include mixins.jade
 
   body
-    +internalHeader('Contact User')
+    div.wrapper
+      +splashTitle()
+      +internalHeader('Contact User')
 
-    h1 Contact #{user.uName}
-    form(method='post', action='sendEmail')
-      input(type='text', name='uName', value=user.uName, style='display:none')
-      label Subject
-      br
-      input(type='text', name='subject')
-      br
-      label Body
-      br
-      textarea(cols=40, rows=10, name='body')
-      br
-      input(type='submit', value='Send Mail')
+      h1 Contact #{user.uName}
+      form(method='post', action='sendEmail')
+        input(type='text', name='uName', value=user.uName, style='display:none')
+        label Subject
+        br
+        input(type='text', name='subject')
+        br
+        label Body
+        br
+        textarea(cols=40, rows=10, name='body')
+        br
+        input(type='submit', value='Send Mail')
+
+      div.push
+
+    +footer()
 
