@@ -88,6 +88,7 @@ div.leftBlock{
 	float:left;
 	width:30%;
 	top:50%;
+	text-align: left;
 	-webkit-transform: translate(0, -50%);
 	-moz-transform: translate(0, -50%);
 	-ms-transform: translate(0, -50%);
@@ -108,8 +109,7 @@ div.rightBlock{
 }
 
 input.bigButton{
-	width:10em;
-	height:4em;
+	width:100%;
 }
 
 p.splashText{
