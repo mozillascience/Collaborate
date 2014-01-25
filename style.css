@@ -83,8 +83,15 @@ div.container{
 }
 
 div.leftBlock{
+	position: relative;
 	float:left;
 	width:20%;
+
+	-webkit-transform: translate(0, -50%);
+	-moz-transform: translate(0, -50%);
+	-ms-transform: translate(0, -50%);
+	-o-transform: translate(0, -50%);
+	transform: translate(0, -50%);
 }
 
 div.rightBlock{
