@@ -5,36 +5,42 @@ html
     include mixins.jade
 
   body
-    +internalHeader('Search')
+    div.wrapper
+      +splashTitle()
+      +internalHeader('Search')
 
-    form(method='post', action='search')
-      label Profession
-      input(type='radio', name='profession', value='scientist' required)
-      label Scientist
-      br
-      input(type='radio', name='profession', value='developer' required)
-      label Developer
-      br
-      br
-
-      label Discipline
-      br
-      - for(var i=0; i<disciplines.length; i++){
-        input(type='checkbox', name='discipline[]', value=disciplines[i] )
-        label= disciplines[i]
+      form(method='post', action='search')
+        label Profession
+        input(type='radio', name='profession', value='scientist' required)
+        label Scientist
         br
-      - }
-      br
-      br
-
-      label Language
-      br
-      - for(i=0; i<languages.length; i++){
-        input(type='checkbox', name='language[]', value=languages[i] )
-        label= languages[i]
+        input(type='radio', name='profession', value='developer' required)
+        label Developer
         br
-      - }
-      br
-      br
+        br
 
-      input(type='submit', value='Search Users')
+        label Discipline
+        br
+        - for(var i=0; i<disciplines.length; i++){
+          input(type='checkbox', name='discipline[]', value=disciplines[i] )
+          label= disciplines[i]
+          br
+        - }
+        br
+        br
+
+        label Language
+        br
+        - for(i=0; i<languages.length; i++){
+          input(type='checkbox', name='language[]', value=languages[i] )
+          label= languages[i]
+          br
+        - }
+        br
+        br
+
+        input(type='submit', value='Search Users')
+
+      div.push
+
+    +footer()
