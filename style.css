@@ -109,7 +109,9 @@ div.rightBlock{
 }
 
 input.bigButton{
-	width:100%;
+	-webkit-appearance: none;
+	width:90%;
+	height:4em;
 }
 
 p.splashText{
