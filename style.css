@@ -73,7 +73,7 @@ div#landingWrapper{
 }
 
 h1.splashTitle{
-	font-size: 200%;
+	font-size: 300%;
 }
 
 div.container{
@@ -93,9 +93,12 @@ input.bigButton{
 	height:4em;
 }
 
+p.splashText{
+	font-size: 200%;
+}
+
 /*Wrapper, push and footer*/
 div.footer{
-	background-color: #999999;
 	border-top:1px solid #000000;
 	height:6em;
 }
