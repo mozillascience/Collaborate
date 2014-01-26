@@ -6,17 +6,17 @@
 app.get('/', function(req, res){
 
 	//fetch the site parameters DB
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('SiteParameters', function(er, collection) {	    	
-	    	collection.findOne( {name: 'SiteParameters'}, function(err, siteParam){    		
+	//mongo.Db.connect(mongoUri, function(err, db) {
+	//	db.collection('SiteParameters', function(er, collection) {	    	
+	//    	collection.findOne( {name: 'SiteParameters'}, function(err, siteParam){    		
 	    		//fetch most recent developer
 				mongo.Db.connect(mongoUri, function(err, db) {
 					db.collection('Users', function(er, collection) {	    	
-				    	collection.findOne( {uName: siteParam.mostRecentDeveloper}, function(err, developer){    		
+				    	collection.findOne( {uName: 'Pika'}, function(err, developer){    		
 				    		//fetch most recent scientist
 							mongo.Db.connect(mongoUri, function(err, db) {
 								db.collection('Users', function(er, collection) {	    	
-							    	collection.findOne( {uName: siteParam.mostRecentScientist}, function(err, scientist){    		
+							    	collection.findOne( {uName: 'Bill'}, function(err, scientist){    		
 							    		res.render('landing.jade', developer, scientist);
 							    	});
 							    });
@@ -24,9 +24,9 @@ app.get('/', function(req, res){
 				    	});
 				    });
 				});
-	    	});
-	    });
-	});
+	    	//});
+	    //});
+	//});
 });
 
 //show login page
