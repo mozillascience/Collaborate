@@ -1,11 +1,19 @@
 doctype html5
 html
   head
+    link(rel='stylesheet', href='/style.css')
+    include mixins.jade
 
   body
-    h1 DERP
+    div.wrapper
+      h1 DERP
 
-    p Something terrible happened.  Click to get things back on track.
+      p Something terrible happened.  Click to get things back on track.
 
-    form(method='get', action='/')
-      input(type='submit' value='Back to Work!')
+      form(method='get', action='/')
+        input(type='submit' value='Back to Work!')
+
+      div.push
+
+    +footer()
+
