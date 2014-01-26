@@ -15,7 +15,7 @@ app.get('/', function(req, res){
 				    		//fetch most recent scientist
 							mongo.Db.connect(mongoUri, function(err, db) {
 								db.collection('Users', function(er, collection) {	    	
-							    	collection.findOne( {uName: ''}, function(err, scientist){    		
+							    	collection.findOne( {uName: siteParam.mostRecentScientist}, function(err, scientist){    		
 							    		res.render('landing.jade', {developer: developer, scientist: scientist});
 							    	});
 							    });
@@ -273,8 +273,16 @@ app.post('/recordUpdate', function(req, res){
 			    								uName : req.body.uName}
 			    						},
 			    						function(){
-											return res.redirect('/userMatches?page=0');									
-			    						});
+			    							//update the latest dev / scientist for frontpage:
+			    							mongo.Db.connect(mongoUri, function(err, db) {
+												db.collection('SiteParameters', function(er, params) {
+													if(req.user.scientist)
+														collection.update({name: 'SiteParameters'}, $set:{mostRecentScientist : req.body.uName}, function(){return res.redirect('/userMatches?page=0');});
+													else
+														collection.update({name: 'SiteParameters'}, $set:{mostRecentDeveloper : req.body.uName}, function(){return res.redirect('/userMatches?page=0');});
+												});
+											});										
+			    					});
 			    } else{ //no uName, just a regular update - but in this case email can change
 			    	//update the local user object
 			    	req.user.discipline = req.body.discipline || req.user.discipline;
