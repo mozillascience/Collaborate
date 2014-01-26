@@ -15,7 +15,7 @@ app.get('/', function(req, res){
 				    		//fetch most recent scientist
 							mongo.Db.connect(mongoUri, function(err, db) {
 								db.collection('Users', function(er, collection) {	    	
-							    	collection.findOne( {uName: siteParam.mostRecentScientist}, function(err, scientist){    		
+							    	collection.findOne( {uName: ''}, function(err, scientist){    		
 							    		res.render('landing.jade', {developer: developer, scientist: scientist});
 							    	});
 							    });
