@@ -17,7 +17,7 @@ app.get('/', function(req, res){
 							mongo.Db.connect(mongoUri, function(err, db) {
 								db.collection('Users', function(er, collection) {	    	
 							    	collection.findOne( {uName: 'Bill'}, function(err, scientist){    		
-							    		res.render('landing.jade', developer, scientist);
+							    		res.render('landing.jade', {developer: developer, scientist: scientist});
 							    	});
 							    });
 							});
