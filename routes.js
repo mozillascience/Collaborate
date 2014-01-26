@@ -268,21 +268,18 @@ app.post('/recordUpdate', function(req, res){
 
 			    	//update the DB and carry on to main user pages
 			    	collection.update(	{email : user.email}, 
-			    						{$set:{	discipline : req.body.discipline, 
-			    								language : req.body.language,
-			    								uName : req.body.uName}
-			    						},
+			    						{$set:{	discipline : req.body.discipline, language : req.body.language,uName : req.body.uName}},
 			    						function(){
 			    							//update the latest dev / scientist for frontpage:
 			    							mongo.Db.connect(mongoUri, function(err, db) {
 												db.collection('SiteParameters', function(er, params) {
 													if(req.user.scientist)
-														collection.update({name: 'SiteParameters'}, $set:{mostRecentScientist : req.body.uName}, function(){return res.redirect('/userMatches?page=0');});
+														collection.update({name: 'SiteParameters'}, {$set:{mostRecentScientist : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
 													else
-														collection.update({name: 'SiteParameters'}, $set:{mostRecentDeveloper : req.body.uName}, function(){return res.redirect('/userMatches?page=0');});
+														collection.update({name: 'SiteParameters'}, {$set:{mostRecentDeveloper : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
 												});
 											});										
-			    					});
+			    						});
 			    } else{ //no uName, just a regular update - but in this case email can change
 			    	//update the local user object
 			    	req.user.discipline = req.body.discipline || req.user.discipline;
