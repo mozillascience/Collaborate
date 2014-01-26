@@ -274,9 +274,9 @@ app.post('/recordUpdate', function(req, res){
 			    							mongo.Db.connect(mongoUri, function(err, db) {
 												db.collection('SiteParameters', function(er, params) {
 													if(req.user.scientist)
-														collection.update({name: 'SiteParameters'}, {$set:{mostRecentScientist : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
+														params.update({name: 'SiteParameters'}, {$set:{mostRecentScientist : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
 													else
-														collection.update({name: 'SiteParameters'}, {$set:{mostRecentDeveloper : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
+														params.update({name: 'SiteParameters'}, {$set:{mostRecentDeveloper : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
 												});
 											});										
 			    						});
