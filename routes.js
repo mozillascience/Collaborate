@@ -4,7 +4,29 @@
 
 //landing page
 app.get('/', function(req, res){
-	res.render('landing.jade');
+
+	//fetch the site parameters DB
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('SiteParameters', function(er, collection) {	    	
+	    	collection.findOne( {name: 'SiteParameters'}, function(err, siteParam){    		
+	    		//fetch most recent developer
+				mongo.Db.connect(mongoUri, function(err, db) {
+					db.collection('Users', function(er, collection) {	    	
+				    	collection.findOne( {uName: siteParam.mostRecentDeveloper}, function(err, developer){    		
+				    		//fetch most recent scientist
+							mongo.Db.connect(mongoUri, function(err, db) {
+								db.collection('Users', function(er, collection) {	    	
+							    	collection.findOne( {uName: siteParam.mostRecentScientist}, function(err, scientist){    		
+							    		res.render('landing.jade', developer, scientist);
+							    	});
+							    });
+							});
+				    	});
+				    });
+				});
+	    	});
+	    });
+	});
 });
 
 //show login page
