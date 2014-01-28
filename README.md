@@ -1,4 +1,4 @@
-interdisciplinary-programing
+interdisciplinary-programming
 ============================
 
 The site, yo.
