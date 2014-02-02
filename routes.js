@@ -8,21 +8,7 @@ app.get('/', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('SiteCache', function(er, collection) {	    	
 	    	collection.findOne( {name: 'MostRecentCache'}, function(err, siteParam){    		
-	    		//fetch most recent developer
-				mongo.Db.connect(mongoUri, function(err, db) {
-					db.collection('Users', function(er, collection) {	    	
-				    	collection.findOne( {uName: siteParam.mostRecentDeveloper}, function(err, developer){    		
-				    		//fetch most recent scientist
-							mongo.Db.connect(mongoUri, function(err, db) {
-								db.collection('Users', function(er, collection) {	    	
-							    	collection.findOne( {uName: siteParam.mostRecentScientist}, function(err, scientist){    		
-							    		res.render('landing.jade', {developer: developer, scientist: scientist});
-							    	});
-							    });
-							});
-				    	});
-				    });
-				});
+	    		res.render('landing.jade', {developer: siteParam.mostRecentDeveloper, scientist: siteParam.mostRecentScientist});
 	    	});
 	    });
 	});
@@ -274,9 +260,9 @@ app.post('/recordUpdate', function(req, res){
 			    							mongo.Db.connect(mongoUri, function(err, db) {
 												db.collection('SiteParameters', function(er, params) {
 													if(req.user.scientist)
-														params.update({name: 'SiteParameters'}, {$set:{mostRecentScientist : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
+														params.update({name: 'SiteParameters'}, {$set:{mostRecentScientist : req.user}}, function(){return res.redirect('/userMatches?page=0');});
 													else
-														params.update({name: 'SiteParameters'}, {$set:{mostRecentDeveloper : req.body.uName}}, function(){return res.redirect('/userMatches?page=0');});
+														params.update({name: 'SiteParameters'}, {$set:{mostRecentDeveloper : req.user}}, function(){return res.redirect('/userMatches?page=0');});
 												});
 											});										
 			    						});
