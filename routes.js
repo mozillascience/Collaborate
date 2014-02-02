@@ -6,8 +6,8 @@
 app.get('/', function(req, res){
 	//fetch the site parameters DB
 	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('SiteParameters', function(er, collection) {	    	
-	    	collection.findOne( {name: 'SiteParameters'}, function(err, siteParam){    		
+		db.collection('SiteCache', function(er, collection) {	    	
+	    	collection.findOne( {name: 'MostRecentCache'}, function(err, siteParam){    		
 	    		//fetch most recent developer
 				mongo.Db.connect(mongoUri, function(err, db) {
 					db.collection('Users', function(er, collection) {	    	
