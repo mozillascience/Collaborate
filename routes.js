@@ -218,8 +218,8 @@ app.post('/newUser', function(req, res){
 	});
 });
 
-//update a user's profile
-app.post('/recordUpdate', function(req, res){
+//create user profile
+app.post('/createUser', function(req, res){
 
 	//open link to the database
 	mongo.Db.connect(mongoUri, function(err, db) {
@@ -230,64 +230,78 @@ app.post('/recordUpdate', function(req, res){
 
 		    	if (err || !user) return res.render('error.jade');
 
-		    	//register the username if present - only on profile creation
-		    	if(req.body.uName){
 
-			    	//update the local user object
-			    	req.user.discipline = req.body.discipline;
-			    	req.user.language = req.body.language
-			    	req.user.uName = req.body.uName;
+		    	//update the local user object
+		    	req.user.discipline = req.body.discipline;
+		    	req.user.language = req.body.language
+		    	req.user.uName = req.body.uName;
 
-		    		//insist all fields have at least one option selected
-		    		if(!req.body.discipline){
-		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
-		    		}
-		    		if(!req.body.language){
-		    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
-		    		}
+	    		//insist all fields have at least one option selected
+	    		if(!req.body.discipline){
+	    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    		}
+	    		if(!req.body.language){
+	    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    		}
 
-			    	//update the DB and carry on to main user pages
-			    	collection.update(	{email : user.email}, 
-			    						{$set:{	discipline : req.body.discipline, language : req.body.language,uName : req.body.uName}},
-			    						function(){
-			    							//update the latest dev / scientist for frontpage:
-			    							mongo.Db.connect(mongoUri, function(err, db) {
-												db.collection('SiteParameters', function(er, params) {
-													if(req.user.scientist)
-														params.update({name: 'SiteParameters'}, {$set:{mostRecentScientist : req.user}}, function(){return res.redirect('/userMatches?page=0');});
-													else
-														params.update({name: 'SiteParameters'}, {$set:{mostRecentDeveloper : req.user}}, function(){return res.redirect('/userMatches?page=0');});
-												});
-											});										
-			    						});
-			    } else{ //no uName, just a regular update - but in this case email can change
-			    	//update the local user object
-			    	req.user.discipline = req.body.discipline || req.user.discipline;
-			    	req.user.language = req.body.language || req.user.language;
-			    	req.user.email = req.body.email;
-
-		    		//insist all fields have at least one option selected
-		    		if(!req.body.discipline){
-		    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
-		    		}
-		    		if(!req.body.language){
-		    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
-		    		}
-
-			    	//update the DB and carry on to main user pages
-			    	collection.update(	{uName : user.uName}, 
-			    						{$set:{	discipline : req.body.discipline, 
-			    								language : req.body.language,
-			    								email : req.body.email}
-			    						},
-			    						function(){
-											return res.redirect('/userMatches?page=0');									
-			    						});
-			    }
+		    	//update the DB and carry on to main user pages
+		    	collection.update(	{email : user.email}, 
+		    						{$set:{	discipline : req.body.discipline, language : req.body.language,uName : req.body.uName}},
+		    						function(){
+		    							//update the latest dev / scientist for frontpage:
+		    							mongo.Db.connect(mongoUri, function(err, db) {
+											db.collection('SiteCache', function(er, params) {
+												if(req.user.scientist)
+													params.update({name: 'MostRecentCache'}, {$set:{mostRecentScientist : req.user}}, function(){return res.redirect('/userMatches?page=0');});
+												else
+													params.update({name: 'MostRecentCache'}, {$set:{mostRecentDeveloper : req.user}}, function(){return res.redirect('/userMatches?page=0');});
+											});
+										});										
+		    						});
 			});
 		});
 	});	
 });
+
+//update a user's profile
+app.post('/updateUser', function(req, res){
+
+	//open link to the database
+	mongo.Db.connect(mongoUri, function(err, db) {
+		db.collection('Users', function(er, collection) {
+
+			//find the user
+			collection.findOne({ email: req.user.email }, function(err, user){
+
+		    	if (err || !user) return res.render('error.jade');
+
+		    	//update the local user object
+		    	req.user.discipline = req.body.discipline || req.user.discipline;
+		    	req.user.language = req.body.language || req.user.language;
+		    	req.user.email = req.body.email;
+
+	    		//insist all fields have at least one option selected
+	    		if(!req.body.discipline){
+	    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    		}
+	    		if(!req.body.language){
+	    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    		}
+
+		    	//update the DB and carry on to main user pages
+		    	collection.update(	{uName : user.uName}, 
+		    						{$set:{	discipline : req.body.discipline, 
+		    								language : req.body.language,
+		    								email : req.body.email}
+		    						},
+		    						function(){
+										return res.redirect('/userMatches?page=0');									
+		    						});
+			});
+		});
+	});	
+});
+
 
 //password recovery - generate a random password, hash it, update the db, and mail it to the user
 app.post('/emailNewPassword', function(req, res){

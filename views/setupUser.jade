@@ -10,7 +10,7 @@ html
       +splashTitle()
       h1= user.email
 
-      form(method='post' action='recordUpdate')
+      form(method='post' action='createUser')
         if user.scientist
           if disciplineError
             p= disciplineError

@@ -11,7 +11,7 @@ html
       +splashTitle()
       +internalHeader('My Profile')
 
-      form(method='post' action='recordUpdate')
+      form(method='post' action='updateUser')
         if user.scientist
           if disciplineError
             p= disciplineError
