@@ -11,7 +11,7 @@
 		mongo.Db.connect(mongoUri, function(err, db) {
 			db.collection('SiteCache', function(er, collection) {	    	
 		    	collection.findOne( {name: 'MostRecentCache'}, function(err, cache){    		
-		    		res.render('landing.jade', {developer: cache.mostRecentDeveloper, scientist: cache.mostRecentScientist});
+		    		res.render('home.jade', {developer: cache.mostRecentDeveloper, scientist: cache.mostRecentScientist});
 		    	});
 		    });
 		});
