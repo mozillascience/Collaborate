@@ -1,17 +1,11 @@
-/////////////////////////////////////////////////////
-//get requests///////////////////////////////////////
-/////////////////////////////////////////////////////
+require('./models/users.js');
 
-//landing page
+/*
+ * GET Requests
+ */
+
 app.get('/', function(req, res){
-	//fetch the site parameters DB
-	mongo.Db.connect(mongoUri, function(err, db) {
-		db.collection('SiteCache', function(er, collection) {	    	
-	    	collection.findOne( {name: 'MostRecentCache'}, function(err, siteParam){    		
-	    		res.render('landing.jade', {developer: siteParam.mostRecentDeveloper, scientist: siteParam.mostRecentScientist});
-	    	});
-	    });
-	});
+	app.userModel.getMostRecent(res);
 });
 
 //show login page

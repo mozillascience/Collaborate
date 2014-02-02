@@ -1,23 +1,28 @@
-////////////////////////////////////////////////////
-//setup/////////////////////////////////////////////
-////////////////////////////////////////////////////
+/*
+ * Globals. Haters gonna hate.
+ */
 
-//globals///////////////////////////////////////////
-express = require("express");		//express
-mongo = require('mongodb'); 		//database
-passport = require('passport');		//handles user authentication
-LocalStrategy = require('passport-local').Strategy,
-bcrypt = require('bcrypt');			//hashes passwords before putting them in DB
-SALT_WORK_FACTOR = 10;				//how many times to scramble a pass before returning the final hash?
-mail = require("nodemailer").mail;	//handles sending mail from the server side - no emails exposed in browser
-app = express();
-mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL ||
-  	'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
-searchBuffer = {}; 					//namespace to hold user searches
-matchBuffer = {}; 					//namespace to hold user matches
-require('./options.js');			//all the arrays of profile options
+express = require("express");		// route-a-ma-jigs
+app = express();					// init app obj
 
-//set up the app
+mongo = require('mongodb'); 		// database
+mongoUri = process.env.MONGOLAB_URI 
+	|| process.env.MONGOHQ_URL 
+	|| 'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
+
+passport = require('passport');		// user authentication
+LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the internet said to do this. - Bill
+
+bcrypt = require('bcrypt');			// hashes passwords before putting them in DB
+SALT_WORK_FACTOR = 10;				// how many times to scramble a pass before returning the final hash?
+
+mail = require("nodemailer").mail;	// handles sending mail from the server side - no emails exposed in browser
+
+searchBuffer = {}; 					// namespace to hold user searches
+matchBuffer = {}; 					// namespace to hold user matches
+require('./options.js');			// all the arrays of profile options - TODO name this file something more specific
+
+// setup the app
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname));
 app.use(express.cookieParser());
@@ -26,14 +31,14 @@ app.use(express.session({ secret: 'j4IjCQtMcWTsahgMCFCS' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-//attatch the routes to the app object
+// Load our routes
 require('./routes.js');
 
-//////////////////////////////////////////////////////
-//user auth///////////////////////////////////////////
-//////////////////////////////////////////////////////
+/*
+ * User Authentication Config
+ */
 
-//configure the passport authentication
+// configure the passport authentication
 passport.use(new LocalStrategy(
     function(username, password, done) {
 		mongo.Db.connect(mongoUri, function(err, db) {
@@ -56,7 +61,7 @@ passport.use(new LocalStrategy(
     })
 );
 
-//passport serialize / deserialize magics
+// passport serialize / deserialize magics
 passport.serializeUser(function(user, done) {
 	done(null, user);
 });
@@ -66,9 +71,11 @@ passport.deserializeUser(function(obj, done) {
 	done(null, obj);
 });
 
-////////////////////////////////////////////////////////
-//start serving/////////////////////////////////////////
-////////////////////////////////////////////////////////
+/*
+ * START SERVING DELICIOUS INTERNETS
+ * A PROGRAMMER IS YOU!
+ */
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
