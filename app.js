@@ -24,7 +24,7 @@ require('./options.js');			// all the arrays of profile options - TODO name this
 
 // setup the app
 app.set('views', __dirname + '/views');
-app.use(express.static(__dirname + '/static'));
+app.use('/static', express.static(__dirname + '/static'));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.session({ secret: 'j4IjCQtMcWTsahgMCFCS' }));  //TODO get this out of the public repo lulz
