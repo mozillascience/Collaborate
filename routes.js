@@ -15,7 +15,8 @@ app.get('/login', function(req, res) {
 	if(req.query.loginError == 1)
 		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
 
-	res.render('login.jade', {loginMessage: loginError})
+	//res.render('login.jade', {loginMessage: loginError})
+	res.send({loginMessage: loginError});
 });
 
 //show registration page
@@ -27,29 +28,29 @@ app.get('/register', function(req, res){
 	if(req.query.registerError == 2)
 		registerError = "Passwords don't match - try again!"
 
-	res.render('register.jade', {registerMessage: registerError});
-});
-
-//show page to set up a new user profile
-app.get('/setupNewUser', function(req, res){
-
-	res.render('chooseClass.jade', {});
-
+	//res.render('register.jade', {registerMessage: registerError});
+	res.send({registerMessage: registerError});
 });
 
 //show a page of search results
 app.get('/searchResults', function(req, res){
-
+/*
 	res.render('searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
 										page: req.query.page, 
 										nPages: Math.ceil(searchBuffer[req.user['_id']].length/10), 
 										hasContacted: req.user.hasContacted} );
+*/
+	res.send({	searchResults: searchBuffer[req.user['_id']], 
+				page: req.query.page, 
+				nPages: Math.ceil(searchBuffer[req.user['_id']].length/10), 
+				hasContacted: req.user.hasContacted})
 });
 
 //user profile page
 app.get('/userProfile', function(req, res){
 
-	res.render('userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
+	//res.render('userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
+	res.send({user: req.user, disciplines: disciplines, languages: languages});
 
 });
 
@@ -60,10 +61,16 @@ app.get('/userMatches', function(req, res){
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
 	    		matchBuffer[req.user['_id']] = matches;
+	    		/*
 	    		res.render('userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
 	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
 	    										hasContacted: req.user.hasContacted});
+	    		*/
+	    		res.send({	match: matches, 
+	    					page: req.query.page, 
+	    					nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
+	    					hasContacted: req.user.hasContacted});
 	    	});
 	    });
 	});
@@ -73,7 +80,8 @@ app.get('/userMatches', function(req, res){
 //search page
 app.get('/userSearch', function(req, res){
 
-	res.render('userSearch.jade', {languages: languages, disciplines: disciplines});
+	//res.render('userSearch.jade', {languages: languages, disciplines: disciplines});
+	res.send({languages: languages, disciplines: disciplines});
 
 });
 
@@ -83,7 +91,8 @@ app.get('/viewProfile', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {uName: req.query.userID}, function(err, user){
-	    		res.render('readonlyProfile.jade', {user: user});
+	    		//res.render('readonlyProfile.jade', {user: user});
+	    		res.send({user: user});
 	    	});
 		});
 	});
@@ -95,7 +104,8 @@ app.get('/contactUser', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {uName: req.query.username}, function(err, user){
-	    		res.render('contactUser.jade', {user: user});
+	    		//res.render('contactUser.jade', {user: user});
+	    		res.send({user: user});
 	    	});
 		});
 	});
@@ -107,31 +117,18 @@ app.post('/search', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {	
 			var scientist = (req.body.profession == 'scientist') ? true : false;
-console.log(req.body)
+
 	    	collection.find( {	scientist: scientist,
 	    						//for checkbox groups, blank === match anything
 	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
 	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
 	    					} ).toArray(function(err, matches){
-	    							searchBuffer[req.user['_id']] = matches;
-	    							return res.redirect('/searchResults?page=0');
+	    							searchBuffer[req.user['_id']] = matches;  //might not actually need this sever-side buffer anymore, depending on embermagics
+	    							//return res.redirect('/searchResults?page=0');
+	    							res.send({matches: matches});
 	    						});
 		});
 	});
-});
-
-//go to the change password form
-app.get('/changePasswordForm', function(req, res){
-
-	return res.render('changePassword.jade');
-
-});
-
-//go to the password recovery page
-app.get('/forgotPass', function(req, res){
-
-	res.render('recoverPassword.jade');
-
 });
 
 ////////////////////////////////////////////////////////
@@ -144,7 +141,7 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/userMatch
 //logout
 app.post('/logout', function(req, res){
   req.logout();
-  res.redirect('/');
+  res.send({message: 'logout'}); //!!!
 });
 
 //register a new user
@@ -154,28 +151,35 @@ app.post('/regUser', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.render('error.jade');
+		    	//if(err) return res.render('error.jade');
+		    	if(err) return res.send({errorCode: 1});
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.redirect('/register/?registerError=2');
+		    	//if(req.body.pass != req.body.repass) return res.redirect('/register/?registerError=2');
+		    	if(req.body.pass != req.body.repass) return res.send({errorCode: 2})
 	
 				//reject new account if email is already taken	    	
 		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
-		    		if(accounts.length != 0) return res.redirect('/register/?registerError=1');
+		    		//if(accounts.length != 0) return res.redirect('/register/?registerError=1');
+		    		if(accounts.length != 0) return res.send({errorCode: 3})
 
 			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-			        	if(err) return res.render('error.jade');
+			        	//if(err) return res.render('error.jade');
+			        	if(err) return res.send({errorCode: 4});
 
 		        		//register new user in the db:
 						collection.insert({'email': req.body.email, 'Pass': hash}, {safe: true}, function(err,res) {});
 
 						//log the new user in:
 						collection.findOne({email: req.body.email}, function(err, user){
-							if(err) return res.render('error.jade');
+							//if(err) return res.render('error.jade');
+							if(err) return res.send({errorCode: 5});
 
 							req.login(user, function(err) {
-							  if (err) return res.render('error.jade');
-							  return res.redirect('/setupNewUser');
+							  //if (err) return res.render('error.jade');
+							  if(err) return res.send({errorCode: 6});
+							  //return res.redirect('/setupNewUser');
+							  res.send({errorCode: 0});
 							});
 						});
 			        });
@@ -195,7 +199,8 @@ app.post('/newUser', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	//if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.send({errorCode: 5});
 
                 //update the local user object
                 req.user.scientist = !!req.body.scientist;
@@ -211,7 +216,8 @@ app.post('/newUser', function(req, res){
 		    							}
 		    						}, 
 		    						function(){
-										  return res.render('setupUser.jade', {user: req.user, disciplines: disciplines, languages: languages});
+										  //return res.render('setupUser.jade', {user: req.user, disciplines: disciplines, languages: languages});
+										  return res.send({user: req.user, disciplines: disciplines, languages: languages});
 		    						});
 			});
 		});
@@ -228,7 +234,8 @@ app.post('/createUser', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	//if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.send({errorCode: 5});
 
 
 		    	//update the local user object
@@ -238,10 +245,12 @@ app.post('/createUser', function(req, res){
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline){
-	    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			//return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			return res.send({user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'});
 	    		}
 	    		if(!req.body.language){
-	    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			//return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			return res.send({user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'});
 	    		}
 
 		    	//update the DB and carry on to main user pages
@@ -252,9 +261,9 @@ app.post('/createUser', function(req, res){
 		    							mongo.Db.connect(mongoUri, function(err, db) {
 											db.collection('SiteCache', function(er, params) {
 												if(req.user.scientist)
-													params.update({name: 'MostRecentCache'}, {$set:{mostRecentScientist : req.user}}, function(){return res.redirect('/userMatches?page=0');});
+													params.update({name: 'MostRecentCache'}, {$set:{mostRecentScientist : req.user}}, function(){/*return res.redirect('/userMatches?page=0');*/});
 												else
-													params.update({name: 'MostRecentCache'}, {$set:{mostRecentDeveloper : req.user}}, function(){return res.redirect('/userMatches?page=0');});
+													params.update({name: 'MostRecentCache'}, {$set:{mostRecentDeveloper : req.user}}, function(){/*return res.redirect('/userMatches?page=0');*/});
 											});
 										});										
 		    						});
@@ -273,7 +282,8 @@ app.post('/updateUser', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	//if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.send({errorCode: 5});
 
 		    	//update the local user object
 		    	req.user.discipline = req.body.discipline || req.user.discipline;
@@ -282,10 +292,12 @@ app.post('/updateUser', function(req, res){
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline){
-	    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			//return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			res.send({user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'});
 	    		}
 	    		if(!req.body.language){
-	    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			//return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			res.send({user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
 		    	//update the DB and carry on to main user pages
@@ -295,7 +307,7 @@ app.post('/updateUser', function(req, res){
 		    								email : req.body.email}
 		    						},
 		    						function(){
-										return res.redirect('/userMatches?page=0');									
+										//return res.redirect('/userMatches?page=0');									
 		    						});
 			});
 		});
@@ -314,19 +326,23 @@ app.post('/emailNewPassword', function(req, res){
 			collection.findOne({ uName: req.body.username }, function(err, user){
 				var newPass;
 
-		    	if (err) return res.render('error.jade');
+		    	//if (err) return res.render('error.jade');
+		    	if(err) return res.send({errorCode: 5});
 		    	if (!user)
-		    		return res.render('error.jade');
+		    		//return res.render('error.jade');
+		    		return res.send({errorCode: 7});
 
 		    	//generate a new password, bunch of random characters
 		    	newPass = (Math.random() + 1).toString(36);
 
 			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-			    	if(err) return res.render('error.jade');
+			    	//if(err) return res.render('error.jade');
+			    	if(err) return res.send({errorCode: 1});
 
 				        // hash the password along with our new salt:
 				        bcrypt.hash(newPass, salt, function(err, hash) {
-				        	if(err) return res.render('error.jade');
+				        	//if(err) return res.render('error.jade');
+				        	if(err) return res.send({errorCode: 4});
 
 				        	//update db
 				        	collection.update({uName : user.uName}, {$set:{Pass : hash}}, function(){});
@@ -353,17 +369,20 @@ app.post('/updatePassword', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.render('error.jade');
+		    	//if(err) return res.render('error.jade');
+		    	if(err) return res.send({errorCode: 1})
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade');
+		    	//if(req.body.pass != req.body.repass) return res.render('changePassword.jade');
+		    	if(req.body.pass != req.body.repass) return res.send({errorCode: 2});
 
 		        // hash the password along with our new salt:
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-		        	if(err) return res.render('error.jade');
+		        	//if(err) return res.render('error.jade');
+		        	if(err) return res.send({errorCode: 4});
 
 	        		//register new password in the db:
 	        		collection.update({uName : req.user.uName}, {$set:{Pass : hash}}, function(){
-	        			return res.redirect('/userMatches?page=0');
+	        			//return res.redirect('/userMatches?page=0');
 	        		});
 		        });
 		    });
@@ -381,14 +400,15 @@ app.post('/deleteProfile', function(req, res){
 			//find the user
 			collection.findOne({ uName: req.user.uName }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	//if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.send({errorCode: 5});
 
 		    	//logout
 		    	req.logout();
 
 		    	//dump user from DB and return to landing page:
 		    	collection.remove({uName : user.uName}, true, function(){
-		    		return res.redirect('/');
+		    		//return res.redirect('/');
 		    	});									
 			});
 		});
@@ -417,7 +437,7 @@ app.post('/sendEmail', function(req, res){
 			    	collection.update(	{uName : user.uName}, 
 			    						{$addToSet:{hasContacted : req.body.uName} }, 
 			    						function(){
-											return res.redirect('/userMatches?page=0');									
+											//return res.redirect('/userMatches?page=0');									
 			    						});
 				});
 			});
