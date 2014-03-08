@@ -1,31 +1,15 @@
+include mixins/userStub.jade
+include mixins/footer.jade
+include mixins/splash.jade
+include mixins/head.jade
+include mixins/headerBar.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='/static/style.css')
-    include mixins/userStub.jade
-    include mixins/footer.jade
-    include mixins/splashTitle.jade
-
-  body
-    div.wrapper#landingWrapper
-      +splashTitle()
-
-      div.container
-        div.leftBlock
-          form(method='get', action='login')
-            input(type='submit', value='Login').bigButton
-
-          form(method='get', action='register')
-            input(type='submit', value='Register').bigButton
-
-        div.rightBlock
-          p.splashText Adipisicing pour-over id cred placeat ethical, distillery Shoreditch Carles laborum incididunt PBR bitters wayfarers irony.
-
-      -if(scientist)
-        +userStub(scientist.uName, [], true, false, scientist.language, scientist.discipline)
-      -if(developer)
-        +userStub(developer.uName, [], false, true, developer.language, developer.discipline)
-
-      div.push
-
+    +head() 
+  body  
+    +headerBar()
+    section
+      +splash()
     +footer()
