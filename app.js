@@ -22,18 +22,6 @@ searchBuffer = {}; 					// namespace to hold user searches
 matchBuffer = {}; 					// namespace to hold user matches
 require('./options.js');			// all the arrays of profile options - TODO name this file something more specific
 
-errorMessageTable = [];
-errorMessageTable[0] = 'all ok';
-errorMessageTable[1] = 'Salt generation failed!';
-errorMessageTable[2] = "Passwords don't match!";
-errorMessageTable[3] = 'Email already taken!'
-errorMessageTable[4] = 'Password hashing failed!'
-errorMessageTable[5] = 'Database query failed!'
-errorMessageTable[6] = 'Login failed!'
-errorMessageTable[7] = 'User not found.'
-
-
-
 // setup the app
 app.set('views', __dirname + '/views');
 app.use('/static', express.static(__dirname + '/static'));
