@@ -14,21 +14,6 @@ mongoUri = process.env.MONGOLAB_URI
 MongoClient = require('mongodb').MongoClient;           // database client
 database = null;                                        //going to populate this with a persistent db connection
 
-//function to open new connection to db only when necessary
-connect = function(callback){
-    if(database === null){
-        MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
-
-            if(err) { return callback(err)};
-            database = db;  //persist the connected db
-            callback(null, db);
-
-        });
-    } else {
-	callback(null, database);  //just use the existing database connection w/ no reconnect
-    }
-}
-
 passport = require('passport');		// user authentication
 LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the internet said to do this. - Bill
 
@@ -40,6 +25,9 @@ mail = require("nodemailer").mail;	// handles sending mail from the server side 
 searchBuffer = {}; 					// namespace to hold user searches
 matchBuffer = {}; 					// namespace to hold user matches
 require('./options.js');			// all the arrays of profile options - TODO name this file something more specific
+
+mongoHelpers = require('./mongoHelpers.js');                    //helper functions for interacting with mongo
+connect = mongoHelpers.connect;
 
 // setup the app
 app.set('views', __dirname + '/views');
