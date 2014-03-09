@@ -2,12 +2,12 @@ doctype html5
 html
   head
     link(rel='stylesheet', href='static/style.css')
-    include ../mixins/footer.jade
-    include ../mixins/splashTitle.jade
+    include ../partials/footer.jade
+    
 
   body
     div.wrapper
-      +splashTitle()
+      
       h1 Register New User
 
       p= registerMessage

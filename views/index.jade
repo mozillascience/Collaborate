@@ -1,15 +1,15 @@
-include mixins/userStub.jade
-include mixins/footer.jade
-include mixins/splash.jade
-include mixins/head.jade
-include mixins/headerBar.jade
+include partials/userStub.jade
+include partials/head.jade
+include partials/header.jade
+include splash.jade
+include partials/footer.jade
 
 doctype html5
 html
   head
     +head() 
   body  
-    +headerBar()
+    +header()
     section
       +splash()
     +footer()

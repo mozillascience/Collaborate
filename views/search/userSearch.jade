@@ -2,13 +2,13 @@ doctype html5
 html
   head
     link(rel='stylesheet', href='static/style.css')
-    include ../mixins/internalHeader.jade
-    include ../mixins/footer.jade
-    include ../mixins/splashTitle.jade
+    include ../partials/internalHeader.jade
+    include ../partials/footer.jade
+    
 
   body
     div.wrapper
-      +splashTitle()
+      
       +internalHeader('Search')
 
       form(method='post', action='search')
