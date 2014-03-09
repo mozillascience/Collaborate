@@ -14,6 +14,21 @@ mongoUri = process.env.MONGOLAB_URI
 MongoClient = require('mongodb').MongoClient;           // database client
 database = null;                                        //going to populate this with a persistent db connection
 
+//function to open new connection to db only when necessary
+connect = function(callback){
+    if(database === null){
+        MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
+
+            if(err) { return callback(err)};
+            database = db;  //persist the connected db
+            callback(null, db);
+
+        });
+    } else {
+	callback(null, database);  //just use the existing database connection w/ no reconnect
+    }
+}
+
 passport = require('passport');		// user authentication
 LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the internet said to do this. - Bill
 
@@ -84,18 +99,3 @@ var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-
-//function to open new connection to db only when necessary
-function connect(callback){
-    if(database === null){
-        MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
-
-            if(err) { return callback(err)};
-            database = db;  //persist the connected db
-            callback(null, db);
-
-        });
-    } else {
-	callback(null, database);  //just use the existing database connection w/ no reconnect
-    }
-}
