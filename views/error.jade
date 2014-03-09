@@ -1,0 +1,21 @@
+doctype html5
+html
+  head
+    link(rel='stylesheet', href='static/style.css')
+    include ../mixins/footer.jade
+    include ../mixins/splashTitle.jade
+
+  body
+    div.wrapper
+      +splashTitle()
+      h1 DERP
+
+      p Something terrible happened.  Click to get things back on track.
+
+      form(method='get', action='/')
+        input(type='submit' value='Back to Work!')
+
+      div.push
+
+    +footer()
+

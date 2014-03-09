@@ -1,0 +1,24 @@
+doctype html5
+html
+  head
+    link(rel='stylesheet', href='static/style.css')
+    include ../mixins/footer.jade
+    include ../mixins/splashTitle.jade
+
+  body
+    div.wrapper
+      +splashTitle()
+      h1 Are you a Scientist or a Software Developer?
+
+      form(method='post', action='newUser')
+        input(type='checkbox', name='scientist', checked=true, style='display:none')
+        input(type='submit', value='Scientist')
+
+      form(method='post', action='newUser')
+        input(type='checkbox', name='scientist', checked=false, style='display:none')
+        input(type='submit', value='Developer')
+
+      div.push
+
+    +footer()
+

@@ -1,0 +1,16 @@
+include mixins/userStub.jade
+include mixins/footer.jade
+include mixins/splash.jade
+include mixins/head.jade
+include mixins/headerBar.jade
+
+doctype html5
+html
+  head
+    +head() 
+  body  
+    +headerBar()
+    section
+      +splash()
+    +footer()
+
