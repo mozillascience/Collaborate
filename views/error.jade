@@ -1,19 +1,16 @@
+
+include partials/head.jade
+include partials/header.jade
+include splash.jade
+include partials/footer.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/footer.jade
-
-  body
-    div.wrapper
-      h1 DERP
-
-      p Something terrible happened.  Click to get things back on track.
-
-      form(method='get', action='/')
-        input(type='submit' value='Back to Work!')
-
-      div.push
-
-    +footer()
-
+    +head() 
+  body.vanilla  
+    div.page-wrapper
+      +header()
+      section
+        h1 Error of some kind occured, poop.
+      +footer()
