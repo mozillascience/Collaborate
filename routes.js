@@ -211,7 +211,7 @@ app.post('/newUser', function(req, res){
 		    							}
 		    						}, 
 		    						function(){
-										  return res.render('userCreation/setupUser.jade', {user: req.user, disciplines: disciplines, languages: languages});
+										  return res.render('registration/setupUser.jade', {user: req.user, disciplines: disciplines, languages: languages});
 		    						});
 			});
 		});
@@ -238,10 +238,10 @@ app.post('/createUser', function(req, res){
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline){
-	    			return res.render('userCreation/setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			return res.render('registration/setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 	    		}
 	    		if(!req.body.language){
-	    			return res.render('userCreation/setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			return res.render('registration/setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
 		    	//update the DB and carry on to main user pages
