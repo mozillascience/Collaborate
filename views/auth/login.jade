@@ -1,24 +1,29 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/footer.jade
+    +head() 
+  body.vanilla  
+    div.page-wrapper
+      +header()
+      section
+        div.content-wrapper
+          div.content
+            h2 Login
+            p= loginMessage
+            form(method='post', action='login').pure-form.pure-form-stacked
+              label User
+              input(type='text' name='username')
+              label Pass
+              input(type='password' name='password')
+              input(type='submit' value='Log In').pure-button
 
-  body
-    div.wrapper
-      h1 Login
+            form(method='get', action='forgotPass')
+              input(type='submit', value='I forgot my password :(').pure-button
+      +footer()
 
-      p= loginMessage
-      form(method='post', action='login')
-        label User
-        input(type='text' name='username')
-        label Pass
-        input(type='password' name='password')
-        input(type='submit' value='Log In')
 
-      form(method='get', action='forgotPass')
-        input(type='submit', value='I forgot my password :(')
 
-      div.push
-
-    +footer()

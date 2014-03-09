@@ -14,12 +14,12 @@ html
           div.content
             h2 Register
             p= registerMessage
-            form(method='post', action='/regUser')
+            form(method='post', action='/regUser').pure-form.pure-form-stacked
               label E-mail
               input(type='email' name='email')
               label Pass
               input(type='password' name='pass')
               label Re-Pass
               input(type='password' name='repass')
-              input(type='submit' value='Register User')
+              input(type='submit' value='Register User').pure-button.pure-button-primary
       +footer()
