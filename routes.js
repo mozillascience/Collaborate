@@ -56,7 +56,7 @@ app.get('/userProfile', function(req, res){
 //show the first 10 user matches, with links to subsequnt batches of 10
 app.get('/userMatches', function(req, res){
 
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
 	    		matchBuffer[req.user['_id']] = matches;
@@ -80,7 +80,7 @@ app.get('/userSearch', function(req, res){
 //view another user's profile
 app.get('/viewProfile', function(req, res){
 
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {uName: req.query.userID}, function(err, user){
 	    		res.render('user/profile.jade', {user: user});
@@ -92,7 +92,7 @@ app.get('/viewProfile', function(req, res){
 //show the page to contact a user
 app.get('/contactUser', function(req, res){
 
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {uName: req.query.username}, function(err, user){
 	    		res.render('user/contactUser.jade', {user: user});
@@ -104,10 +104,10 @@ app.get('/contactUser', function(req, res){
 //run a search using the given parameters
 app.post('/search', function(req, res){
 
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {	
 			var scientist = (req.body.profession == 'scientist') ? true : false;
-console.log(req.body)
+
 	    	collection.find( {	scientist: scientist,
 	    						//for checkbox groups, blank === match anything
 	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
@@ -150,7 +150,7 @@ app.post('/logout', function(req, res){
 //register a new user
 app.post('/regUser', function(req, res){
 
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -189,7 +189,7 @@ app.post('/regUser', function(req, res){
 app.post('/newUser', function(req, res){
 
 	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 			//find the user
@@ -222,7 +222,7 @@ app.post('/newUser', function(req, res){
 app.post('/createUser', function(req, res){
 
 	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 			//find the user
@@ -249,7 +249,7 @@ app.post('/createUser', function(req, res){
 		    						{$set:{	discipline : req.body.discipline, language : req.body.language,uName : req.body.uName}},
 		    						function(){
 		    							//update the latest dev / scientist for frontpage:
-		    							mongo.Db.connect(mongoUri, function(err, db) {
+		    							connect(function(err, db) {
 											db.collection('SiteCache', function(er, params) {
 												if(req.user.scientist)
 													params.update({name: 'MostRecentCache'}, {$set:{mostRecentScientist : req.user}}, function(){return res.redirect('/userMatches?page=0');});
@@ -267,7 +267,7 @@ app.post('/createUser', function(req, res){
 app.post('/updateUser', function(req, res){
 
 	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 			//find the user
@@ -307,7 +307,7 @@ app.post('/updateUser', function(req, res){
 app.post('/emailNewPassword', function(req, res){
 
 	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 			//find the user
@@ -350,7 +350,7 @@ app.post('/emailNewPassword', function(req, res){
 //validate and register the new password
 app.post('/updatePassword', function(req, res){
 
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		    	if(err) return res.render('utilityPages/error.jade');
@@ -375,7 +375,7 @@ app.post('/updatePassword', function(req, res){
 app.post('/deleteProfile', function(req, res){
 
 	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 			//find the user
@@ -398,7 +398,7 @@ app.post('/deleteProfile', function(req, res){
 //send an email to the user indicated by _id, and the initiating user
 app.post('/sendEmail', function(req, res){
 	//open link to the database
-	mongo.Db.connect(mongoUri, function(err, db) {
+	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 
 			//find the user to get their email - this way email is never exposed in the browser

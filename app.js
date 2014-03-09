@@ -5,10 +5,14 @@
 express = require("express");		// route-a-ma-jigs
 app = express();					// init app obj
 
+/*
 mongo = require('mongodb'); 		// database
 mongoUri = process.env.MONGOLAB_URI 
 	|| process.env.MONGOHQ_URL 
-	|| 'mongodb://heroku_app20467917:j5f8u413gre79i0o24km87ut0b@ds059898.mongolab.com:59898/heroku_app20467917';
+	|| 'mongodb://127.0.0.1:27017/test';
+*/
+MongoClient = require('mongodb').MongoClient;           // database client
+database = null;                                        //going to populate this with a persistent db connection
 
 passport = require('passport');		// user authentication
 LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the internet said to do this. - Bill
@@ -21,6 +25,9 @@ mail = require("nodemailer").mail;	// handles sending mail from the server side 
 searchBuffer = {}; 					// namespace to hold user searches
 matchBuffer = {}; 					// namespace to hold user matches
 require('./options.js');			// all the arrays of profile options - TODO name this file something more specific
+
+mongoHelpers = require('./mongoHelpers.js');                    //helper functions for interacting with mongo
+connect = mongoHelpers.connect;
 
 // setup the app
 app.set('views', __dirname + '/views');
@@ -41,7 +48,7 @@ require('./routes.js');
 // configure the passport authentication
 passport.use(new LocalStrategy(
     function(username, password, done) {
-		mongo.Db.connect(mongoUri, function(err, db) {
+		connect(function(err, db) {
 			db.collection('Users', function(er, collection) {
 			    collection.findOne({ uName: username }, function(err, user) {
 			    	if (err) return res.render('error.jade');
