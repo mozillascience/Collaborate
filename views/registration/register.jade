@@ -1,25 +1,25 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/footer.jade
-    
-
-  body
-    div.wrapper
-      
-      h1 Register New User
-
-      p= registerMessage
-      form(method='post', action='/regUser')
-        label E-mail
-        input(type='email' name='email')
-        label Pass
-        input(type='password' name='pass')
-        label Re-Pass
-        input(type='password' name='repass')
-        input(type='submit' value='Register User')
-
-      div.push
-
-    +footer()
+    +head() 
+  body.vanilla  
+    div.page-wrapper
+      +header()
+      section
+        div.content-wrapper
+          div.content
+            h2 Register
+            p= registerMessage
+            form(method='post', action='/regUser')
+              label E-mail
+              input(type='email' name='email')
+              label Pass
+              input(type='password' name='pass')
+              label Re-Pass
+              input(type='password' name='repass')
+              input(type='submit' value='Register User')
+      +footer()
