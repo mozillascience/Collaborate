@@ -15,7 +15,7 @@ app.get('/login', function(req, res) {
 	if(req.query.loginError == 1)
 		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
 
-	res.render('login.jade', {loginMessage: loginError})
+	res.render('auth/login.jade', {loginMessage: loginError})
 });
 
 //show registration page
@@ -27,20 +27,20 @@ app.get('/register', function(req, res){
 	if(req.query.registerError == 2)
 		registerError = "Passwords don't match - try again!"
 
-	res.render('register.jade', {registerMessage: registerError});
+	res.render('registration/register.jade', {registerMessage: registerError});
 });
 
 //show page to set up a new user profile
 app.get('/setupNewUser', function(req, res){
 
-	res.render('chooseClass.jade', {});
+	res.render('registration/chooseClass.jade', {});
 
 });
 
 //show a page of search results
 app.get('/searchResults', function(req, res){
 
-	res.render('searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
+	res.render('search/searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
 										page: req.query.page, 
 										nPages: Math.ceil(searchBuffer[req.user['_id']].length/10), 
 										hasContacted: req.user.hasContacted} );
@@ -49,7 +49,7 @@ app.get('/searchResults', function(req, res){
 //user profile page
 app.get('/userProfile', function(req, res){
 
-	res.render('userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
+	res.render('user/userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
 
 });
 
@@ -60,7 +60,7 @@ app.get('/userMatches', function(req, res){
 		db.collection('Users', function(er, collection) {	    	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
 	    		matchBuffer[req.user['_id']] = matches;
-	    		res.render('userMatches.jade', {match: matches, 
+	    		res.render('user/userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
 	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
 	    										hasContacted: req.user.hasContacted});
@@ -73,7 +73,7 @@ app.get('/userMatches', function(req, res){
 //search page
 app.get('/userSearch', function(req, res){
 
-	res.render('userSearch.jade', {languages: languages, disciplines: disciplines});
+	res.render('search/userSearch.jade', {languages: languages, disciplines: disciplines});
 
 });
 
@@ -83,7 +83,7 @@ app.get('/viewProfile', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {uName: req.query.userID}, function(err, user){
-	    		res.render('readonlyProfile.jade', {user: user});
+	    		res.render('user/profile.jade', {user: user});
 	    	});
 		});
 	});
@@ -95,7 +95,7 @@ app.get('/contactUser', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {uName: req.query.username}, function(err, user){
-	    		res.render('contactUser.jade', {user: user});
+	    		res.render('user/contactUser.jade', {user: user});
 	    	});
 		});
 	});
@@ -123,14 +123,14 @@ console.log(req.body)
 //go to the change password form
 app.get('/changePasswordForm', function(req, res){
 
-	return res.render('changePassword.jade');
+	return res.render('user/changePassword.jade');
 
 });
 
 //go to the password recovery page
 app.get('/forgotPass', function(req, res){
 
-	res.render('recoverPassword.jade');
+	res.render('auth/recoverPassword.jade');
 
 });
 
@@ -195,7 +195,7 @@ app.post('/newUser', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.render('utilityPages/error.jade');
 
                 //update the local user object
                 req.user.scientist = !!req.body.scientist;
@@ -211,7 +211,7 @@ app.post('/newUser', function(req, res){
 		    							}
 		    						}, 
 		    						function(){
-										  return res.render('setupUser.jade', {user: req.user, disciplines: disciplines, languages: languages});
+										  return res.render('userCreation/setupUser.jade', {user: req.user, disciplines: disciplines, languages: languages});
 		    						});
 			});
 		});
@@ -228,7 +228,7 @@ app.post('/createUser', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.render('utilityPages/error.jade');
 
 
 		    	//update the local user object
@@ -238,10 +238,10 @@ app.post('/createUser', function(req, res){
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline){
-	    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			return res.render('userCreation/setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 	    		}
 	    		if(!req.body.language){
-	    			return res.render('setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			return res.render('userCreation/setupUser.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
 		    	//update the DB and carry on to main user pages
@@ -273,7 +273,7 @@ app.post('/updateUser', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.render('utilityPages/error.jade');
 
 		    	//update the local user object
 		    	req.user.discipline = req.body.discipline || req.user.discipline;
@@ -282,10 +282,10 @@ app.post('/updateUser', function(req, res){
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline){
-	    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			return res.render('internalPages/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 	    		}
 	    		if(!req.body.language){
-	    			return res.render('userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			return res.render('internalPages/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
 		    	//update the DB and carry on to main user pages
@@ -314,19 +314,19 @@ app.post('/emailNewPassword', function(req, res){
 			collection.findOne({ uName: req.body.username }, function(err, user){
 				var newPass;
 
-		    	if (err) return res.render('error.jade');
+		    	if (err) return res.render('utilityPages/error.jade');
 		    	if (!user)
-		    		return res.render('error.jade');
+		    		return res.render('utilityPages/error.jade');
 
 		    	//generate a new password, bunch of random characters
 		    	newPass = (Math.random() + 1).toString(36);
 
 			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-			    	if(err) return res.render('error.jade');
+			    	if(err) return res.render('utilityPages/error.jade');
 
 				        // hash the password along with our new salt:
 				        bcrypt.hash(newPass, salt, function(err, hash) {
-				        	if(err) return res.render('error.jade');
+				        	if(err) return res.render('utilityPages/error.jade');
 
 				        	//update db
 				        	collection.update({uName : user.uName}, {$set:{Pass : hash}}, function(){});
@@ -353,13 +353,13 @@ app.post('/updatePassword', function(req, res){
 	mongo.Db.connect(mongoUri, function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.render('error.jade');
+		    	if(err) return res.render('utilityPages/error.jade');
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade');
+		    	if(req.body.pass != req.body.repass) return res.render('utilityPages/changePassword.jade');
 
 		        // hash the password along with our new salt:
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-		        	if(err) return res.render('error.jade');
+		        	if(err) return res.render('utilityPages/error.jade');
 
 	        		//register new password in the db:
 	        		collection.update({uName : req.user.uName}, {$set:{Pass : hash}}, function(){
@@ -381,7 +381,7 @@ app.post('/deleteProfile', function(req, res){
 			//find the user
 			collection.findOne({ uName: req.user.uName }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.render('utilityPages/error.jade');
 
 		    	//logout
 		    	req.logout();
