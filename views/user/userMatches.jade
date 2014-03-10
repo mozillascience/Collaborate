@@ -16,20 +16,20 @@ html
       section
         div.content-wrapper
 
-        +internalHeader('My Matches')
+          +internalHeader('My Matches')
 
-        - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
-          +userStub(match[i].uName, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline)
-        - }
-
-        - if(match.length == 0) {
-            p No matches... YET
-        - } 
-
-        -if(match.length > 10)
-          h3 more matches
-          - for(var j=0; j<Math.ceil(match.length/10); j++ ){
-            a(href='/userMatches?page='+j) Page #{j}
+          - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
+            +userStub(match[i].uName, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline)
           - }
+
+          - if(match.length == 0) {
+              p No matches... YET
+          - } 
+
+          -if(match.length > 10)
+            h3 more matches
+            - for(var j=0; j<Math.ceil(match.length/10); j++ ){
+              a(href='/userMatches?page='+j) Page #{j}
+            - }
 
       +footer()
