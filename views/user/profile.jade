@@ -1,25 +1,28 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+include ../partials/internalHeader.jade
+
 doctype html5
 html
-
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/internalHeader.jade
-    include ../partials/footer.jade
+    +head()
+    
+  body.vanilla
+    div.page-wrapper
+      +header()
+      
+      section
+        div.content-wrapper
+          +internalHeader('User Profile')
 
-  body
-    div.wrapper
+          h1 #{user.uName} Profile
 
-      +internalHeader('User Profile')
+          form(method='get', action='contactUser').pure-form
+            button(value=user.uName, name='username').pure-button.pure-button-primary Contact #{user.uName}
 
-      h1 #{user.uName} Profile
+          p= user.uName
+          p= user.discipline
+          p= user.language
 
-      form(method='get', action='contactUser')
-        button(value=user.uName, name='username') Contact #{user.uName}
-
-      p= user.uName
-      p= user.discipline
-      p= user.language
-
-      div.push
-
-    +footer()
+      +footer()

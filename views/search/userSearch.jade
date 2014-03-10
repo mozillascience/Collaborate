@@ -1,48 +1,40 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+include ../partials/internalHeader.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/internalHeader.jade
-    include ../partials/footer.jade
+    +head()
     
-
-  body
-    div.wrapper
+  body.vanilla
+    div.page-wrapper
+      +header()
       
-      +internalHeader('Search')
+      section
+        div.content-wrapper      
+          +internalHeader('Search')
 
-      form(method='post', action='search')
-        label Profession
-        input(type='radio', name='profession', value='scientist' required)
-        label Scientist
-        br
-        input(type='radio', name='profession', value='developer' required)
-        label Developer
-        br
-        br
+          form(method='post', action='search').pure-form.pure-form-stacked
+            label Profession
+            label(for='Scientist').pure-radio Scientist
+              input(type='radio', name='profession', value='scientist', id='Scientist', required)
+            label(for='Developer').pure-radio Developer
+              input(type='radio', name='profession', value='developer', id='Developer', required)
 
-        label Discipline
-        br
-        - for(var i=0; i<disciplines.length; i++){
-          input(type='checkbox', name='discipline[]', value=disciplines[i] )
-          label= disciplines[i]
-          br
-        - }
-        br
-        br
+            label Discipline
+            - for(var i=0; i<disciplines.length; i++){
+              label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] )
+            - }
 
-        label Language
-        br
-        - for(i=0; i<languages.length; i++){
-          input(type='checkbox', name='language[]', value=languages[i] )
-          label= languages[i]
-          br
-        - }
-        br
-        br
+            label Language
+            - for(i=0; i<languages.length; i++){
+              label(for=languages[i]).pure-checkbox= languages[i]
+                input(type='checkbox', name='language[]', value=languages[i], id=languages[i] )
+            - }
 
-        input(type='submit', value='Search Users')
+            input(type='submit', value='Search Users').pure-button.pure-button-primary
 
-      div.push
-
-    +footer()
+      +footer()

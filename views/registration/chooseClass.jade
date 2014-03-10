@@ -1,24 +1,27 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/footer.jade
+    +head()
 
+  body.vanilla
+    div.page-wrapper
+      +header()
 
-  body
-    div.wrapper
+      section
+        div.content-wrapper
+          h1 Are you a Scientist or a Software Developer?
 
-      h1 Are you a Scientist or a Software Developer?
+          form(method='post', action='newUser').pure-form.pure-form-stacked
+            input(type='checkbox', name='scientist', checked=true, style='display:none')
+            input(type='submit', value='Scientist').pure-button.pure-button-primary
 
-      form(method='post', action='newUser')
-        input(type='checkbox', name='scientist', checked=true, style='display:none')
-        input(type='submit', value='Scientist')
+          form(method='post', action='newUser').pure-form.pure-form-stacked
+            input(type='checkbox', name='scientist', checked=false, style='display:none')
+            input(type='submit', value='Developer').pure-button.pure-button-primary    
 
-      form(method='post', action='newUser')
-        input(type='checkbox', name='scientist', checked=false, style='display:none')
-        input(type='submit', value='Developer')
-
-      div.push
-
-    +footer()
+      +footer()
 

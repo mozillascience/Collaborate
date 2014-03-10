@@ -1,83 +1,84 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/footer.jade
+    +head()
     
-
-  body
-    div.wrapper
+  body.vanilla
+    div.page-wrapper
+      +header()
       
-      h1= user.email
+      section
+        div.content-wrapper
+          h1= user.email
 
-      form(method='post' action='createUser')
-        if user.scientist
-          if disciplineError
-            p= disciplineError
-          label What is your discipline?
-          br
-          - for(var i=0; i<disciplines.length; i++){
-            if user.discipline
-              - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-            else
-              - var check = false
-            input(type='checkbox', name='discipline[]', value=disciplines[i] checked = check)
-            label= disciplines[i]
-            br
-          - }
-          br
+          form(method='post' action='createUser').pure-form.pure-form-stacked
+            fieldset
+              if user.scientist
+                if disciplineError
+                  p= disciplineError
+                label What is your discipline?
+                - for(var i=0; i<disciplines.length; i++){
+                  if user.discipline
+                    - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                  else
+                    - var check = false
+                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                    input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] checked = check)
+                - }
 
-          if languageError
-            p= languageError
-          label What language would you like to work in?
-          br
-          - for(i=0; i<languages.length; i++){
-            if user.language
-              - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-            else
-              - var check = false
-            input(type='checkbox', name='language[]', value=languages[i], checked = check)
-            label= languages[i]
-            br
-          - }
-          br
+                if languageError
+                  p= languageError
+                label What language would you like to work in?
+                
+                - for(i=0; i<languages.length; i++){
+                  if user.language
+                    - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                  else
+                    - var check = false
+                  label(for=languages[i]).pure-checkbox= languages[i]
+                    input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked = check)
+                  
+                - }
+                
 
-        if user.developer
-          if languageError
-            p= languageError
-          label What languages are you comfortable with?
-          br
-          - for(i=0; i<languages.length; i++){
-            if user.language
-              - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-            else
-              - var check = false
-            input(type='checkbox', name='language[]', value=languages[i], checked = check)
-            label= languages[i]
-            br
-          - }
-          br
+              if user.developer
+                if languageError
+                  p= languageError
+                label What languages are you comfortable with?
+                
+                - for(i=0; i<languages.length; i++){
+                  if user.language
+                    - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                  else
+                    - var check = false
+                  label(for=languages[i]).pure-checkbox= languages[i]
+                    input(type='checkbox', name='language[]', value=languages[i], id='languages[i]', checked = check)
+                  
+                - }
+                
 
-          if disciplineError
-            p= disciplineError
-          label What sciences interest you?
-          br
-          - for(var i=0; i<disciplines.length; i++){
-            if user.discipline
-              - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-            else
-              - var check = false
-            input(type='checkbox', name='discipline[]', value=disciplines[i] checked = check)
-            label= disciplines[i]
-            br
-          - }
-          br
+                if disciplineError
+                  p= disciplineError
+                label What sciences interest you?
+                
+                - for(var i=0; i<disciplines.length; i++){
+                  if user.discipline
+                    - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                  else
+                    - var check = false
+                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                    input(type='checkbox', name='discipline[]', value=disciplines[i], id='disciplines[i]', checked = check)
+                  
+                - }
+                
 
-        label user name
-        input(type='text', name='uName' value=user.uName required)
+              label user name
+              input(type='text', name='uName' value=user.uName required)
 
-        input(type='submit', value='Update Profile')
+              input(type='submit', value='Update Profile').pure-button.pure-button-primary
 
-      div.push()
-
-    +footer()
+      +footer()
