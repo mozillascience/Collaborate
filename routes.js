@@ -20,14 +20,7 @@ app.get('/login', function(req, res) {
 
 //show registration page
 app.get('/register', function(req, res){
-	var registerError = null;
-
-	if(req.query.registerError == 1)
-		registerError = 'There is already a user registered at that address.  Did you forget your password?';
-	if(req.query.registerError == 2)
-		registerError = "Passwords don't match - try again!"
-
-	res.render('registration/register.jade', {registerMessage: registerError});
+	res.render('registration/register.jade', {disciplines: disciplines, languages: languages});
 });
 
 //show page to set up a new user profile
@@ -167,7 +160,15 @@ app.post('/regUser', function(req, res){
 			        	if(err) return res.render('error.jade');
 
 		        		//register new user in the db:
-						collection.insert({'email': req.body.email, 'Pass': hash}, {safe: true}, function(err,res) {});
+						collection.insert({	'uName':req.body.uName, 
+											'email': req.body.email, 
+											'Pass': hash,
+											'scientist': req.body.profession,
+											'developer': req.body.profession,
+											'hasContacted': [],
+											'discipline': req.body.discipline,
+											'language': req.body.language 
+										}, {safe: true}, function(err,res) {});
 
 						//log the new user in:
 						collection.findOne({email: req.body.email}, function(err, user){
@@ -175,7 +176,7 @@ app.post('/regUser', function(req, res){
 
 							req.login(user, function(err) {
 							  if (err) return res.render('error.jade');
-							  return res.redirect('/setupNewUser');
+							  return res.redirect('/userMatches?page=0');;
 							});
 						});
 			        });
@@ -184,7 +185,7 @@ app.post('/regUser', function(req, res){
 		});
 	});
 });
-
+/*
 //register user and go to setup page
 app.post('/newUser', function(req, res){
 
@@ -230,7 +231,6 @@ app.post('/createUser', function(req, res){
 
 		    	if (err || !user) return res.render('utilityPages/error.jade');
 
-
 		    	//update the local user object
 		    	req.user.discipline = req.body.discipline;
 		    	req.user.language = req.body.language
@@ -262,7 +262,7 @@ app.post('/createUser', function(req, res){
 		});
 	});	
 });
-
+*/
 //update a user's profile
 app.post('/updateUser', function(req, res){
 

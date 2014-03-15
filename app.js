@@ -51,12 +51,12 @@ passport.use(new LocalStrategy(
 		connect(function(err, db) {
 			db.collection('Users', function(er, collection) {
 			    collection.findOne({ uName: username }, function(err, user) {
-			    	if (err) return res.render('error.jade');
+			    	//if (err) return res.render('error.jade');
 			    	if (!user) {
 			    		return done(null, false, { message: 'Incorrect username.' });
 			    	}
 				    bcrypt.compare(password, user.Pass, function(err, isMatch) {
-				        if (err) res.render('error.jade');
+				        //if (err) res.render('error.jade');
 				        if(isMatch)
 					        return done(null, user)
 					    else
