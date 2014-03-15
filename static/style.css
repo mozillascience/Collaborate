@@ -1380,6 +1380,11 @@ div#registrationDetails{
   transition: opacity 0.3s, max-height 0.3s ease; 
 }
 
+p#passError, p#disciplineError, p#languageError{
+  display:none;
+  background-color: #FF9999;
+}
+
 /*
  * Media Queries
  */

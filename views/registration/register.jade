@@ -14,16 +14,17 @@ html
           div.content
             h2 Register
             p= registerMessage
-            form(method='post', action='/regUser').pure-form.pure-form-stacked
+            form(method='post', action='/regUser', onsubmit='return signupValidation()').pure-form.pure-form-stacked
               fieldset
 
                 div#credentials
                   label E-mail
-                  input(type='email' name='email')
+                  input(type='email' name='email' required)
+                  p(id='passError') Passwords don't match!
                   label Pass
-                  input(type='password' name='pass')
+                  input(id='pass' type='password' name='pass')
                   label Re-Pass
-                  input(type='password' name='repass')
+                  input(id='repass' type='password' name='repass')
 
                 div#profession
                   h3 Are you a Scientist or a Developer?
@@ -33,6 +34,7 @@ html
                     input(id='software' type='radio' name='profession' value='developer' onclick='manageSignupForm()')
 
                 div#registrationDetails
+                  p(id='disciplineError') Please choose at least one discipline.
                   label#disciplineText What is your discipline?
                   - for(var i=0; i<disciplines.length; i++){
                     //if user.discipline
@@ -44,8 +46,8 @@ html
                       input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] checked = check)
                   - }
 
+                  p(id='languageError') Please choose at least one language.
                   label#languageText What language would you like to work in?
-                  
                   - for(i=0; i<languages.length; i++){
                     //if user.language
                     //  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
@@ -59,7 +61,7 @@ html
                   label user name
                   input(type='text', name='uName' required)
 
-                  input(type='submit', value='Update Profile').pure-button.pure-button-primary
+                  input(type='submit', value='Create Profile').pure-button.pure-button-primary
 
 
       +footer()

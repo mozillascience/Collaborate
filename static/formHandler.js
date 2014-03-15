@@ -23,3 +23,57 @@ function manageSignupForm(){
 		languageText.innerHTML = 'What languages are you comfortable working in?'
 	}
 } 
+
+//validate the signup form before submission
+function signupValidation(){
+	var allOK = true
+	,	pass = document.getElementById('pass')
+	,	repass = document.getElementById('repass')
+	,	disciplines = document.querySelectorAll('input[name="discipline[]"]')
+	,	disciplineChosen = false
+	,	languages = document.querySelectorAll('input[name="language[]"]')
+	,	languageChosen = false
+	,	passError = document.getElementById('passError')
+	,	disciplineError = document.getElementById('disciplineError')
+	, 	languageError = document.getElementById('languageError')
+
+	//demand password match
+	if(pass.value != repass.value){
+		console.log([pass, repass])
+		allOK = false;
+		pass.style.border = '2px solid #FF0000';
+		repass.style.border = '2px solid #FF0000';
+		passError.style.display = 'block';
+	} else {
+		pass.style.border = ''
+		repass.style.border = ''
+		passError.style.display = 'none';
+	}
+
+	//demand at least one member of each checkbox group is checked
+	[].forEach.call(disciplines, function(discipline){
+		disciplineChosen = disciplineChosen || discipline.checked;
+	});
+	if(!disciplineChosen){
+		allOK = false;
+		disciplineError.style.display = 'block';
+	} else {
+		disciplineError.style.display = 'none';
+	}
+
+	[].forEach.call(languages, function(language){
+		languageChosen = languageChosen || language.checked;
+	});
+	if(!languageChosen){
+		allOK = false;
+		languageError.style.display = 'block';
+	} else {
+		languageError.style.display = 'none';
+	}
+
+	//return to top of form if mistakes present
+	if(!allOK)
+		document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+	return allOK;
+}
