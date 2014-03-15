@@ -1385,6 +1385,10 @@ p#passError, p#disciplineError, p#languageError{
   background-color: #FF9999;
 }
 
+p#emailError{
+  background-color: #FF9999;
+}
+
 /*
  * Media Queries
  */

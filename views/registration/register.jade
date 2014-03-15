@@ -19,6 +19,8 @@ html
 
                 div#credentials
                   label E-mail
+                  if emailError
+                    p(id='emailError') That email adress is already taken.
                   input(type='email' name='email' required)
                   p(id='passError') Passwords don't match!
                   label Pass

@@ -75,5 +75,8 @@ function signupValidation(){
 	if(!allOK)
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 
+	//turn off email error - server will turn it back on if necessary
+	document.getElementById('emailError').style.display = 'none';
+
 	return allOK;
 }
