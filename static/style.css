@@ -1386,7 +1386,7 @@ p#passError, p#disciplineError, p#languageError{
   color: #000000;
 }
 
-p#emailError{
+p#emailError, p.errorBanner{
   background-color: #FF9999;
   color: #000000;
 }

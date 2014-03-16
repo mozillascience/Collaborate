@@ -201,21 +201,25 @@ app.post('/updateUser', function(req, res){
 		    	if (err || !user) return res.render('utilityPages/error.jade');
 
 		    	//update the local user object
+		    	req.user.scientist = req.body.profession=='scientist';
+		    	req.user.developer = req.body.profession=='developer';
 		    	req.user.discipline = req.body.discipline || req.user.discipline;
 		    	req.user.language = req.body.language || req.user.language;
 		    	req.user.email = req.body.email;
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline){
-	    			return res.render('internalPages/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 	    		}
 	    		if(!req.body.language){
-	    			return res.render('internalPages/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
 		    	//update the DB and carry on to main user pages
 		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{	discipline : req.body.discipline, 
+		    						{$set:{	scientist : req.body.scientist,
+		    								developer : req.body.developer,
+		    								discipline : req.body.discipline, 
 		    								language : req.body.language,
 		    								email : req.body.email}
 		    						},
