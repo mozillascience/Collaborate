@@ -14,63 +14,73 @@ html
       
       section
         div.content-wrapper
-          +internalHeader('My Profile')
+          +internalHeader()
+
+          h1= user.uName
 
           form(method='post' action='updateUser').pure-form.pure-form-stacked
-            if user.scientist
-              if disciplineError
-                p= disciplineError
-              label What is your discipline?
-              
-              - for(var i=0; i<disciplines.length; i++){
-                - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-                label(for=disciplines[i]).pure-checkbox= disciplines[i]
-                   input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
+            fieldset
+
+              label What is your profession? 
+              label(for='science').pure-radio= 'Scientist'
+                input(id='science' type='radio' name='profession' value='scientist' checked = user.scientist)
+              label(for='software').pure-radio= 'Developer'
+                input(id='software' type='radio' name='profession' value='developer' checked = user.developer)
+
+              if user.scientist
+                if disciplineError
+                  p= disciplineError
+                label What is your discipline?
                 
-              - }
-              
-
-              if languageError
-                p= languageError
-              label What language would you like to work in?
-              
-              - for(i=0; i<languages.length; i++){
-                - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-                label(for=languages[i]).pure-checkbox= languages[i]
-                  input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
+                - for(var i=0; i<disciplines.length; i++){
+                  - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                     input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
+                  
+                - }
                 
-              - }
-              
 
-
-            if user.developer
-              if languageError
-                p= languageError
-              label What languages are you comfortable with?
-              
-              - for(i=0; i<languages.length; i++){
-                - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-                label(for=languages[i]).pure-checkbox= languages[i]
-                  input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
+                if languageError
+                  p= languageError
+                label What language would you like to work in?
                 
-              - }
-              
-
-              if disciplineError
-                p= disciplineError
-              label What sciences interest you?
-              
-              - for(i=0; i<disciplines.length; i++){
-                - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-                label(for=disciplines[i]).pure-checkbox= disciplines[i]
-                  input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
+                - for(i=0; i<languages.length; i++){
+                  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                  label(for=languages[i]).pure-checkbox= languages[i]
+                    input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
+                  
+                - }
                 
-              - }
-              
-            label email
-            input(type='email', name='email', value=user.email required)
 
-            input(type='submit', value='Update Profile').pure-button.pure-button-primary
+
+              if user.developer
+                if languageError
+                  p= languageError
+                label What languages are you comfortable with?
+                
+                - for(i=0; i<languages.length; i++){
+                  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                  label(for=languages[i]).pure-checkbox= languages[i]
+                    input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
+                  
+                - }
+                
+
+                if disciplineError
+                  p= disciplineError
+                label What sciences interest you?
+                
+                - for(i=0; i<disciplines.length; i++){
+                  - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                    input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
+                  
+                - }
+                
+              label email
+              input(type='email', name='email', value=user.email required)
+
+              input(type='submit', value='Update Profile').pure-button.pure-button-primary
 
           form(method='get', action='changePasswordForm').pure-form
             input(type='submit', value='Change Password').pure-button

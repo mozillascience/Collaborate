@@ -1,9 +1,6 @@
 mixin internalHeader(title)
   div.pure-menu.pure-menu-open.pure-menu-horizontal
 
-    //-
-      h1= title
-
     ul
       li
         a(href='/userMatches?page=0') Matches
@@ -13,14 +10,5 @@ mixin internalHeader(title)
         a(href='/userSearch') Search
 
     //-
-      form(method='get', action='userMatches').pure-form
-        button(value=0, name='page').pure-button.pure-button-primary My Matches
-
-      form(method='get', action='userProfile').pure-form
-        button(value=0, name='page').pure-button.pure-button-primary My Profile
-
-      form(method='get', action='userSearch').pure-form
-        button(value=0, name='page').pure-button.pure-button-primary Search
-
       form(method='post', action='logout').pure-form
         button(value=0, name='page').pure-button.pure-button-primary Logout

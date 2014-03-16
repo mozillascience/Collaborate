@@ -47,13 +47,13 @@ require('./routes.js');
 
 // configure the passport authentication
 passport.use(new LocalStrategy(
-    function(username, password, done) {
+    function(email, password, done) {
 		connect(function(err, db) {
 			db.collection('Users', function(er, collection) {
-			    collection.findOne({ uName: username }, function(err, user) {
+			    collection.findOne({ email: email }, function(err, user) {
 			    	//if (err) return res.render('error.jade');
 			    	if (!user) {
-			    		return done(null, false, { message: 'Incorrect username.' });
+			    		return done(null, false, { message: 'Email not found.' });
 			    	}
 				    bcrypt.compare(password, user.Pass, function(err, isMatch) {
 				        //if (err) res.render('error.jade');
