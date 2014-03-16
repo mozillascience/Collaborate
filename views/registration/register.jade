@@ -20,7 +20,7 @@ html
                 div#credentials
                   label E-mail
                   if emailError
-                    p(id='emailError') That email adress is already taken.
+                    p(id='emailError') That email address is already taken.
                   input(type='email' name='email' required)
                   p(id='passError') Passwords don't match!
                   label Pass
@@ -30,20 +30,22 @@ html
 
                 div#profession
                   h3 Are you a Scientist or a Developer?
+                  - var scientist = user.profession=='scientist'
+                  - var developer = user.profession=='developer' 
                   label(for='science').pure-radio= 'Scientist'
-                    input(id='science' type='radio' name='profession' value='scientist' onclick='manageSignupForm()')
+                    input(id='science' type='radio' name='profession' value='scientist' onclick='manageSignupForm()' checked = scientist)
                   label(for='software').pure-radio= 'Developer'
-                    input(id='software' type='radio' name='profession' value='developer' onclick='manageSignupForm()')
+                    input(id='software' type='radio' name='profession' value='developer' onclick='manageSignupForm()' checked = developer)
 
-                div#registrationDetails
+                - var opacity = (scientist || developer) ? 'opacity: 1; max-height:2000px' : ''
+                div#registrationDetails(style = opacity)
                   p(id='disciplineError') Please choose at least one discipline.
                   label#disciplineText What is your discipline?
                   - for(var i=0; i<disciplines.length; i++){
-                    //if user.discipline
-                    //  - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-                    //else
-                    //  - var check = false
-                    - var check = false
+                    if user.discipline
+                      - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                    else
+                      - var check = false
                     label(for=disciplines[i]).pure-checkbox= disciplines[i]
                       input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] checked = check)
                   - }
@@ -51,17 +53,16 @@ html
                   p(id='languageError') Please choose at least one language.
                   label#languageText What language would you like to work in?
                   - for(i=0; i<languages.length; i++){
-                    //if user.language
-                    //  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-                    //else
-                    //  - var check = false
-                    - var check = false
+                    if user.language
+                      - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                    else
+                      - var check = false
                     label(for=languages[i]).pure-checkbox= languages[i]
                       input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked = check)
                   - }
 
                   label user name
-                  input(type='text', name='uName' required)
+                  input(type='text', name='uName' value=user.name required)
 
                   input(type='submit', value='Create Profile').pure-button.pure-button-primary
 

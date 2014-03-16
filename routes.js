@@ -20,7 +20,7 @@ app.get('/login', function(req, res) {
 
 //show registration page
 app.get('/register', function(req, res){
-	res.render('registration/register.jade', {disciplines: disciplines, languages: languages});
+	res.render('registration/register.jade', {disciplines: disciplines, languages: languages, user:{}});
 });
 
 //show page to set up a new user profile
@@ -153,8 +153,10 @@ app.post('/regUser', function(req, res){
 	
 				//reject new account if email is already taken	    	
 		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
-		    		if(accounts.length != 0) res.render('registration/register.jade', {disciplines: disciplines, languages: languages, emailError: true});
-
+		    		if(accounts.length != 0){ 
+		    			res.render('registration/register.jade', {disciplines: disciplines, languages: languages, emailError: true, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
+		    			return;
+					}
 			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 			        	if(err) return res.render('error.jade');
@@ -163,8 +165,8 @@ app.post('/regUser', function(req, res){
 						collection.insert({	'uName':req.body.uName, 
 											'email': req.body.email, 
 											'Pass': hash,
-											'scientist': req.body.profession,
-											'developer': req.body.profession,
+											'scientist': req.body.profession == 'scientist',
+											'developer': req.body.profession == 'developer',
 											'hasContacted': [],
 											'discipline': req.body.discipline,
 											'language': req.body.language 

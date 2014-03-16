@@ -39,7 +39,6 @@ function signupValidation(){
 
 	//demand password match
 	if(pass.value != repass.value){
-		console.log([pass, repass])
 		allOK = false;
 		pass.style.border = '2px solid #FF0000';
 		repass.style.border = '2px solid #FF0000';
@@ -76,7 +75,8 @@ function signupValidation(){
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 
 	//turn off email error - server will turn it back on if necessary
-	document.getElementById('emailError').style.display = 'none';
+	if(document.getElementById('emailError'))
+		document.getElementById('emailError').style.display = 'none';
 
 	return allOK;
 }
