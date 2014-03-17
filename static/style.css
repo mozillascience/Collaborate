@@ -1280,6 +1280,9 @@ footer p{
     top: 0;
     left: 0;
     position: fixed !important;
+
+    background: url('img/headerImage.jpg');
+    background-size: cover;
 }
 
 .splash {
@@ -1297,8 +1300,8 @@ footer p{
 .splash-head {
     font-size: 20px;
     font-weight: bold;
-    color: black;
-    border: 3px solid black;
+    color: white;
+    border: 3px solid white;
     padding: 1em 1.6em;
     font-weight: 100;
     border-radius: 5px;
@@ -1307,9 +1310,9 @@ footer p{
 
 /* This is the subheading that appears on the blue section */
 .splash-subhead {
-    color: black;
+    color: white;
     letter-spacing: 0.05em;
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .content-wrapper {
@@ -1347,8 +1350,22 @@ footer p{
 
 /* This is the class used for the dark-background areas. */
 .ribbon {
+    /*
     background: #2d3e50;
     color: #aaa;
+    */
+    background: #16a085;
+    color: #222;
+}
+
+/* Bill wanted a three-color layout, here's a different ribbon */
+.ribbon-alt {
+    /*
+    background: #34495e;
+    color: #aaa;
+    */
+    background: #1abc9c;
+    color: #222;
 }
 
 /* Content Pages */
@@ -1389,6 +1406,11 @@ p#passError, p#disciplineError, p#languageError{
 p#emailError, p.errorBanner{
   background-color: #FF9999;
   color: #000000;
+}
+
+i.bigIcon{
+  color: #FFFFFF;
+  font-size: 1000%
 }
 
 /*
