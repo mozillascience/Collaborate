@@ -41,7 +41,6 @@ app.get('/searchResults', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
-
 	res.render('user/userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
 
 });
@@ -174,7 +173,8 @@ app.post('/regUser', function(req, res){
 											'developer': req.body.profession == 'developer',
 											'hasContacted': [],
 											'discipline': req.body.discipline,
-											'language': req.body.language 
+											'language': req.body.language,
+											'description': req.body.projectDescription
 										}, {safe: true}, function(err,res) {});
 
 						//log the new user in:
@@ -211,6 +211,7 @@ app.post('/updateUser', function(req, res){
 		    	req.user.discipline = req.body.discipline || req.user.discipline;
 		    	req.user.language = req.body.language || req.user.language;
 		    	req.user.email = req.body.email;
+		    	req.user.description = req.body.projectDescription;
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline){
@@ -226,7 +227,8 @@ app.post('/updateUser', function(req, res){
 		    								developer : req.body.developer,
 		    								discipline : req.body.discipline, 
 		    								language : req.body.language,
-		    								email : req.body.email}
+		    								email : req.body.email,
+		    								description: req.body.projectDescription}
 		    						},
 		    						function(){
 										return res.redirect('/userMatches?page=0');									

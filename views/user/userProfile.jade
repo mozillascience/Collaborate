@@ -80,6 +80,9 @@ html
               label email
               input(type='email', name='email', value=user.email required)
 
+              label#projectDescription Tell us about your project!
+              textarea(name='projectDescription' cols=50 rows=15 required)= user.description 
+
               input(type='submit', value='Update Profile').pure-button.pure-button-primary
 
           form(method='get', action='changePasswordForm').pure-form

@@ -16,13 +16,16 @@ html
         div.content-wrapper
           +internalHeader('User Profile')
 
-          h1 #{user.uName} Profile
+          h1 #{user.uName}'s Profile
 
           form(method='get', action='contactUser').pure-form
             button(value=user.uName, name='username').pure-button.pure-button-primary Contact #{user.uName}
 
-          p= user.uName
+          label Disciplines:
           p= user.discipline
+          label Languages:
           p= user.language
+          label Project Description:
+          p= user.description
 
       +footer()

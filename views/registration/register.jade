@@ -64,7 +64,10 @@ html
                       input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked = check)
                   - }
 
-                  label user name
+                  label#projectDescription Tell us a bit about your project!
+                  textarea(name='projectDescription' cols=50 rows=15 required)
+
+                  label User Name
                   input(type='text', name='uName' value=user.name required)
 
                   input(type='submit', value='Create Profile').pure-button.pure-button-primary
