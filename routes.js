@@ -71,10 +71,11 @@ app.get('/userSearch', function(req, res){
 
 //view another user's profile
 app.get('/viewProfile', function(req, res){
+	var objectId;
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
-	    	collection.findOne( {uName: req.query.userID}, function(err, user){
+	    	collection.findOne( {_id: ObjectID.createFromHexString(req.query.uniqueID)}, function(err, user){
 	    		res.render('user/profile.jade', {user: user});
 	    	});
 		});
@@ -86,7 +87,7 @@ app.get('/contactUser', function(req, res){
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
-	    	collection.findOne( {uName: req.query.username}, function(err, user){
+	    	collection.findOne( {_id: ObjectID.createFromHexString(req.query.uniqueID)}, function(err, user){
 	    		res.render('user/contactUser.jade', {user: user});
 	    	});
 		});
