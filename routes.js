@@ -140,6 +140,11 @@ app.post('/logout', function(req, res){
   res.redirect('/');
 });
 
+//show registration page with email filled in
+app.post('/register', function(req, res){
+	res.render('registration/register.jade', {disciplines: disciplines, languages: languages, user:{}, email: req.body.email});
+});
+
 //register a new user
 app.post('/regUser', function(req, res){
 

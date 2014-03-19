@@ -59,14 +59,10 @@ mixin splash
           h2.content-head.is-center Together We Can
           div.pure-g
             div.l-box-lrg.pure-u-1.pure-u-med-2-5
-              form.pure-form.pure-form-stacked
+              form(method='post' action='/register').pure-form.pure-form-stacked
                 fieldset
-                  label(for='email') Your Name
-                  input#email(type='text', placeholder='Your Name')
                   label(for='email') Your Email
-                  input#email(type='email', placeholder='Your Email')
-                  label(for='password') Your Password
-                  input#password(type='password', placeholder='Your Password')
+                  input#email(type='email', name='email' placeholder='Your Email')
                   button.pure-button(type='submit') Sign Up
             div.l-box-lrg.pure-u-1.pure-u-med-3-5
               h4 Contact Us

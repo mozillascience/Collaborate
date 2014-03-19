@@ -21,7 +21,10 @@ html
                   label E-mail
                   if emailError
                     p(id='emailError') That email address is already taken.
-                  input(type='email' name='email' required)
+                  if email
+                    input(type='email' name='email' value=email required)
+                  else
+                    input(type='email' name='email' required)
                   p(id='passError') Passwords don't match!
                   label Pass
                   input(id='pass' type='password' name='pass')
