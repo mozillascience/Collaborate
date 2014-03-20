@@ -320,7 +320,7 @@ app.post('/updatePassword', function(req, res){
 		        	if(err) return res.render('error.jade');
 
 	        		//register new password in the db:
-	        		collection.update({uName : req.user.uName}, {$set:{Pass : hash}}, function(){
+	        		collection.update({email : req.user.email}, {$set:{Pass : hash}}, function(){
 	        			return res.redirect('/userMatches?page=0');
 	        		});
 		        });
@@ -361,7 +361,7 @@ app.post('/sendEmail', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user to get their email - this way email is never exposed in the browser
-			collection.findOne({ uName: req.body.uName }, function(err, user){
+			collection.findOne({ _id: ObjectID.createFromHexString(req.body.uniqueID) }, function(err, user){
 
 				//send the mail
 				mail({
@@ -372,9 +372,9 @@ app.post('/sendEmail', function(req, res){
 				});
 
 				//make a note in the initiating user's database that they've now contacted this user
-				collection.findOne({uName: req.user.uName}, function(err, user){
-			    	collection.update(	{uName : user.uName}, 
-			    						{$addToSet:{hasContacted : req.body.uName} }, 
+				collection.findOne({_id: ObjectID.createFromHexString(req.user._id+'')}, function(err, user){
+			    	collection.update(	{email : user.email}, 
+			    						{$addToSet:{hasContacted : req.body.uniqueID} }, 
 			    						function(){
 											return res.redirect('/userMatches?page=0');									
 			    						});
