@@ -71,7 +71,6 @@ app.get('/userSearch', function(req, res){
 
 //view another user's profile
 app.get('/viewProfile', function(req, res){
-	var objectId;
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
@@ -204,14 +203,13 @@ app.post('/updateUser', function(req, res){
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('utilityPages/error.jade');
+		    	if (err || !user) return res.render('error.jade');
 
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
 		    	req.user.developer = req.body.profession=='developer';
 		    	req.user.discipline = req.body.discipline || req.user.discipline;
 		    	req.user.language = req.body.language || req.user.language;
-		    	req.user.email = req.body.email;
 		    	req.user.description = req.body.projectDescription;
 
 	    		//insist all fields have at least one option selected
@@ -222,18 +220,29 @@ app.post('/updateUser', function(req, res){
 	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
-		    	//update the DB and carry on to main user pages
-		    	collection.update(	{uName : user.uName}, 
-		    						{$set:{	scientist : req.body.scientist,
-		    								developer : req.body.developer,
-		    								discipline : req.body.discipline, 
-		    								language : req.body.language,
-		    								email : req.body.email,
-		    								description: req.body.projectDescription}
-		    						},
-		    						function(){
-										return res.redirect('/userMatches?page=0');									
-		    						});
+	    		//need to make sure that either the user hasn't changed their
+	    		//email, or they've changed it to something not otherwise in the
+	    		//database
+	    		collection.findOne({ email: req.body.email }, function(err, user2){
+	    			if(!user2 || req.user.email == req.body.email){
+	    				//email checks out - update the DB and carry on to main user pages
+				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')}, 
+				    						{$set:{	scientist : req.body.profession=='scientist',
+				    								developer : req.body.profession=='developer',
+				    								discipline : req.body.discipline, 
+				    								language : req.body.language,
+				    								email : req.body.email,
+				    								description: req.body.projectDescription}
+				    						},
+				    						function(){
+												return res.redirect('/userMatches?page=0');									
+				    						});
+
+	    			} else{
+	    				//update failed - need to inform user
+	    				return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, emailError: 'That email address is already taken - keep your old one or choose another.'})
+	    			}
+	    		});
 			});
 		});
 	});	
@@ -302,13 +311,13 @@ app.post('/updatePassword', function(req, res){
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.render('utilityPages/error.jade');
+		    	if(err) return res.render('error.jade');
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.render('utilityPages/changePassword.jade');
+		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade');
 
 		        // hash the password along with our new salt:
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-		        	if(err) return res.render('utilityPages/error.jade');
+		        	if(err) return res.render('error.jade');
 
 	        		//register new password in the db:
 	        		collection.update({uName : req.user.uName}, {$set:{Pass : hash}}, function(){
@@ -328,20 +337,21 @@ app.post('/deleteProfile', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user
-			collection.findOne({ uName: req.user.uName }, function(err, user){
+			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('utilityPages/error.jade');
+		    	if (err || !user) return res.render('error.jade');
 
 		    	//logout
 		    	req.logout();
 
 		    	//dump user from DB and return to landing page:
-		    	collection.remove({uName : user.uName}, true, function(){
+		    	collection.remove({email : user.email}, true, function(){
 		    		return res.redirect('/');
 		    	});									
 			});
 		});
 	});	
+
 });
 
 //send an email to the user indicated by _id, and the initiating user

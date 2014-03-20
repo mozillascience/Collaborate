@@ -78,6 +78,8 @@ html
                 - }
                 
               label email
+              if emailError
+                p.errorBanner= emailError
               input(type='email', name='email', value=user.email required)
 
               label#projectDescription Tell us about your project!
