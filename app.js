@@ -11,7 +11,7 @@ mongoUri = process.env.MONGOLAB_URI
 	|| process.env.MONGOHQ_URL 
 	|| 'mongodb://127.0.0.1:27017/test';
 */
-ObjectID = require('mongodb').ObjectID;
+ObjectID = require('mongodb').ObjectID;					// tool for reconstructing mongo-style ids out of their hex encodings
 MongoClient = require('mongodb').MongoClient;           // database client
 database = null;                                        //going to populate this with a persistent db connection
 
@@ -21,7 +21,15 @@ LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the in
 bcrypt = require('bcrypt');			// hashes passwords before putting them in DB
 SALT_WORK_FACTOR = 10;				// how many times to scramble a pass before returning the final hash?
 
-mail = require("nodemailer").mail;	// handles sending mail from the server side - no emails exposed in browser
+mail = require("nodemailer");	// handles sending mail from the server side - no emails exposed in browser
+
+smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
+    service: "Gmail",
+    auth: {
+        user: "xxx",
+        pass: "xxx"
+    }
+});
 
 searchBuffer = {}; 					// namespace to hold user searches
 matchBuffer = {}; 					// namespace to hold user matches

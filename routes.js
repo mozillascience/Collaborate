@@ -248,34 +248,46 @@ app.post('/emailNewPassword', function(req, res){
 		db.collection('Users', function(er, collection) {
 
 			//find the user
-			collection.findOne({ uName: req.body.username }, function(err, user){
+			collection.findOne({ email: req.body.email }, function(err, user){
 				var newPass;
 
-		    	if (err) return res.render('utilityPages/error.jade');
+		    	if (err) return res.render('error.jade');
 		    	if (!user)
-		    		return res.render('utilityPages/error.jade');
+		    		return res.render('error.jade');
 
 		    	//generate a new password, bunch of random characters
 		    	newPass = (Math.random() + 1).toString(36);
 
 			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-			    	if(err) return res.render('utilityPages/error.jade');
+			    	if(err) return res.render('error.jade');
 
 				        // hash the password along with our new salt:
 				        bcrypt.hash(newPass, salt, function(err, hash) {
-				        	if(err) return res.render('utilityPages/error.jade');
+				        	if(err) return res.render('error.jade');
 
 				        	//update db
-				        	collection.update({uName : user.uName}, {$set:{Pass : hash}}, function(){});
+				        	collection.update({email : req.body.email}, {$set:{Pass : hash}}, function(){});
 							
 				        });
 			    });
 
-				mail({
+				var mailOptions = {
 				    from: "Fred Foo <foo@blurdybloop.com>", // sender address
-				    to: "herpderp, mills.wj@gmail.com", // list of receivers
-				    subject: "Hello", // Subject line
+				    to: req.body.email, // list of receivers
+				    subject: "Password Reset from InterdisciplinaryProgramming", // Subject line
 				    text: newPass // body
+				};
+
+				// send mail with defined transport object
+				smtpTransport.sendMail(mailOptions, function(error, response){
+				    if(error){
+				        console.log(error);
+				    }else{
+				        console.log("Message sent: " + response.message);
+				    }
+
+				    // if you don't want to use this transport object anymore, uncomment following line
+				    //smtpTransport.close(); // shut down the connection pool, no more messages
 				});
 
 				res.redirect('/')
