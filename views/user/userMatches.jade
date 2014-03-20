@@ -19,7 +19,7 @@ html
           +internalHeader('My Matches')
 
           - for(var i=page*10; i<Math.min(match.length, (page+1)*10); i++) {
-            +userStub(match[i].uName, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline, match[i]._id)
+            +userStub(match[i].uName, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline, match[i].description, match[i]._id)
           - }
 
           - if(match.length == 0) {

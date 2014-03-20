@@ -1,13 +1,18 @@
-mixin userStub(name, hasContacted, isScientist, isDeveloper, language, discipline, uniqueID)
+mixin userStub(name, hasContacted, isScientist, isDeveloper, language, discipline, decription, uniqueID)
   div.userStub
     h3= name
     - if(hasContacted.indexOf(name) != -1 )
       div You have already contacted this user.
     form(method='get', action='viewProfile').pure-form
       button(value=uniqueID, name='uniqueID').pure-button View Profile
+    label Profession:
     if isScientist
       div Scientist
     if isDeveloper
       div Developer
+    label Languages:
     div= language
+    label Disciplines:
     div= discipline
+    label Projects & Interests:
+    p= descirption

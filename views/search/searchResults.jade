@@ -18,7 +18,7 @@ html
           +internalHeader('Search Results')
 
           - for(var i=page*10; i<Math.min(searchResults.length, (page+1)*10); i++) {
-            +userStub(searchResults[i].uName, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline, searchResults[i]._id)
+            +userStub(searchResults[i].uName, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline, searchResults[i].description, searchResults[i]._id)
           - }
 
           - if(searchResults.length == 0) {
