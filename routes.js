@@ -363,12 +363,23 @@ app.post('/sendEmail', function(req, res){
 			//find the user to get their email - this way email is never exposed in the browser
 			collection.findOne({ _id: ObjectID.createFromHexString(req.body.uniqueID) }, function(err, user){
 
-				//send the mail
-				mail({
+				var mailOptions = {
 				    from: "Interdisciplinary Programming <noreply@interdisciplinaryprogramming.com>", // sender address
 				    to: user.email + ', ' + req.user.email, // list of receivers
 				    subject: req.body.subject, // Subject line
 				    text: req.body.body // body
+				};
+
+				// send mail with defined transport object
+				smtpTransport.sendMail(mailOptions, function(error, response){
+				    if(error){
+				        console.log(error);
+				    }else{
+				        console.log("Message sent: " + response.message);
+				    }
+
+				    // if you don't want to use this transport object anymore, uncomment following line
+				    //smtpTransport.close(); // shut down the connection pool, no more messages
 				});
 
 				//make a note in the initiating user's database that they've now contacted this user
@@ -379,6 +390,7 @@ app.post('/sendEmail', function(req, res){
 											return res.redirect('/userMatches?page=0');									
 			    						});
 				});
+
 			});
 		});
 	});
