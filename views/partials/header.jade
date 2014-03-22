@@ -1,9 +1,13 @@
-mixin header
+mixin header(loggedIn)
 	header
 		div.home-menu.pure-menu.pure-menu-open.pure-menu-horizontal.pure-menu-fixed
 			a(href='/').pure-menu-heading Interdisciplinary Programming
 			ul
-				li
-					a(href='/login') Login
-				li
-					a(href='/register') Signup
+				if(loggedIn)
+					form(method='post', action='logout').pure-form
+						button(value=0, name='page').pure-button Logout
+				else
+					li
+						a(href='/login') Login
+					li
+						a(href='/register') Signup
