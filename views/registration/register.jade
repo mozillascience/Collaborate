@@ -36,9 +36,9 @@ html
                   - var scientist = user.profession=='scientist'
                   - var developer = user.profession=='developer' 
                   label(for='science').pure-radio= 'Scientist'
-                    input(id='science' type='radio' name='profession' value='scientist' onclick='manageSignupForm()' checked = scientist)
+                    input(id='science' type='radio' name='profession' value='scientist' onclick='manageUserForm()' checked = scientist)
                   label(for='software').pure-radio= 'Developer'
-                    input(id='software' type='radio' name='profession' value='developer' onclick='manageSignupForm()' checked = developer)
+                    input(id='software' type='radio' name='profession' value='developer' onclick='manageUserForm()' checked = developer)
 
                 - var opacity = (scientist || developer) ? 'opacity: 1; max-height:2000px' : ''
                 div#registrationDetails(style = opacity)

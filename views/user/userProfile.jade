@@ -23,14 +23,14 @@ html
 
               label What is your profession? 
               label(for='science').pure-radio= 'Scientist'
-                input(id='science' type='radio' name='profession' value='scientist' checked = user.scientist)
+                input(id='science' type='radio' name='profession' value='scientist' onclick='manageUserForm()' checked = user.scientist)
               label(for='software').pure-radio= 'Developer'
-                input(id='software' type='radio' name='profession' value='developer' checked = user.developer)
+                input(id='software' type='radio' name='profession' value='developer' onclick='manageUserForm()' checked = user.developer)
 
               if user.scientist
                 if disciplineError
                   p.errorBanner= disciplineError
-                label What is your discipline?
+                label#disciplineText What is your discipline?
                 
                 - for(var i=0; i<disciplines.length; i++){
                   - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
@@ -42,7 +42,7 @@ html
 
                 if languageError
                   p.errorBanner= languageError
-                label What language would you like to work in?
+                label#languageText What language would you like to work in?
                 
                 - for(i=0; i<languages.length; i++){
                   - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
@@ -56,7 +56,7 @@ html
               if user.developer
                 if languageError
                   p= languageError
-                label What languages are you comfortable with?
+                label#languageText What languages are you comfortable with?
                 
                 - for(i=0; i<languages.length; i++){
                   - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
@@ -68,7 +68,7 @@ html
 
                 if disciplineError
                   p= disciplineError
-                label What sciences interest you?
+                label#disciplineText What sciences interest you?
                 
                 - for(i=0; i<disciplines.length; i++){
                   - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
@@ -94,3 +94,5 @@ html
 
 
       +footer()
+
+    script(src="static/formHandler.js")
