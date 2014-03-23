@@ -18,6 +18,36 @@ app.get('/login', function(req, res) {
 	res.render('auth/login.jade', {loginMessage: loginError})
 });
 
+app.get('/error', function(req, res){
+	var errorMessage = null;
+
+	//error codes
+	//10xx - database connection & lookup problems
+	if(req.query.errCode == 1000)
+		errorMessage = 'Error 1000: Database connection failed.'
+	if(req.query.errCode == 1001)
+		errorMessage = 'Error 1001: Failed to connect to User databse collection.'
+	if(req.query.errCode == 1002)
+		errorMessage = 'Error 1002: Failed to find user email in database.'
+	if(req.query.errCode == 1003)
+		errorMessage = 'Error 1003: Failed to find user id in database.'	
+	//11xx - password & login problems
+	if(req.query.errCode == 1100)
+		errorMessage = 'Error 1100: Password salt generation failed.'
+	if(req.query.errCode == 1101)
+		errorMessage = 'Error 1101: Password hashing failed.'
+	if(req.query.errCode == 1102)
+		errorMessage = 'Error 1102: Login failed.'
+	//12xx - search problems
+	if(req.query.errCode == 1200)
+		errorMessage = 'Error 1200: Search summarization failed.'
+	//13xx - email problems
+	if(req.query.errCode == 1300)
+		errorMessage = 'Error 1300: Email generation failed.'
+
+	res.render('error.jade', {errorMessage: errorMessage});
+})
+
 //show registration page
 app.get('/register', function(req, res){
 	res.render('registration/register.jade', {disciplines: disciplines, languages: languages, user:{}});
@@ -156,22 +186,28 @@ app.post('/register', function(req, res){
 app.post('/regUser', function(req, res){
 
 	connect(function(err, db) {
+		if(err) return res.redirect('/error?errCode=1000');
+
 		db.collection('Users', function(er, collection) {
+			if(er) return res.redirect('/error?errCode=1001');			
 
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.render('error.jade');
+		    	if(err) return res.redirect('/error?errCode=1100');
+
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.redirect('/register/?registerError=2');
+		    	if(req.body.pass != req.body.repass) return res.redirect('/register?registerError=2');
 	
 				//reject new account if email is already taken	    	
 		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
+		    		if(err) return res.redirect('/error?errCode=1002');
+
 		    		if(accounts.length != 0){ 
 		    			res.render('registration/register.jade', {disciplines: disciplines, languages: languages, emailError: true, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
 		    			return;
 					}
 			        // hash the password along with our new salt:
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-			        	if(err) return res.render('error.jade');
+			        	if(err) return res.redirect('/error?errCode=1101');
 
 		        		//register new user in the db:
 						collection.insert({	'uName':req.body.uName, 
@@ -187,10 +223,10 @@ app.post('/regUser', function(req, res){
 
 						//log the new user in:
 						collection.findOne({email: req.body.email}, function(err, user){
-							if(err) return res.render('error.jade');
+							if(err) return res.redirect('/error?errCode=1002');
 
 							req.login(user, function(err) {
-							  if (err) return res.render('error.jade');
+							  if(err) return res.redirect('/error?errCode=1102');
 							  return res.redirect('/userMatches?page=0');;
 							});
 						});
@@ -206,12 +242,15 @@ app.post('/updateUser', function(req, res){
 
 	//open link to the database
 	connect(function(err, db) {
+		if(err) return res.redirect('/error?errCode=1000'); 
+
 		db.collection('Users', function(er, collection) {
+			if(er) return res.redirect('/error?errCode=1001');
 
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	if (err || !user) return res.redirect('/error?errCode=1002');
 
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
@@ -232,6 +271,8 @@ app.post('/updateUser', function(req, res){
 	    		//email, or they've changed it to something not otherwise in the
 	    		//database
 	    		collection.findOne({ email: req.body.email }, function(err, user2){
+	    			if(err) return res.redirect('/error?errCode=1002');
+
 	    			if(!user2 || req.user.email == req.body.email){
 	    				//email checks out - update the DB and carry on to main user pages
 				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')}, 
@@ -259,7 +300,11 @@ app.post('/updateUser', function(req, res){
 //run a search using the given parameters
 app.post('/search', function(req, res){
 	connect(function(err, db) {
-		db.collection('Users', function(er, collection) {	
+		if(err) return res.redirect('/error?errCode=1000');
+
+		db.collection('Users', function(er, collection) {
+			if(er) return res.redirect('/error?errCode=1001');
+
 			var scientist = (req.body.profession == 'scientist') ? true : false;
 
 	    	collection.find( {	scientist: scientist,
@@ -267,6 +312,8 @@ app.post('/search', function(req, res){
 	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
 	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
 	    					} ).toArray(function(err, matches){
+	    							if(err) return res.redirect('/error?errCode=1200');
+
 	    							searchBuffer[req.user['_id']] = matches;
 	    							return res.redirect('/searchResults?page=0');
 	    						});
@@ -279,25 +326,26 @@ app.post('/emailNewPassword', function(req, res){
 
 	//open link to the database
 	connect(function(err, db) {
+		if(err) return res.redirect('/error?errCode=1000');
+
 		db.collection('Users', function(er, collection) {
+			if(er) return res.redirect('/error?errCode=1001');
 
 			//find the user
 			collection.findOne({ email: req.body.email }, function(err, user){
 				var newPass;
 
-		    	if (err) return res.render('error.jade');
-		    	if (!user)
-		    		return res.render('error.jade');
+		    	if(err || !user) return res.redirect('/error?errCode=1002');
 
 		    	//generate a new password, bunch of random characters
 		    	newPass = (Math.random() + 1).toString(36);
 
 			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-			    	if(err) return res.render('error.jade');
+			    	if(err) return res.redirect('/error?errCode=1100');
 
 				        // hash the password along with our new salt:
 				        bcrypt.hash(newPass, salt, function(err, hash) {
-				        	if(err) return res.render('error.jade');
+				        	if(err) return res.redirect('/error?errCode=1101');
 
 				        	//update db
 				        	collection.update({email : req.body.email}, {$set:{Pass : hash}}, function(){});
@@ -314,9 +362,8 @@ app.post('/emailNewPassword', function(req, res){
 
 				// send mail with defined transport object
 				smtpTransport.sendMail(mailOptions, function(error, response){
-				    if(error){
-				        console.log(error);
-				    }else{
+				    if(error) return res.redirect('/error?errCode=1300');
+				    else{
 				        console.log("Message sent: " + response.message);
 				    }
 
@@ -334,15 +381,20 @@ app.post('/emailNewPassword', function(req, res){
 app.post('/updatePassword', function(req, res){
 
 	connect(function(err, db) {
+		if(err) return res.redirect('/error?errCode=1000');
+
 		db.collection('Users', function(er, collection) {
+			if(er) return res.redirect('/error?errCode=1001');
+
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.render('error.jade');
+		    	if(err) return res.redirect('/error?errCode=1100');
+
 		    	//make sure the password was entered the same way twice
 		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade');
 
 		        // hash the password along with our new salt:
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-		        	if(err) return res.render('error.jade');
+		        	if(err) return res.redirect('/error?errCode=1101');
 
 	        		//register new password in the db:
 	        		collection.update({email : req.user.email}, {$set:{Pass : hash}}, function(){
@@ -359,12 +411,15 @@ app.post('/deleteProfile', function(req, res){
 
 	//open link to the database
 	connect(function(err, db) {
+		if(err) return res.redirect('/error?errCode=1000');
+
 		db.collection('Users', function(er, collection) {
+			if(er) return res.redirect('/error?errCode=1001');
 
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if (err || !user) return res.render('error.jade');
+		    	if(err || !user) return res.redirect('/error?errCode=1002');
 
 		    	//logout
 		    	req.logout();
@@ -382,10 +437,14 @@ app.post('/deleteProfile', function(req, res){
 app.post('/sendEmail', function(req, res){
 	//open link to the database
 	connect(function(err, db) {
+		if(err) return res.redirect('/error?errCode=1000');
+
 		db.collection('Users', function(er, collection) {
+			if(er) return res.redirect('/error?errCode=1001');
 
 			//find the user to get their email - this way email is never exposed in the browser
 			collection.findOne({ _id: ObjectID.createFromHexString(req.body.uniqueID) }, function(err, user){
+				if(err) return res.redirect('/error?errCode=1003');
 
 				var mailOptions = {
 				    from: "Interdisciplinary Programming <noreply@interdisciplinaryprogramming.com>", // sender address
@@ -396,9 +455,8 @@ app.post('/sendEmail', function(req, res){
 
 				// send mail with defined transport object
 				smtpTransport.sendMail(mailOptions, function(error, response){
-				    if(error){
-				        console.log(error);
-				    }else{
+					if(error) return res.redirect('/error?errCode=1300');
+				    else{
 				        console.log("Message sent: " + response.message);
 				    }
 
@@ -408,6 +466,7 @@ app.post('/sendEmail', function(req, res){
 
 				//make a note in the initiating user's database that they've now contacted this user
 				collection.findOne({_id: ObjectID.createFromHexString(req.user._id+'')}, function(err, user){
+					if(err) return res.redirect('/error?errCode=1003');
 			    	collection.update(	{email : user.email}, 
 			    						{$addToSet:{hasContacted : req.body.uniqueID} }, 
 			    						function(){
