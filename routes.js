@@ -23,11 +23,9 @@ app.get('/register', function(req, res){
 	res.render('registration/register.jade', {disciplines: disciplines, languages: languages, user:{}});
 });
 
-//show page to set up a new user profile
-app.get('/setupNewUser', function(req, res){
-
-	res.render('registration/chooseClass.jade', {});
-
+//show page to confirm profile deletion
+app.get('/requestDeleteProfile', function(req, res){
+	res.render('user/confirmDeleteProfile.jade', {});
 });
 
 //show a page of search results
@@ -351,7 +349,6 @@ app.post('/deleteProfile', function(req, res){
 			});
 		});
 	});	
-
 });
 
 //send an email to the user indicated by _id, and the initiating user

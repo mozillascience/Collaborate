@@ -90,8 +90,7 @@ html
           form(method='get', action='changePasswordForm').pure-form
             input(type='submit', value='Change Password').pure-button
 
-          form(method='post', action='deleteProfile').pure-form
-            input(type='submit', value='Delete My Profile').pure-button
+          a(href='/requestDeleteProfile').pure-button Delete My Profile
 
 
       +footer()
