@@ -139,7 +139,7 @@ app.get('/forgotPass', function(req, res){
 ////////////////////////////////////////////////////////
 
 //validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/login/?loginError=1'}) );
+app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/login?loginError=1'}) );
 
 //logout
 app.post('/logout', function(req, res){
