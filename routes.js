@@ -25,11 +25,18 @@ app.get('/register', function(req, res){
 
 //show page to confirm profile deletion
 app.get('/requestDeleteProfile', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
+
 	res.render('user/confirmDeleteProfile.jade', {});
 });
 
 //show a page of search results
 app.get('/searchResults', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
 
 	res.render('search/searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
 										page: req.query.page, 
@@ -39,12 +46,19 @@ app.get('/searchResults', function(req, res){
 
 //user profile page
 app.get('/userProfile', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
+
 	res.render('user/userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
 
 });
 
 //show the first 10 user matches, with links to subsequnt batches of 10
 app.get('/userMatches', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {	    	
@@ -62,6 +76,9 @@ app.get('/userMatches', function(req, res){
 
 //search page
 app.get('/userSearch', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
 
 	res.render('search/userSearch.jade', {languages: languages, disciplines: disciplines});
 
@@ -69,6 +86,9 @@ app.get('/userSearch', function(req, res){
 
 //view another user's profile
 app.get('/viewProfile', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
@@ -81,6 +101,9 @@ app.get('/viewProfile', function(req, res){
 
 //show the page to contact a user
 app.get('/contactUser', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
@@ -91,27 +114,11 @@ app.get('/contactUser', function(req, res){
 	});
 });
 
-//run a search using the given parameters
-app.post('/search', function(req, res){
-
-	connect(function(err, db) {
-		db.collection('Users', function(er, collection) {	
-			var scientist = (req.body.profession == 'scientist') ? true : false;
-
-	    	collection.find( {	scientist: scientist,
-	    						//for checkbox groups, blank === match anything
-	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
-	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
-	    					} ).toArray(function(err, matches){
-	    							searchBuffer[req.user['_id']] = matches;
-	    							return res.redirect('/searchResults?page=0');
-	    						});
-		});
-	});
-});
-
 //go to the change password form
 app.get('/changePasswordForm', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
 
 	return res.render('user/changePassword.jade');
 
@@ -119,6 +126,9 @@ app.get('/changePasswordForm', function(req, res){
 
 //go to the password recovery page
 app.get('/forgotPass', function(req, res){
+	//don't let a non-logged in person in:
+	if(!req.user)
+		return res.redirect('/login');
 
 	res.render('auth/recoverPassword.jade');
 
@@ -246,6 +256,23 @@ app.post('/updateUser', function(req, res){
 	});	
 });
 
+//run a search using the given parameters
+app.post('/search', function(req, res){
+	connect(function(err, db) {
+		db.collection('Users', function(er, collection) {	
+			var scientist = (req.body.profession == 'scientist') ? true : false;
+
+	    	collection.find( {	scientist: scientist,
+	    						//for checkbox groups, blank === match anything
+	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
+	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
+	    					} ).toArray(function(err, matches){
+	    							searchBuffer[req.user['_id']] = matches;
+	    							return res.redirect('/searchResults?page=0');
+	    						});
+		});
+	});
+});
 
 //password recovery - generate a random password, hash it, update the db, and mail it to the user
 app.post('/emailNewPassword', function(req, res){
