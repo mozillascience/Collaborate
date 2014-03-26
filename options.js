@@ -20,7 +20,7 @@ disciplines = 	[ 	'Agriculture',
 					'Physics & Astronomy',
 					'Statistics & Math',
 					'Zoology',
-					'Any'
+					'Any Discipline'
 				],
 
 languages = [ 	'BASIC',
@@ -49,5 +49,5 @@ languages = [ 	'BASIC',
 				'Tcl',
 				'Verilog',
 				'VHDL',
-				'Any'
+				'Any Language'
 			];

@@ -91,8 +91,14 @@ app.get('/userMatches', function(req, res){
 		return res.redirect('/login');
 
 	connect(function(err, db) {
-		db.collection('Users', function(er, collection) {	
-	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
+		db.collection('Users', function(er, collection) {
+			//build query object first:
+			var query = {scientist: req.user.developer};
+			if(req.user.discipline.indexOf('Any Discipline') == -1 )
+				query.discipline = {$in: req.user.discipline};
+			if(req.user.language.indexOf('Any Language') == -1 )
+				query.language = {$in: req.user.language};
+	    	collection.find( query ).toArray(function(err, matches){
 	    		matchBuffer[req.user['_id']] = matches;
 	    		res.render('user/userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
@@ -305,18 +311,20 @@ app.post('/search', function(req, res){
 		db.collection('Users', function(er, collection) {
 			if(er) return res.redirect('/error?errCode=1001');
 
-			var scientist = (req.body.profession == 'scientist') ? true : false;
+			var scientist = (req.body.profession == 'scientist') ? true : false,
+				query = {scientist: scientist};
+				//no box checked on a checkbox group matches anything, as does checking the 'Any' box
+				if(req.body.language && (req.body.language.indexOf('Any Language') == -1) )
+					query.language = req.body.language;
+				if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) )
+					query.discipline = req.body.discipline;				
 
-	    	collection.find( {	scientist: scientist,
-	    						//for checkbox groups, blank === match anything
-	    						language : {$in: (req.body.language ? req.body.language : languages)}, 
-	    						discipline : {$in: (req.body.discipline ? req.body.discipline : disciplines)}
-	    					} ).toArray(function(err, matches){
-	    							if(err) return res.redirect('/error?errCode=1200');
+	    	collection.find(query).toArray(function(err, matches){
+	    		if(err) return res.redirect('/error?errCode=1200');
 
-	    							searchBuffer[req.user['_id']] = matches;
-	    							return res.redirect('/searchResults?page=0');
-	    						});
+	    		searchBuffer[req.user['_id']] = matches;
+	    		return res.redirect('/searchResults?page=0');
+	    	});
 		});
 	});
 });

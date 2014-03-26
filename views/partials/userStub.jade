@@ -11,8 +11,14 @@ mixin userStub(name, uniqueID, hasContacted, isScientist, isDeveloper, language,
     if isDeveloper
       div Developer
     label Languages:
-    div= language
-    label Disciplines:
-    div= discipline
+    if language
+      ul
+        each elt in language
+          li= elt
+    if discipline
+      label Disciplines:
+      ul
+        each elt in discipline
+          li= elt
     label Projects & Interests:
     p= descirption
