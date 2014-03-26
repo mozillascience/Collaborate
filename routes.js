@@ -91,7 +91,7 @@ app.get('/userMatches', function(req, res){
 		return res.redirect('/login');
 
 	connect(function(err, db) {
-		db.collection('Users', function(er, collection) {	    	
+		db.collection('Users', function(er, collection) {	
 	    	collection.find( {scientist: req.user.developer, language : {$in: req.user.language}, discipline : {$in: req.user.discipline}} ).toArray(function(err, matches){
 	    		matchBuffer[req.user['_id']] = matches;
 	    		res.render('user/userMatches.jade', {match: matches, 
