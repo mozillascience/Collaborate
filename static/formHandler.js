@@ -10,7 +10,7 @@ function manageUserForm(){
 
 	//switch the details section of the form to opacity=1 and allow height expansion:
 	if(wrapperDiv)
-		wrapperDiv.setAttribute('style', 'max-height: 2000px; opacity: 1');
+		wrapperDiv.setAttribute('style', 'max-height: 10000px; opacity: 1');
 
 	//determine which radio button got clicked:
 	isScientist = document.getElementById('science').checked

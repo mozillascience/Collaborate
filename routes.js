@@ -68,9 +68,8 @@ app.get('/searchResults', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('search/searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
-										page: req.query.page, 
-										nPages: Math.ceil(searchBuffer[req.user['_id']].length/10), 
+	res.render('search/searchResults.jade', {	searchResults: null, //searchBuffer[req.user['_id']], 
+										page: req.query.page,  
 										hasContacted: req.user.hasContacted} );
 });
 
@@ -322,8 +321,11 @@ app.post('/search', function(req, res){
 	    	collection.find(query).toArray(function(err, matches){
 	    		if(err) return res.redirect('/error?errCode=1200');
 
-	    		searchBuffer[req.user['_id']] = matches;
-	    		return res.redirect('/searchResults?page=0');
+	    		//searchBuffer[req.user['_id']] = matches;
+	    		//return res.redirect('/searchResults?page=0');
+				res.render('search/searchResults.jade', {	searchResults: matches, 
+													page: 0, 
+													hasContacted: req.user.hasContacted} );
 	    	});
 		});
 	});
