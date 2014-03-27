@@ -1,66 +1,4 @@
-/*CSS Reset*/
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-	height:100%;
-	width:100%;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-/*Enforce more intuitive box-sizing, suppress selection, demand default cursor*/
-* { 
-	-moz-box-sizing: border-box; 
-	-webkit-box-sizing: border-box; 
-	box-sizing: border-box; 
-}
-
-html, body{
-	height: 100%;
-	width: 100%;
-}
 
 /* Typography */
 
@@ -1342,6 +1280,9 @@ footer p{
     top: 0;
     left: 0;
     position: fixed !important;
+
+    background: url('img/headerImage.jpg');
+    background-size: cover;
 }
 
 .splash {
@@ -1359,8 +1300,8 @@ footer p{
 .splash-head {
     font-size: 20px;
     font-weight: bold;
-    color: black;
-    border: 3px solid black;
+    color: white;
+    border: 3px solid white;
     padding: 1em 1.6em;
     font-weight: 100;
     border-radius: 5px;
@@ -1369,9 +1310,9 @@ footer p{
 
 /* This is the subheading that appears on the blue section */
 .splash-subhead {
-    color: black;
+    color: white;
     letter-spacing: 0.05em;
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .content-wrapper {
@@ -1409,8 +1350,22 @@ footer p{
 
 /* This is the class used for the dark-background areas. */
 .ribbon {
+    /*
     background: #2d3e50;
     color: #aaa;
+    */
+    background: #16a085;
+    color: #222;
+}
+
+/* Bill wanted a three-color layout, here's a different ribbon */
+.ribbon-alt {
+    /*
+    background: #34495e;
+    color: #aaa;
+    */
+    background: #1abc9c;
+    color: #222;
 }
 
 /* Content Pages */
@@ -1431,6 +1386,32 @@ footer p{
 	margin-bottom: 12%;
 }
 
+div#registrationDetails{
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: opacity 0.3s, max-height 0.3s ease;
+  -moz-transition: opacity 0.3s, max-height 0.3s ease;
+  -ms-transition: opacity 0.3s, max-height 0.3s ease;
+  -o-transition: opacity 0.3s, max-height 0.3s ease;
+  transition: opacity 0.3s, max-height 0.3s ease; 
+}
+
+p#passError, p#disciplineError, p#languageError{
+  display:none;
+  background-color: #FF9999;
+  color: #000000;
+}
+
+p#emailError, p.errorBanner{
+  background-color: #FF9999;
+  color: #000000;
+}
+
+i.bigIcon{
+  color: #FFFFFF;
+  font-size: 1000%
+}
 
 /*
  * Media Queries

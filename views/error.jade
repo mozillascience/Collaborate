@@ -10,7 +10,13 @@ html
     +head() 
   body.vanilla   
     div.page-wrapper
-      +header()
+      +header(true)
       section
-        h1 Error of some kind occured, poop.
+        h1 Whoooops!  Something's gone wrong.
+
+        p#errorPageContent= errorMessage
+
+        form(method='post', action='logout').pure-form
+            button(value=0, name='page').pure-button Back to Safety
+
       +footer()

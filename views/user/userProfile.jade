@@ -1,78 +1,98 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+include ../partials/internalHeader.jade
+
 doctype html5
 html
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/internalHeader.jade
-    include ../partials/footer.jade
+    +head()
+    
+  body.vanilla
+    div.page-wrapper
+      +header(true)
+      
+      section
+        div.content-wrapper
+          +internalHeader()
 
-  body
-    div.wrapper
-      +internalHeader('My Profile')
+          h1= user.uName
 
-      form(method='post' action='updateUser')
-        if user.scientist
-          if disciplineError
-            p= disciplineError
-          label What is your discipline?
-          br
-          - for(var i=0; i<disciplines.length; i++){
-            - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-            input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
-            label= disciplines[i]
-            br
-          - }
-          br
+          form(method='post' action='updateUser').pure-form.pure-form-stacked
+            fieldset
 
-          if languageError
-            p= languageError
-          label What language would you like to work in?
-          br
-          - for(i=0; i<languages.length; i++){
-            - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-            input(type='checkbox', name='language[]', value=languages[i], checked=check )
-            label= languages[i]
-            br
-          - }
-          br
+              label What is your profession? 
+              label(for='science').pure-radio= 'Scientist'
+                input(id='science' type='radio' name='profession' value='scientist' onclick='manageUserForm()' checked = user.scientist)
+              label(for='software').pure-radio= 'Developer'
+                input(id='software' type='radio' name='profession' value='developer' onclick='manageUserForm()' checked = user.developer)
+
+              if user.scientist
+                if disciplineError
+                  p.errorBanner= disciplineError
+                label#disciplineText What is your discipline?
+                
+                - for(var i=0; i<disciplines.length; i++){
+                  - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                     input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
+                  
+                - }
+                
+
+                if languageError
+                  p.errorBanner= languageError
+                label#languageText What language would you like to work in?
+                
+                - for(i=0; i<languages.length; i++){
+                  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                  label(for=languages[i]).pure-checkbox= languages[i]
+                    input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
+                  
+                - }
+                
 
 
-        if user.developer
-          if languageError
-            p= languageError
-          label What languages are you comfortable with?
-          br
-          - for(i=0; i<languages.length; i++){
-            - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-            input(type='checkbox', name='language[]', value=languages[i], checked=check )
-            label= languages[i]
-            br
-          - }
-          br
+              if user.developer
+                if languageError
+                  p= languageError
+                label#languageText What languages are you comfortable with?
+                
+                - for(i=0; i<languages.length; i++){
+                  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                  label(for=languages[i]).pure-checkbox= languages[i]
+                    input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
+                  
+                - }
+                
 
-          if disciplineError
-            p= disciplineError
-          label What sciences interest you?
-          br
-          - for(i=0; i<disciplines.length; i++){
-            - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-            input(type='checkbox', name='discipline[]', value=disciplines[i], checked=check )
-            label= disciplines[i]
-            br
-          - }
-          br
+                if disciplineError
+                  p= disciplineError
+                label#disciplineText What sciences interest you?
+                
+                - for(i=0; i<disciplines.length; i++){
+                  - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                    input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
+                  
+                - }
+                
+              label email
+              if emailError
+                p.errorBanner= emailError
+              input(type='email', name='email', value=user.email required)
 
-        br
-        label email
-        input(type='email', name='email', value=user.email required)
+              label#projectDescription Tell us about your project!
+              textarea(name='projectDescription' cols=50 rows=15 required)= user.description 
 
-        input(type='submit', value='Update Profile')
+              input(type='submit', value='Update Profile').pure-button.pure-button-primary
 
-      form(method='get', action='changePasswordForm')
-        input(type='submit', value='Change Password')
+          form(method='get', action='changePasswordForm').pure-form
+            input(type='submit', value='Change Password').pure-button
 
-      form(method='post', action='deleteProfile')
-        input(type='submit', value='Delete My Profile')
+          a(href='/requestDeleteProfile').pure-button Delete My Profile
 
-      div.push
 
-    +footer()
+      +footer()
+
+    script(src="static/formHandler.js")

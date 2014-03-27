@@ -1,31 +1,35 @@
+include ../partials/head.jade
+include ../partials/header.jade
+include ../partials/footer.jade
+include ../partials/internalHeader.jade
+
 doctype html5
 html
-
   head
-    link(rel='stylesheet', href='static/style.css')
-    include ../partials/internalHeader.jade
-    include ../partials/footer.jade
+    +head()
+    
+  body.vanilla
+    div.page-wrapper
+      +header(true)
+      
+      section
+        div.content-wrapper
+      
+          +internalHeader('Contact User')
+
+          h1 Contact #{user.uName}
+          form(method='post', action='sendEmail').pure-form.pure-form-stacked
+            input(type='hidden', name='uniqueID', value=user._id, style='display:none')
+            label Subject
+            
+            input(type='text', name='subject')
+            
+            label Body
+            textarea(cols=40, rows=10, name='body')
+            
+            input(type='submit', value='Send Mail').pure-button.pure-button-primary
+
     
 
-  body
-    div.wrapper
-      
-      +internalHeader('Contact User')
-
-      h1 Contact #{user.uName}
-      form(method='post', action='sendEmail')
-        input(type='text', name='uName', value=user.uName, style='display:none')
-        label Subject
-        br
-        input(type='text', name='subject')
-        br
-        label Body
-        br
-        textarea(cols=40, rows=10, name='body')
-        br
-        input(type='submit', value='Send Mail')
-
-      div.push
-
-    +footer()
+      +footer()
 

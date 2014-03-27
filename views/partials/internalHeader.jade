@@ -1,15 +1,14 @@
 mixin internalHeader(title)
-  div.internalHeader
-    h1= title
+  div.pure-menu.pure-menu-open.pure-menu-horizontal
 
-    form(method='get', action='userMatches')
-      button(value=0, name='page') My Matches
+    ul
+      li
+        a(href='/userMatches?page=0') Matches
+      li
+        a(href='/userProfile') Profile
+      li
+        a(href='/userSearch') Search
 
-    form(method='get', action='userProfile')
-      input(type='submit', value='My Profile')
-
-    form(method='get', action='userSearch')
-      input(type='submit', value='Search')
-
-    form(method='post', action='logout')
-      input(type='submit', value='Logout')
+    //-
+      form(method='post', action='logout').pure-form
+        button(value=0, name='page').pure-button.pure-button-primary Logout
