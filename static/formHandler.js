@@ -34,6 +34,8 @@ function signupValidation(){
 	,	disciplineChosen = false
 	,	languages = document.querySelectorAll('input[name="language[]"]')
 	,	languageChosen = false
+	,	altDiscipline = otherDisc.value
+	,	altLanguage = otherLang.value
 	,	passError = document.getElementById('passError')
 	,	disciplineError = document.getElementById('disciplineError')
 	, 	languageError = document.getElementById('languageError')
@@ -54,7 +56,8 @@ function signupValidation(){
 	[].forEach.call(disciplines, function(discipline){
 		disciplineChosen = disciplineChosen || discipline.checked;
 	});
-	if(!disciplineChosen && !otherDisc){
+
+	if(!disciplineChosen && !altDiscipline){
 		allOK = false;
 		disciplineError.style.display = 'block';
 	} else {
@@ -64,7 +67,7 @@ function signupValidation(){
 	[].forEach.call(languages, function(language){
 		languageChosen = languageChosen || language.checked;
 	});
-	if(!languageChosen && !otherLang){
+	if(!languageChosen && !altLanguage){
 		allOK = false;
 		languageError.style.display = 'block';
 	} else {

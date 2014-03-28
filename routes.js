@@ -214,18 +214,16 @@ app.post('/regUser', function(req, res){
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 			        	if(err) return res.redirect('/error?errCode=1101');
 
-			        	var lang, disc;
+			        	var lang=[], disc=[];
 			        	//build language and discipline arrays
 			        	if(req.body.language)
-			        		lang = req.body.language.concat(cleanCase(req.body.otherLang))
-			        	else
-			        		lang = [cleanCase(req.body.otherLang)]
-
-			        	//build language and discipline arrays
+			        		lang = lang.concat(req.body.language);
+			        	if(req.body.otherLang)
+			        		lang = lang.concat(cleanCase(req.body.otherLang));
 			        	if(req.body.discipline)
-			        		disc = req.body.discipline.concat(cleanCase(req.body.otherDisc))
-			        	else
-			        		disc = [cleanCase(req.body.otherDisc)]
+			        		disc = disc.concat(req.body.discipline);
+			        	if(req.body.otherDisc)
+			        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
 		        		//register new user in the db:
 						collection.insert({	'uName':req.body.uName, 
@@ -269,21 +267,19 @@ app.post('/updateUser', function(req, res){
 
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
-				var lang, disc;
+				var lang=[], disc=[];
 
 		    	if (err || !user) return res.redirect('/error?errCode=1002');
 
 	        	//build language and discipline arrays
 	        	if(req.body.language)
-	        		lang = req.body.language.concat(cleanCase(req.body.otherLang))
-	        	else
-	        		lang = [cleanCase(req.body.otherLang)]
-
-	        	//build language and discipline arrays
+	        		lang = lang.concat(req.body.language);
+	        	if(req.body.otherLang)
+	        		lang = lang.concat(cleanCase(req.body.otherLang));
 	        	if(req.body.discipline)
-	        		disc = req.body.discipline.concat(cleanCase(req.body.otherDisc))
-	        	else
-	        		disc = [cleanCase(req.body.otherDisc)]
+	        		disc = disc.concat(req.body.discipline);
+	        	if(req.body.otherDisc)
+	        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
