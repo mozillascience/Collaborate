@@ -98,7 +98,7 @@ app.get('/userMatches', function(req, res){
 			if(req.user.language.indexOf('Any Language') == -1 )
 				query.language = {$in: req.user.language};
 	    	collection.find( query ).toArray(function(err, matches){
-	    		matchBuffer[req.user['_id']] = matches;
+	    		matchBuffer[req.user['_id']] = matches.sort(helpers.sortByTimestamp);
 	    		res.render('user/userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
 	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
@@ -236,7 +236,8 @@ app.post('/regUser', function(req, res){
 											'language': lang,
 											'otherLang': cleanCase(req.body.otherLang),
 											'otherDisc': cleanCase(req.body.otherDisc),
-											'description': req.body.projectDescription
+											'description': req.body.projectDescription,
+											'timeCreated': Date.now()
 										}, {safe: true}, function(err,res) {});
 
 						//log the new user in:
@@ -354,10 +355,16 @@ app.post('/search', function(req, res){
 				} else if(req.body.otherDisc)
 					query.discipline = [cleanCase(req.body.otherDisc)];
 
+				//just has arrays stuck into language and discipline, wrap in object
+				if(query.language)
+					query.language = {$in: query.language}
+				if(query.discipline)
+					query.discipline = {$in: query.discipline}
+
 	    	collection.find(query).toArray(function(err, matches){
 	    		if(err) return res.redirect('/error?errCode=1200');
 
-	    		searchBuffer[req.user['_id']] = matches;
+	    		searchBuffer[req.user['_id']] = matches.sort(helpers.sortByTimestamp)
 	    		return res.redirect('/searchResults?page=0');
 	    		/*
 				res.render('search/searchResults.jade', {	searchResults: matches, 
