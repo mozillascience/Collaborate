@@ -50,11 +50,11 @@ function signupValidation(){
 		passError.style.display = 'none';
 	}
 
-	//demand at least one member of each checkbox group is checked
+	//demand at least one member of each checkbox group is checked, and / or the 'other' field is filled out:
 	[].forEach.call(disciplines, function(discipline){
 		disciplineChosen = disciplineChosen || discipline.checked;
 	});
-	if(!disciplineChosen){
+	if(!disciplineChosen && !otherDisc){
 		allOK = false;
 		disciplineError.style.display = 'block';
 	} else {
@@ -64,7 +64,7 @@ function signupValidation(){
 	[].forEach.call(languages, function(language){
 		languageChosen = languageChosen || language.checked;
 	});
-	if(!languageChosen){
+	if(!languageChosen && !otherLang){
 		allOK = false;
 		languageError.style.display = 'block';
 	} else {

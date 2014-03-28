@@ -214,6 +214,19 @@ app.post('/regUser', function(req, res){
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 			        	if(err) return res.redirect('/error?errCode=1101');
 
+			        	var lang, disc;
+			        	//build language and discipline arrays
+			        	if(req.body.language)
+			        		lang = req.body.language.concat(req.body.otherLang)
+			        	else
+			        		lang = [req.body.otherLang]
+
+			        	//build language and discipline arrays
+			        	if(req.body.discipline)
+			        		disc = req.body.discipline.concat(req.body.otherDisc)
+			        	else
+			        		disc = [req.body.otherDisc]
+
 		        		//register new user in the db:
 						collection.insert({	'uName':req.body.uName, 
 											'email': req.body.email, 
@@ -221,8 +234,10 @@ app.post('/regUser', function(req, res){
 											'scientist': req.body.profession == 'scientist',
 											'developer': req.body.profession == 'developer',
 											'hasContacted': [],
-											'discipline': req.body.discipline,
-											'language': req.body.language,
+											'discipline': disc,
+											'language': lang,
+											'otherLang': req.body.otherLang,
+											'otherDisc': req.body.otherDisc,
 											'description': req.body.projectDescription
 										}, {safe: true}, function(err,res) {});
 
@@ -254,21 +269,36 @@ app.post('/updateUser', function(req, res){
 
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
+				var lang, disc;
 
 		    	if (err || !user) return res.redirect('/error?errCode=1002');
+
+	        	//build language and discipline arrays
+	        	if(req.body.language)
+	        		lang = req.body.language.concat(req.body.otherLang)
+	        	else
+	        		lang = [req.body.otherLang]
+
+	        	//build language and discipline arrays
+	        	if(req.body.discipline)
+	        		disc = req.body.discipline.concat(req.body.otherDisc)
+	        	else
+	        		disc = [req.body.otherDisc]
 
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
 		    	req.user.developer = req.body.profession=='developer';
-		    	req.user.discipline = req.body.discipline || req.user.discipline;
-		    	req.user.language = req.body.language || req.user.language;
+		    	req.user.discipline = disc || req.user.discipline;
+		    	req.user.language = lang || req.user.language;
+		    	req.user.otherLang = req.body.otherLang || req.user.otherLang;
+		    	req.user.otherDisc = req.body.otherDisc || req.user.otherDisc;
 		    	req.user.description = req.body.projectDescription;
 
 	    		//insist all fields have at least one option selected
-	    		if(!req.body.discipline){
+	    		if(!req.body.discipline && !req.body.otherDisc){
 	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 	    		}
-	    		if(!req.body.language){
+	    		if(!req.body.language && !req.body.otherLang){
 	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
@@ -276,15 +306,19 @@ app.post('/updateUser', function(req, res){
 	    		//email, or they've changed it to something not otherwise in the
 	    		//database
 	    		collection.findOne({ email: req.body.email }, function(err, user2){
+
 	    			if(err) return res.redirect('/error?errCode=1002');
 
 	    			if(!user2 || req.user.email == req.body.email){
-	    				//email checks out - update the DB and carry on to main user pages
+	    				//email checks out - update the DB
+
 				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')}, 
 				    						{$set:{	scientist : req.body.profession=='scientist',
 				    								developer : req.body.profession=='developer',
-				    								discipline : req.body.discipline, 
-				    								language : req.body.language,
+				    								discipline : disc, 
+				    								language : lang,
+				    								otherLang : req.body.otherLang,
+				    								otherDisc : req.body.otherDisc,
 				    								email : req.body.email,
 				    								description: req.body.projectDescription}
 				    						},
