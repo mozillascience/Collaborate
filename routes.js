@@ -217,15 +217,15 @@ app.post('/regUser', function(req, res){
 			        	var lang, disc;
 			        	//build language and discipline arrays
 			        	if(req.body.language)
-			        		lang = req.body.language.concat(req.body.otherLang)
+			        		lang = req.body.language.concat(cleanCase(req.body.otherLang))
 			        	else
-			        		lang = [req.body.otherLang]
+			        		lang = [cleanCase(req.body.otherLang)]
 
 			        	//build language and discipline arrays
 			        	if(req.body.discipline)
-			        		disc = req.body.discipline.concat(req.body.otherDisc)
+			        		disc = req.body.discipline.concat(cleanCase(req.body.otherDisc))
 			        	else
-			        		disc = [req.body.otherDisc]
+			        		disc = [cleanCase(req.body.otherDisc)]
 
 		        		//register new user in the db:
 						collection.insert({	'uName':req.body.uName, 
@@ -236,8 +236,8 @@ app.post('/regUser', function(req, res){
 											'hasContacted': [],
 											'discipline': disc,
 											'language': lang,
-											'otherLang': req.body.otherLang,
-											'otherDisc': req.body.otherDisc,
+											'otherLang': cleanCase(req.body.otherLang),
+											'otherDisc': cleanCase(req.body.otherDisc),
 											'description': req.body.projectDescription
 										}, {safe: true}, function(err,res) {});
 
@@ -275,23 +275,23 @@ app.post('/updateUser', function(req, res){
 
 	        	//build language and discipline arrays
 	        	if(req.body.language)
-	        		lang = req.body.language.concat(req.body.otherLang)
+	        		lang = req.body.language.concat(cleanCase(req.body.otherLang))
 	        	else
-	        		lang = [req.body.otherLang]
+	        		lang = [cleanCase(req.body.otherLang)]
 
 	        	//build language and discipline arrays
 	        	if(req.body.discipline)
-	        		disc = req.body.discipline.concat(req.body.otherDisc)
+	        		disc = req.body.discipline.concat(cleanCase(req.body.otherDisc))
 	        	else
-	        		disc = [req.body.otherDisc]
+	        		disc = [cleanCase(req.body.otherDisc)]
 
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
 		    	req.user.developer = req.body.profession=='developer';
 		    	req.user.discipline = disc || req.user.discipline;
 		    	req.user.language = lang || req.user.language;
-		    	req.user.otherLang = req.body.otherLang || req.user.otherLang;
-		    	req.user.otherDisc = req.body.otherDisc || req.user.otherDisc;
+		    	req.user.otherLang = cleanCase(req.body.otherLang) || req.user.otherLang;
+		    	req.user.otherDisc = cleanCase(req.body.otherDisc) || req.user.otherDisc;
 		    	req.user.description = req.body.projectDescription;
 
 	    		//insist all fields have at least one option selected
@@ -317,8 +317,8 @@ app.post('/updateUser', function(req, res){
 				    								developer : req.body.profession=='developer',
 				    								discipline : disc, 
 				    								language : lang,
-				    								otherLang : req.body.otherLang,
-				    								otherDisc : req.body.otherDisc,
+				    								otherLang : cleanCase(req.body.otherLang),
+				    								otherDisc : cleanCase(req.body.otherDisc),
 				    								email : req.body.email,
 				    								description: req.body.projectDescription}
 				    						},
@@ -347,10 +347,16 @@ app.post('/search', function(req, res){
 			var scientist = (req.body.profession == 'scientist') ? true : false,
 				query = {scientist: scientist};
 				//no box checked on a checkbox group matches anything, as does checking the 'Any' box
-				if(req.body.language && (req.body.language.indexOf('Any Language') == -1) )
+				if(req.body.language && (req.body.language.indexOf('Any Language') == -1) ){
 					query.language = req.body.language;
-				if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) )
-					query.discipline = req.body.discipline;				
+				    query.language.concat(cleanCase(req.body.otherLang)); //also tack on the freeform field
+				} else if(req.body.otherLang)
+					query.language = [cleanCase(req.body.otherLang)]; //just the freeform field
+				if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) ){
+					query.discipline = req.body.discipline;	
+					query.discipline.concat(cleanCase(req.body.otherDisc));
+				} else if(req.body.otherDisc)
+					query.discipline = [cleanCase(req.body.otherDisc)];
 
 	    	collection.find(query).toArray(function(err, matches){
 	    		if(err) return res.redirect('/error?errCode=1200');

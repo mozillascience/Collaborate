@@ -28,12 +28,16 @@ html
               label(for=disciplines[i]).pure-checkbox= disciplines[i]
                 input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] )
             - }
+            label(for='otherDisc').pure-checkbox= 'Other Discipline'
+              input(type='text', name='otherDisc', id='otherDisc')
 
             label Language
             - for(i=0; i<languages.length; i++){
               label(for=languages[i]).pure-checkbox= languages[i]
                 input(type='checkbox', name='language[]', value=languages[i], id=languages[i] )
             - }
+            label(for='otherLang').pure-checkbox= 'Other Language'
+              input(type='text', name='otherLang', id='otherLang')
 
             input(type='submit', value='Search Users').pure-button.pure-button-primary
 
