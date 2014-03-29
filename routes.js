@@ -214,7 +214,7 @@ app.post('/regUser', function(req, res){
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 			        	if(err) return res.redirect('/error?errCode=1101');
 
-			        	var lang=[], disc=[];
+			        	var lang=[], disc=[], linkTable;
 			        	//build language and discipline arrays
 			        	if(req.body.language)
 			        		lang = lang.concat(req.body.language);
@@ -224,6 +224,9 @@ app.post('/regUser', function(req, res){
 			        		disc = disc.concat(req.body.discipline);
 			        	if(req.body.otherDisc)
 			        		disc = disc.concat(cleanCase(req.body.otherDisc));
+
+			        	//scrub the link table into something sensible
+			        	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
 
 		        		//register new user in the db:
 						collection.insert({	'uName':req.body.uName, 
@@ -237,7 +240,9 @@ app.post('/regUser', function(req, res){
 											'otherLang': cleanCase(req.body.otherLang),
 											'otherDisc': cleanCase(req.body.otherDisc),
 											'description': req.body.projectDescription,
-											'timeCreated': Date.now()
+											'timeCreated': Date.now(),
+											'linkDescription' : linkTable[0],
+											'link' : linkTable[1]
 										}, {safe: true}, function(err,res) {});
 
 						//log the new user in:
@@ -268,7 +273,7 @@ app.post('/updateUser', function(req, res){
 
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
-				var lang=[], disc=[];
+				var lang=[], disc=[], linkTable;
 
 		    	if (err || !user) return res.redirect('/error?errCode=1002');
 
@@ -282,6 +287,9 @@ app.post('/updateUser', function(req, res){
 	        	if(req.body.otherDisc)
 	        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
+				//scrub the link table into something sensible
+			  	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
 		    	req.user.developer = req.body.profession=='developer';
@@ -290,6 +298,8 @@ app.post('/updateUser', function(req, res){
 		    	req.user.otherLang = cleanCase(req.body.otherLang) || req.user.otherLang;
 		    	req.user.otherDisc = cleanCase(req.body.otherDisc) || req.user.otherDisc;
 		    	req.user.description = req.body.projectDescription;
+		    	req.user.linkDescription = linkTable[0];
+		    	req.user.link = linkTable[1];
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline && !req.body.otherDisc){
@@ -317,7 +327,10 @@ app.post('/updateUser', function(req, res){
 				    								otherLang : cleanCase(req.body.otherLang),
 				    								otherDisc : cleanCase(req.body.otherDisc),
 				    								email : req.body.email,
-				    								description: req.body.projectDescription}
+				    								description: req.body.projectDescription,
+				    								linkDescription: linkTable[0],
+				    								link: linkTable[1]
+				    							}
 				    						},
 				    						function(){
 												return res.redirect('/userMatches?page=0');									

@@ -87,6 +87,13 @@ html
               label#projectDescription Tell us about your project!
               textarea(name='projectDescription' cols=50 rows=15 required)= user.description 
 
+              label#linkTitle Any links to papers, projects or repos you'd like to show off?
+              - for(i=0; i<user.linkDescription.length; i++){
+                  input(type='text', name='linkDescription[]', placeholder='Description', value=user.linkDescription[i])
+                  input(type='url', name='link[]', placeholder='URL', value=user.link[i])
+              - }
+              input(type='button', id='addURL' onclick='appendURL()' value='Add Another Link').pure-button
+
               input(type='submit', value='Update Profile').pure-button.pure-button-primary
 
           form(method='get', action='changePasswordForm').pure-form

@@ -84,3 +84,21 @@ function signupValidation(){
 
 	return allOK;
 }
+
+//expand the registration / user profile form to add another description/link pair
+function appendURL(){
+	var description = document.createElement('input')
+	,	URL = document.createElement('input')
+	,	addButton = document.getElementById('addURL');
+
+	description.type = 'text';
+	description.name = 'linkDescription[]';
+	description.placeholder = 'Description';
+
+	URL.type = 'url';
+	URL.name = 'link[]';
+	URL.placeholder = 'URL';
+
+	addButton.parentNode.insertBefore(description, addButton);
+	addButton.parentNode.insertBefore(URL, addButton);
+}
