@@ -87,9 +87,12 @@ function signupValidation(){
 
 //expand the registration / user profile form to add another description/link pair
 function appendURL(){
-	var description = document.createElement('input')
+	var title = document.createElement('label')
+	,	description = document.createElement('input')
 	,	URL = document.createElement('input')
 	,	addButton = document.getElementById('addURL');
+
+	title.innerHTML = 'Link:';
 
 	description.type = 'text';
 	description.name = 'linkDescription[]';
@@ -99,6 +102,7 @@ function appendURL(){
 	URL.name = 'link[]';
 	URL.placeholder = 'URL';
 
+	addButton.parentNode.insertBefore(title, addButton);
 	addButton.parentNode.insertBefore(description, addButton);
 	addButton.parentNode.insertBefore(URL, addButton);
 }

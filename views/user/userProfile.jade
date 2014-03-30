@@ -89,6 +89,7 @@ html
 
               label#linkTitle Any links to papers, projects or repos you'd like to show off?
               - for(i=0; i<user.linkDescription.length; i++){
+                  label Link:
                   input(type='text', name='linkDescription[]', placeholder='Description', value=user.linkDescription[i])
                   input(type='url', name='link[]', placeholder='URL', value=user.link[i])
               - }
