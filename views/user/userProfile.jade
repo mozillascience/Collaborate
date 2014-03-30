@@ -29,7 +29,7 @@ html
 
               if user.scientist
                 if disciplineError
-                  p.errorBanner= disciplineError
+                  p.error= disciplineError
                 label#disciplineText What is your discipline?
                 
                 - for(var i=0; i<disciplines.length; i++){
@@ -41,7 +41,7 @@ html
                   input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
 
                 if languageError
-                  p.errorBanner= languageError
+                  p.error= languageError
                 label#languageText What language would you like to work in?
                 
                 - for(i=0; i<languages.length; i++){
