@@ -20,9 +20,8 @@ html
               label Pass
               input(type='password' name='password')
               input(type='submit' value='Log In').pure-button
-
-            form(method='get', action='forgotPass')
-              input(type='submit', value='I forgot my password :(').pure-button
+            a(href='/register', class='block-link') Sign Up
+            a(href='/forgotPass', class='block-link') Recover Password
       +footer()
 
 

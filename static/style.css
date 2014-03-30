@@ -1384,6 +1384,11 @@ footer p{
 	margin-bottom: 12%;
 }
 
+.pure-form textarea {
+  width: 100%;
+  min-height: 7em;
+}
+
 div#registrationDetails{
   opacity: 0;
   max-height: 0;
@@ -1397,13 +1402,21 @@ div#registrationDetails{
 
 p#passError, p#disciplineError, p#languageError{
   display:none;
-  background-color: #FF9999;
-  color: #000000;
 }
 
-p#emailError, p.errorBanner{
+.error{
+  padding: 0.5em;
   background-color: #FF9999;
   color: #000000;
+  padding: 0.5em;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.block-link {
+  float: left;
+  margin-bottom: 1em;
 }
 
 i.bigIcon{

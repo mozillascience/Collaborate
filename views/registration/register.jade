@@ -17,10 +17,9 @@ html
             form(method='post', action='/regUser', onsubmit='return signupValidation()').pure-form.pure-form-stacked
               fieldset
                 div#credentials
-
-                  label E-mail
                   if emailError
-                    p(id ='emailError') That email address is already taken.
+                    p(id ='emailError', class="error") That email address is already taken.
+                  label E-mail
                   if email
                     input(type ='email' name ='email' value = email required)
                   else
@@ -53,7 +52,7 @@ html
 
                 - var opacity = (scientist || developer) ? 'opacity: 1; max-height:10000px' : ''
                 div#registrationDetails(style = opacity)
-                  p(id = 'disciplineError') Please choose at least one discipline.
+                  p(id = 'disciplineError', class="error") Please choose at least one discipline.
                   label#disciplineText What is your discipline?
                   - for(var i = 0; i < disciplines.length; i++){
                     if user.discipline
@@ -67,7 +66,7 @@ html
                   label(for='otherDisc').pure-checkbox= 'Other Discipline'
                     input(type='text', name='otherDisc', id='otherDisc')
 
-                  p(id='languageError') Please choose at least one language.
+                  p(id='languageError', class="error") Please choose at least one language.
                   label#languageText What language would you like to work in?
                   - for(i = 0; i < languages.length; i++){
                     if user.language
