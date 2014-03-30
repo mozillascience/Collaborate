@@ -1,5 +1,3 @@
-
-
 /* Typography */
 
 body {
@@ -1281,7 +1279,7 @@ footer p{
     left: 0;
     position: fixed !important;
 
-    background: url('img/headerImage.jpg');
+    background: url('img/splash2.jpg');
     background-size: cover;
 }
 
@@ -1412,6 +1410,20 @@ i.bigIcon{
   color: #FFFFFF;
   font-size: 1000%
 }
+
+/* Form Customizations */
+
+.pure-form input[type="checkbox"], .pure-form input[type="radio"] {
+  width: auto;
+  float: right;
+}
+
+.pure-form label span {
+  font-family: "Monda";
+  font-weight: bold;
+  font-size: 100%;
+}
+
 
 /*
  * Media Queries

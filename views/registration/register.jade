@@ -16,61 +16,71 @@ html
             p= registerMessage
             form(method='post', action='/regUser', onsubmit='return signupValidation()').pure-form.pure-form-stacked
               fieldset
-
                 div#credentials
+
                   label E-mail
                   if emailError
-                    p(id='emailError') That email address is already taken.
+                    p(id ='emailError') That email address is already taken.
                   if email
-                    input(type='email' name='email' value=email required)
+                    input(type ='email' name ='email' value = email required)
                   else
-                    input(type='email' name='email' required)
-                  p(id='passError') Passwords don't match!
-                  label Pass
-                  input(id='pass' type='password' name='pass')
-                  label Re-Pass
-                  input(id='repass' type='password' name='repass')
+                    input(type = 'email' name = 'email' required)
+
+                  p(id = 'passError') Passwords don't match!
+
+                  label Display Name
+                  input(type='text', name='uName' value=user.name required)
+
+                  label Password
+                  input(id = 'pass' type = 'password' name = 'pass')
+
+                  label Verify Password
+                  input(id = 'repass' type = 'password' name = 'repass')
 
                 div#profession
                   h3 Are you a Scientist or a Developer?
-                  - var scientist = user.profession=='scientist'
-                  - var developer = user.profession=='developer' 
-                  label(for='science').pure-radio= 'Scientist'
-                    input(id='science' type='radio' name='profession' value='scientist' onclick='manageUserForm()' checked = scientist)
-                  label(for='software').pure-radio= 'Developer'
-                    input(id='software' type='radio' name='profession' value='developer' onclick='manageUserForm()' checked = developer)
 
-                - var opacity = (scientist || developer) ? 'opacity: 1; max-height:2000px' : ''
+                  - var scientist = user.profession == 'scientist'
+                  - var developer = user.profession == 'developer' 
+
+                  label(for = 'science').pure-radio
+                    span Scientist
+                    input(id = 'science' type='radio' name='profession' value = 'scientist' onclick = 'manageUserForm()' checked = scientist)
+
+                  label(for = 'software').pure-radio
+                    span Developer
+                    input(id = 'software' type='radio' name='profession' value = 'developer' onclick = 'manageUserForm()' checked = developer)
+
+                - var opacity = (scientist || developer) ? 'opacity: 1; max-height:10000px' : ''
                 div#registrationDetails(style = opacity)
-                  p(id='disciplineError') Please choose at least one discipline.
+                  p(id = 'disciplineError') Please choose at least one discipline.
                   label#disciplineText What is your discipline?
-                  - for(var i=0; i<disciplines.length; i++){
+                  - for(var i = 0; i < disciplines.length; i++){
                     if user.discipline
                       - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
                     else
                       - var check = false
-                    label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                    label(for = disciplines[i]).pure-checkbox
+                      span= disciplines[i]
                       input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] checked = check)
                   - }
 
                   p(id='languageError') Please choose at least one language.
                   label#languageText What language would you like to work in?
-                  - for(i=0; i<languages.length; i++){
+                  - for(i = 0; i < languages.length; i++){
                     if user.language
                       - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
                     else
                       - var check = false
-                    label(for=languages[i]).pure-checkbox= languages[i]
+                    label(for=languages[i]).pure-checkbox
+                      span= languages[i]
                       input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked = check)
                   - }
 
                   label#projectDescription Tell us a bit about your project!
                   textarea(name='projectDescription' cols=50 rows=15 required)
 
-                  label User Name
-                  input(type='text', name='uName' value=user.name required)
-
-                  input(type='submit', value='Create Profile').pure-button.pure-button-primary
+                  input(type='submit', value='Create Account').pure-button.pure-button-primary
 
 
       +footer()
