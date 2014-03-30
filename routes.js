@@ -69,8 +69,7 @@ app.get('/searchResults', function(req, res){
 		return res.redirect('/login');
 
 	res.render('search/searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
-										page: req.query.page, 
-										nPages: Math.ceil(searchBuffer[req.user['_id']].length/10), 
+										page: req.query.page,  
 										hasContacted: req.user.hasContacted} );
 });
 
@@ -99,7 +98,7 @@ app.get('/userMatches', function(req, res){
 			if(req.user.language.indexOf('Any Language') == -1 )
 				query.language = {$in: req.user.language};
 	    	collection.find( query ).toArray(function(err, matches){
-	    		matchBuffer[req.user['_id']] = matches;
+	    		matchBuffer[req.user['_id']] = matches.sort(helpers.sortByTimestamp);
 	    		res.render('user/userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
 	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
@@ -215,6 +214,20 @@ app.post('/regUser', function(req, res){
 			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 			        	if(err) return res.redirect('/error?errCode=1101');
 
+			        	var lang=[], disc=[], linkTable;
+			        	//build language and discipline arrays
+			        	if(req.body.language)
+			        		lang = lang.concat(req.body.language);
+			        	if(req.body.otherLang)
+			        		lang = lang.concat(cleanCase(req.body.otherLang));
+			        	if(req.body.discipline)
+			        		disc = disc.concat(req.body.discipline);
+			        	if(req.body.otherDisc)
+			        		disc = disc.concat(cleanCase(req.body.otherDisc));
+
+			        	//scrub the link table into something sensible
+			        	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+
 		        		//register new user in the db:
 						collection.insert({	'uName':req.body.uName, 
 											'email': req.body.email, 
@@ -222,9 +235,14 @@ app.post('/regUser', function(req, res){
 											'scientist': req.body.profession == 'scientist',
 											'developer': req.body.profession == 'developer',
 											'hasContacted': [],
-											'discipline': req.body.discipline,
-											'language': req.body.language,
-											'description': req.body.projectDescription
+											'discipline': disc,
+											'language': lang,
+											'otherLang': cleanCase(req.body.otherLang),
+											'otherDisc': cleanCase(req.body.otherDisc),
+											'description': req.body.projectDescription,
+											'timeCreated': Date.now(),
+											'linkDescription' : linkTable[0],
+											'link' : linkTable[1]
 										}, {safe: true}, function(err,res) {});
 
 						//log the new user in:
@@ -255,21 +273,39 @@ app.post('/updateUser', function(req, res){
 
 			//find the user
 			collection.findOne({ email: req.user.email }, function(err, user){
+				var lang=[], disc=[], linkTable;
 
 		    	if (err || !user) return res.redirect('/error?errCode=1002');
+
+	        	//build language and discipline arrays
+	        	if(req.body.language)
+	        		lang = lang.concat(req.body.language);
+	        	if(req.body.otherLang)
+	        		lang = lang.concat(cleanCase(req.body.otherLang));
+	        	if(req.body.discipline)
+	        		disc = disc.concat(req.body.discipline);
+	        	if(req.body.otherDisc)
+	        		disc = disc.concat(cleanCase(req.body.otherDisc));
+
+				//scrub the link table into something sensible
+			  	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
 
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
 		    	req.user.developer = req.body.profession=='developer';
-		    	req.user.discipline = req.body.discipline || req.user.discipline;
-		    	req.user.language = req.body.language || req.user.language;
+		    	req.user.discipline = disc || req.user.discipline;
+		    	req.user.language = lang || req.user.language;
+		    	req.user.otherLang = cleanCase(req.body.otherLang) || req.user.otherLang;
+		    	req.user.otherDisc = cleanCase(req.body.otherDisc) || req.user.otherDisc;
 		    	req.user.description = req.body.projectDescription;
+		    	req.user.linkDescription = linkTable[0];
+		    	req.user.link = linkTable[1];
 
 	    		//insist all fields have at least one option selected
-	    		if(!req.body.discipline){
+	    		if(!req.body.discipline && !req.body.otherDisc){
 	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 	    		}
-	    		if(!req.body.language){
+	    		if(!req.body.language && !req.body.otherLang){
 	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
@@ -277,17 +313,24 @@ app.post('/updateUser', function(req, res){
 	    		//email, or they've changed it to something not otherwise in the
 	    		//database
 	    		collection.findOne({ email: req.body.email }, function(err, user2){
+
 	    			if(err) return res.redirect('/error?errCode=1002');
 
 	    			if(!user2 || req.user.email == req.body.email){
-	    				//email checks out - update the DB and carry on to main user pages
+	    				//email checks out - update the DB
+
 				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')}, 
 				    						{$set:{	scientist : req.body.profession=='scientist',
 				    								developer : req.body.profession=='developer',
-				    								discipline : req.body.discipline, 
-				    								language : req.body.language,
+				    								discipline : disc, 
+				    								language : lang,
+				    								otherLang : cleanCase(req.body.otherLang),
+				    								otherDisc : cleanCase(req.body.otherDisc),
 				    								email : req.body.email,
-				    								description: req.body.projectDescription}
+				    								description: req.body.projectDescription,
+				    								linkDescription: linkTable[0],
+				    								link: linkTable[1]
+				    							}
 				    						},
 				    						function(){
 												return res.redirect('/userMatches?page=0');									
@@ -314,16 +357,33 @@ app.post('/search', function(req, res){
 			var scientist = (req.body.profession == 'scientist') ? true : false,
 				query = {scientist: scientist};
 				//no box checked on a checkbox group matches anything, as does checking the 'Any' box
-				if(req.body.language && (req.body.language.indexOf('Any Language') == -1) )
+				if(req.body.language && (req.body.language.indexOf('Any Language') == -1) ){
 					query.language = req.body.language;
-				if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) )
-					query.discipline = req.body.discipline;				
+				    query.language.concat(cleanCase(req.body.otherLang)); //also tack on the freeform field
+				} else if(req.body.otherLang)
+					query.language = [cleanCase(req.body.otherLang)]; //just the freeform field
+				if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) ){
+					query.discipline = req.body.discipline;	
+					query.discipline.concat(cleanCase(req.body.otherDisc));
+				} else if(req.body.otherDisc)
+					query.discipline = [cleanCase(req.body.otherDisc)];
+
+				//just has arrays stuck into language and discipline, wrap in object
+				if(query.language)
+					query.language = {$in: query.language}
+				if(query.discipline)
+					query.discipline = {$in: query.discipline}
 
 	    	collection.find(query).toArray(function(err, matches){
 	    		if(err) return res.redirect('/error?errCode=1200');
 
-	    		searchBuffer[req.user['_id']] = matches;
+	    		searchBuffer[req.user['_id']] = matches.sort(helpers.sortByTimestamp)
 	    		return res.redirect('/searchResults?page=0');
+	    		/*
+				res.render('search/searchResults.jade', {	searchResults: matches, 
+															page: 0, 
+															hasContacted: req.user.hasContacted} );
+				*/
 	    	});
 		});
 	});

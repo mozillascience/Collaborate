@@ -64,6 +64,8 @@ html
                       span= disciplines[i]
                       input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] checked = check)
                   - }
+                  label(for='otherDisc').pure-checkbox= 'Other Discipline'
+                    input(type='text', name='otherDisc', id='otherDisc')
 
                   p(id='languageError') Please choose at least one language.
                   label#languageText What language would you like to work in?
@@ -76,11 +78,18 @@ html
                       span= languages[i]
                       input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked = check)
                   - }
+                  label(for='otherLang').pure-checkbox= 'Other Language'
+                    input(type='text', name='otherLang', id='otherLang')
 
                   label#projectDescription Tell us a bit about your project!
-                  textarea(name='projectDescription' cols=50 rows=15 required)
+                  textarea(name='projectDescription' required)
 
-                  input(type='submit', value='Create Account').pure-button.pure-button-primary
+                  label#linkTitle Any links to papers, projects or repos you'd like to show off?
+                  input(type='text', name='linkDescription[]', placeholder='Description')
+                  input(type='url', name='link[]', placeholder='URL')
+                  input(type='button', id='addURL' onclick='appendURL()' value='Add Another Link').pure-button
+
+                  input(type='submit', value='Create Profile').pure-button.pure-button-primary
 
 
       +footer()

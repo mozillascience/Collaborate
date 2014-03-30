@@ -10,7 +10,7 @@ function manageUserForm(){
 
 	//switch the details section of the form to opacity=1 and allow height expansion:
 	if(wrapperDiv)
-		wrapperDiv.setAttribute('style', 'max-height: 2000px; opacity: 1');
+		wrapperDiv.setAttribute('style', 'max-height: 10000px; opacity: 1');
 
 	//determine which radio button got clicked:
 	isScientist = document.getElementById('science').checked
@@ -34,6 +34,8 @@ function signupValidation(){
 	,	disciplineChosen = false
 	,	languages = document.querySelectorAll('input[name="language[]"]')
 	,	languageChosen = false
+	,	altDiscipline = otherDisc.value
+	,	altLanguage = otherLang.value
 	,	passError = document.getElementById('passError')
 	,	disciplineError = document.getElementById('disciplineError')
 	, 	languageError = document.getElementById('languageError')
@@ -50,11 +52,12 @@ function signupValidation(){
 		passError.style.display = 'none';
 	}
 
-	//demand at least one member of each checkbox group is checked
+	//demand at least one member of each checkbox group is checked, and / or the 'other' field is filled out:
 	[].forEach.call(disciplines, function(discipline){
 		disciplineChosen = disciplineChosen || discipline.checked;
 	});
-	if(!disciplineChosen){
+
+	if(!disciplineChosen && !altDiscipline){
 		allOK = false;
 		disciplineError.style.display = 'block';
 	} else {
@@ -64,7 +67,7 @@ function signupValidation(){
 	[].forEach.call(languages, function(language){
 		languageChosen = languageChosen || language.checked;
 	});
-	if(!languageChosen){
+	if(!languageChosen && !altLanguage){
 		allOK = false;
 		languageError.style.display = 'block';
 	} else {
@@ -80,4 +83,22 @@ function signupValidation(){
 		document.getElementById('emailError').style.display = 'none';
 
 	return allOK;
+}
+
+//expand the registration / user profile form to add another description/link pair
+function appendURL(){
+	var description = document.createElement('input')
+	,	URL = document.createElement('input')
+	,	addButton = document.getElementById('addURL');
+
+	description.type = 'text';
+	description.name = 'linkDescription[]';
+	description.placeholder = 'Description';
+
+	URL.type = 'url';
+	URL.name = 'link[]';
+	URL.placeholder = 'URL';
+
+	addButton.parentNode.insertBefore(description, addButton);
+	addButton.parentNode.insertBefore(URL, addButton);
 }

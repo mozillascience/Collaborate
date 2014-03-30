@@ -28,4 +28,11 @@ html
           label Project Description:
           p= user.description
 
+          label#linkTitle Notable Links
+          ul
+            - for(i=0; i<user.linkDescription.length; i++){
+                li
+                  a(href=user.link[i])= user.linkDescription[i]
+            - }          
+
       +footer()

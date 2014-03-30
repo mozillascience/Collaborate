@@ -36,9 +36,9 @@ html
                   - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
                   label(for=disciplines[i]).pure-checkbox= disciplines[i]
                      input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
-                  
                 - }
-                
+                label(for='otherDisc').pure-checkbox= 'Other Discipline'
+                  input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
 
                 if languageError
                   p.errorBanner= languageError
@@ -48,8 +48,9 @@ html
                   - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
                   label(for=languages[i]).pure-checkbox= languages[i]
                     input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
-                  
                 - }
+                label(for='otherLang').pure-checkbox= 'Other Language'
+                  input(type='text', name='otherLang', id='otherLang', value=user.otherLang)
                 
 
 
@@ -62,9 +63,9 @@ html
                   - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
                   label(for=languages[i]).pure-checkbox= languages[i]
                     input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
-                  
                 - }
-                
+                label(for='otherLang').pure-checkbox= 'Other Language'
+                  input(type='text', name='otherLang', id='otherLang', value=user.otherLang)                
 
                 if disciplineError
                   p= disciplineError
@@ -74,8 +75,9 @@ html
                   - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
                   label(for=disciplines[i]).pure-checkbox= disciplines[i]
                     input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
-                  
                 - }
+                label(for='otherDisc').pure-checkbox= 'Other Discipline'
+                  input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
                 
               label email
               if emailError
@@ -84,6 +86,13 @@ html
 
               label#projectDescription Tell us about your project!
               textarea(name='projectDescription' cols=50 rows=15 required)= user.description 
+
+              label#linkTitle Any links to papers, projects or repos you'd like to show off?
+              - for(i=0; i<user.linkDescription.length; i++){
+                  input(type='text', name='linkDescription[]', placeholder='Description', value=user.linkDescription[i])
+                  input(type='url', name='link[]', placeholder='URL', value=user.link[i])
+              - }
+              input(type='button', id='addURL' onclick='appendURL()' value='Add Another Link').pure-button
 
               input(type='submit', value='Update Profile').pure-button.pure-button-primary
 

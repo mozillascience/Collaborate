@@ -10,11 +10,20 @@ html
     +head()
     
   body.vanilla
+
+    //-
+      if searchResults
+        script.
+          window.sessionStorage.setItem('IPsearchResults', JSON.stringify(searchResults) )
+      else
+        - var searchResults = JSON.parse(sessionStorage.getItem('IPsearchResults'))
+
     div.page-wrapper
       +header(true)
-      
+
       section
         div.content-wrapper
+
           +internalHeader('Search Results')
           - for(var i=page*10; i<Math.min(searchResults.length, (parseInt(page, 10)+1)*10); i++) {
             +userStub(searchResults[i].uName, searchResults[i]._id, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline, searchResults[i].description, searchResults[i]._id)
