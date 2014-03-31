@@ -17,11 +17,11 @@ function manageUserForm(){
 
 	//set the question text as a function of profession:
 	if(isScientist){
-		disciplineText.innerHTML = 'What is your discipline?';
-		languageText.innerHTML = 'What languages would you like to work in?';
+		disciplineText.innerHTML = '*What is your discipline?';
+		languageText.innerHTML = '*What languages would you like to work in?';
 	} else {
-		disciplineText.innerHTML = 'What disciplines interest you?';
-		languageText.innerHTML = 'What languages are you comfortable working in?'
+		disciplineText.innerHTML = '*What disciplines interest you?';
+		languageText.innerHTML = '*What languages are you comfortable working in?'
 	}
 } 
 
@@ -87,9 +87,12 @@ function signupValidation(){
 
 //expand the registration / user profile form to add another description/link pair
 function appendURL(){
-	var description = document.createElement('input')
+	var title = document.createElement('label')
+	,	description = document.createElement('input')
 	,	URL = document.createElement('input')
 	,	addButton = document.getElementById('addURL');
+
+	title.innerHTML = 'Link:';
 
 	description.type = 'text';
 	description.name = 'linkDescription[]';
@@ -98,7 +101,15 @@ function appendURL(){
 	URL.type = 'url';
 	URL.name = 'link[]';
 	URL.placeholder = 'URL';
+	URL.onchange = tweakURL.bind(URL);
 
+	addButton.parentNode.insertBefore(title, addButton);
 	addButton.parentNode.insertBefore(description, addButton);
 	addButton.parentNode.insertBefore(URL, addButton);
+}
+
+//help format URLs correctly
+function tweakURL(){
+	if(this.value.indexOf('http') != 0 && this.value != '')
+		this.value = 'http://' + this.value;
 }
