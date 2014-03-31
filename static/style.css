@@ -1267,6 +1267,12 @@ footer p{
 	margin: 0;
 }
 
+/* Header + Header Menu */
+
+.home-menu .pure-menu-heading {
+  white-space: normal;
+}
+
 /* Splash Page Styles */
 .splash-container {
     background: #1f8dd6;
@@ -1417,11 +1423,18 @@ p#passError, p#disciplineError, p#languageError{
 .block-link {
   float: left;
   margin-bottom: 1em;
+  clear: both;
 }
 
 i.bigIcon{
   color: #FFFFFF;
   font-size: 1000%
+}
+
+/* User Matches */
+
+#userMatches .pure-menu {
+
 }
 
 /* Form Customizations */
