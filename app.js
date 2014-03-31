@@ -31,6 +31,8 @@ smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
     }
 });
 
+minify = require('express-minify');		//minification tool
+
 searchBuffer = {}; 					// namespace to hold user searches
 matchBuffer = {}; 					// namespace to hold user matches
 require('./options.js');			// all the arrays of profile options - TODO name this file something more specific
@@ -42,6 +44,10 @@ connect = mongoHelpers.connect;
 
 // setup the app
 app.set('views', __dirname + '/views');
+app.use(minify({
+    js_match: /javascript/,
+    css_match: /css/
+}));
 app.use('/static', express.static(__dirname + '/static'));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
