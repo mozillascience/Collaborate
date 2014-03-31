@@ -16,10 +16,12 @@ html
             p= registerMessage
             form(method='post', action='/regUser', onsubmit='return signupValidation()').pure-form.pure-form-stacked
               fieldset
+                label *Required Field
+
                 div#credentials
                   if emailError
                     p(id ='emailError', class="error") That email address is already taken.
-                  label E-mail
+                  label *E-mail
                   if email
                     input(type ='email' name ='email' value = email required)
                   else
@@ -27,17 +29,17 @@ html
 
                   p(id = 'passError') Passwords don't match!
 
-                  label Display Name
+                  label *Display Name
                   input(type='text', name='uName' value=user.name required)
 
-                  label Password
+                  label *Password
                   input(id = 'pass' type = 'password' name = 'pass')
 
-                  label Verify Password
+                  label *Verify Password
                   input(id = 'repass' type = 'password' name = 'repass')
 
                 div#profession
-                  h3 Are you a Scientist or a Developer?
+                  h3 *Are you a Scientist or a Developer?
 
                   - var scientist = user.profession == 'scientist'
                   - var developer = user.profession == 'developer' 
@@ -53,7 +55,7 @@ html
                 - var opacity = (scientist || developer) ? 'opacity: 1; max-height:10000px' : ''
                 div#registrationDetails(style = opacity)
                   p(id = 'disciplineError', class="error") Please choose at least one discipline.
-                  label#disciplineText What is your discipline?
+                  label#disciplineText *What is your discipline?
                   - for(var i = 0; i < disciplines.length; i++){
                     if user.discipline
                       - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
@@ -67,7 +69,7 @@ html
                     input(type='text', name='otherDisc', id='otherDisc')
 
                   p(id='languageError', class="error") Please choose at least one language.
-                  label#languageText What language would you like to work in?
+                  label#languageText *What language would you like to work in?
                   - for(i = 0; i < languages.length; i++){
                     if user.language
                       - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
@@ -80,7 +82,7 @@ html
                   label(for='otherLang').pure-checkbox= 'Other Language'
                     input(type='text', name='otherLang', id='otherLang')
 
-                  label#projectDescription Tell us a bit about your project!
+                  label#projectDescription *Tell us a bit about your project!
                   textarea(name='projectDescription' required)
 
                   label#linkTitle Any links to papers, projects or repos you'd like to show off?

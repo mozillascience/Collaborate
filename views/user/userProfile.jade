@@ -21,7 +21,9 @@ html
           form(method='post' action='updateUser').pure-form.pure-form-stacked
             fieldset
 
-              label What is your profession? 
+              label *Required Field
+
+              label *What is your profession? 
               label(for='science').pure-radio= 'Scientist'
                 input(id='science' type='radio' name='profession' value='scientist' onclick='manageUserForm()' checked = user.scientist)
               label(for='software').pure-radio= 'Developer'
@@ -30,7 +32,7 @@ html
               if user.scientist
                 if disciplineError
                   p.error= disciplineError
-                label#disciplineText What is your discipline?
+                label#disciplineText *What is your discipline?
                 
                 - for(var i=0; i<disciplines.length; i++){
                   - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
@@ -42,7 +44,7 @@ html
 
                 if languageError
                   p.error= languageError
-                label#languageText What language would you like to work in?
+                label#languageText *What language would you like to work in?
                 
                 - for(i=0; i<languages.length; i++){
                   - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
@@ -57,7 +59,7 @@ html
               if user.developer
                 if languageError
                   p= languageError
-                label#languageText What languages are you comfortable with?
+                label#languageText *What languages are you comfortable with?
                 
                 - for(i=0; i<languages.length; i++){
                   - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
@@ -69,7 +71,7 @@ html
 
                 if disciplineError
                   p= disciplineError
-                label#disciplineText What sciences interest you?
+                label#disciplineText *What sciences interest you?
                 
                 - for(i=0; i<disciplines.length; i++){
                   - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
@@ -79,12 +81,12 @@ html
                 label(for='otherDisc').pure-checkbox= 'Other Discipline'
                   input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
                 
-              label email
+              label *email
               if emailError
                 p.errorBanner= emailError
               input(type='email', name='email', value=user.email required)
 
-              label#projectDescription Tell us about your project!
+              label#projectDescription *Tell us about your project!
               textarea(name='projectDescription' cols=50 rows=15 required)= user.description 
 
               label#linkTitle Any links to papers, projects or repos you'd like to show off?

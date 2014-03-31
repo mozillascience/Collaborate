@@ -17,11 +17,11 @@ function manageUserForm(){
 
 	//set the question text as a function of profession:
 	if(isScientist){
-		disciplineText.innerHTML = 'What is your discipline?';
-		languageText.innerHTML = 'What languages would you like to work in?';
+		disciplineText.innerHTML = '*What is your discipline?';
+		languageText.innerHTML = '*What languages would you like to work in?';
 	} else {
-		disciplineText.innerHTML = 'What disciplines interest you?';
-		languageText.innerHTML = 'What languages are you comfortable working in?'
+		disciplineText.innerHTML = '*What disciplines interest you?';
+		languageText.innerHTML = '*What languages are you comfortable working in?'
 	}
 } 
 
