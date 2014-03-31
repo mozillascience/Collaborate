@@ -101,8 +101,15 @@ function appendURL(){
 	URL.type = 'url';
 	URL.name = 'link[]';
 	URL.placeholder = 'URL';
+	URL.onchange = tweakURL.bind(URL);
 
 	addButton.parentNode.insertBefore(title, addButton);
 	addButton.parentNode.insertBefore(description, addButton);
 	addButton.parentNode.insertBefore(URL, addButton);
+}
+
+//help format URLs correctly
+function tweakURL(){
+	if(this.value.indexOf('http') != 0 && this.value != '')
+		this.value = 'http://' + this.value;
 }
