@@ -33,8 +33,6 @@ smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
 
 minify = require('express-minify');		//minification tool
 
-searchBuffer = {}; 					// namespace to hold user searches
-matchBuffer = {}; 					// namespace to hold user matches
 require('./options.js');			// all the arrays of profile options - TODO name this file something more specific
 helpers = require('./helpers.js');			// some generic helper functions
 cleanCase = helpers.cleanCase;

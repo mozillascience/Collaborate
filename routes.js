@@ -74,7 +74,7 @@ app.get('/searchResults', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('search/searchResults.jade', {	searchResults: searchBuffer[req.user['_id']], 
+	res.render('search/searchResults.jade', {	searchResults: req.user.searchBuffer, 
 										page: req.query.page,  
 										hasContacted: req.user.hasContacted} );
 });
@@ -104,10 +104,10 @@ app.get('/userMatches', function(req, res){
 			if(req.user.language.indexOf('Any Language') == -1 )
 				query.language = {$in: req.user.language};
 	    	collection.find( query ).toArray(function(err, matches){
-	    		matchBuffer[req.user['_id']] = matches.sort(helpers.sortByTimestamp);
+	    		req.user.matchBuffer = matches.sort(helpers.sortByTimestamp);
 	    		res.render('user/userMatches.jade', {match: matches, 
 	    										page: req.query.page, 
-	    										nPages: Math.ceil(matchBuffer[req.user['_id']].length/10),
+	    										nPages: Math.ceil(req.user.matchBuffer),
 	    										hasContacted: req.user.hasContacted});
 	    	});
 	    });
@@ -377,13 +377,9 @@ app.post('/search', function(req, res){
 	    	collection.find(query).toArray(function(err, matches){
 	    		if(err) return res.redirect('/error?errCode=1200');
 
-	    		searchBuffer[req.user['_id']] = matches.sort(helpers.sortByTimestamp)
+	    		req.user.searchBuffer = matches.sort(helpers.sortByTimestamp);
 	    		return res.redirect('/searchResults?page=0');
-	    		/*
-				res.render('search/searchResults.jade', {	searchResults: matches, 
-															page: 0, 
-															hasContacted: req.user.hasContacted} );
-				*/
+
 	    	});
 		});
 	});
