@@ -18,6 +18,12 @@ app.get('/login', function(req, res) {
 	res.render('auth/login.jade', {loginMessage: loginError})
 });
 
+//logout
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
 app.get('/error', function(req, res){
 	var errorMessage = null;
 
@@ -175,12 +181,6 @@ app.get('/forgotPass', function(req, res){
 
 //validate login attempt
 app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/login?loginError=1'}) );
-
-//logout
-app.post('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
 
 //show registration page with email filled in
 app.post('/register', function(req, res){
