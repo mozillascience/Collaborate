@@ -1,7 +1,6 @@
 include ../partials/head.jade
 include ../partials/header.jade
 include ../partials/footer.jade
-include ../partials/internalHeader.jade
 include ../partials/userStub.jade
 
 doctype html5
@@ -24,7 +23,6 @@ html
       section
         div.content-wrapper
 
-          +internalHeader('Search Results')
           - for(var i=page*10; i<Math.min(searchResults.length, (parseInt(page, 10)+1)*10); i++) {
             +userStub(searchResults[i].uName, searchResults[i]._id, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline, searchResults[i].description, searchResults[i]._id)
           - }
