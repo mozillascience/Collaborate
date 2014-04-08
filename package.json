@@ -26,7 +26,8 @@
     "passport": "*",
     "passport-local": "*",
     "bcrypt":"*",
-    "nodemailer":"*"
+    "nodemailer":"*",
+    "express-minify":"*"
   },
   "engines": {
     "node": "0.10.x",
