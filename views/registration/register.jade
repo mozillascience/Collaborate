@@ -29,6 +29,8 @@ html
 
                   p(id = 'passError') Passwords don't match!
 
+                  if uNameError
+                    p(id ='uNameError', class="error") That user name is already taken.
                   label *Display Name
                   input(type='text', name='uName' value=user.name required)
 

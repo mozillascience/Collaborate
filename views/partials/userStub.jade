@@ -3,7 +3,7 @@ mixin userStub(name, uniqueID, hasContacted, isScientist, isDeveloper, language,
     h3= name
     - if(hasContacted.indexOf(uniqueID+'') != -1 )
       div You have already contacted this user.
-    form(method='get', action='viewProfile').pure-form
+    form(method='get', action='profile/'+name).pure-form
       button(value=uniqueID, name='uniqueID').pure-button View Profile
     label Profession:
     if isScientist

@@ -128,14 +128,14 @@ app.get('/userSearch', function(req, res){
 });
 
 //view another user's profile
-app.get('/viewProfile', function(req, res){
+app.get('/profile/:uName', function(req, res){
 	//don't let a non-logged in person in:
 	if(!req.user)
 		return res.redirect('/login');
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
-	    	collection.findOne( {_id: ObjectID.createFromHexString(req.query.uniqueID)}, function(err, user){
+	    	collection.findOne( {uName: req.params.uName}, function(err, user){
 	    		res.render('user/profile.jade', {loggedIn: !!req.user, user: user});
 	    	});
 		});
@@ -212,48 +212,59 @@ app.post('/regUser', function(req, res){
 		    			res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, emailError: true, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
 		    			return;
 					}
-			        // hash the password along with our new salt:
-			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-			        	if(err) return res.redirect('/error?errCode=1101');
 
-			        	var lang=[], disc=[], linkTable;
-			        	//build language and discipline arrays
-			        	if(req.body.language)
-			        		lang = lang.concat(req.body.language);
-			        	if(req.body.otherLang)
-			        		lang = lang.concat(cleanCase(req.body.otherLang));
-			        	if(req.body.discipline)
-			        		disc = disc.concat(req.body.discipline);
-			        	if(req.body.otherDisc)
-			        		disc = disc.concat(cleanCase(req.body.otherDisc));
+					//reject new account if username is already taken
+			    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
+			    		if(err) return res.redirect('/error?errCode=1002');
 
-			        	//scrub the link table into something sensible
-			        	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+			    		if(accounts.length != 0){ 
+			    			res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, uNameError: true, email:req.body.email, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
+			    			return;
+						}					
 
-		        		//register new user in the db:
-						collection.insert({	'uName':req.body.uName, 
-											'email': req.body.email, 
-											'Pass': hash,
-											'scientist': req.body.profession == 'scientist',
-											'developer': req.body.profession == 'developer',
-											'hasContacted': [],
-											'discipline': disc,
-											'language': lang,
-											'otherLang': cleanCase(req.body.otherLang),
-											'otherDisc': cleanCase(req.body.otherDisc),
-											'description': req.body.projectDescription,
-											'timeCreated': Date.now(),
-											'linkDescription' : linkTable[0],
-											'link' : linkTable[1]
-										}, {safe: true}, function(err,res) {});
+				        // hash the password along with our new salt:
+				        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+				        	if(err) return res.redirect('/error?errCode=1101');
 
-						//log the new user in:
-						collection.findOne({email: req.body.email}, function(err, user){
-							if(err) return res.redirect('/error?errCode=1002');
+				        	var lang=[], disc=[], linkTable;
+				        	//build language and discipline arrays
+				        	if(req.body.language)
+				        		lang = lang.concat(req.body.language);
+				        	if(req.body.otherLang)
+				        		lang = lang.concat(cleanCase(req.body.otherLang));
+				        	if(req.body.discipline)
+				        		disc = disc.concat(req.body.discipline);
+				        	if(req.body.otherDisc)
+				        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
-							req.login(user, function(err) {
-							  if(err) return res.redirect('/error?errCode=1102');
-							  return res.redirect('/userMatches?page=0');;
+				        	//scrub the link table into something sensible
+				        	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+
+			        		//register new user in the db:
+							collection.insert({	'uName':req.body.uName, 
+												'email': req.body.email, 
+												'Pass': hash,
+												'scientist': req.body.profession == 'scientist',
+												'developer': req.body.profession == 'developer',
+												'hasContacted': [],
+												'discipline': disc,
+												'language': lang,
+												'otherLang': cleanCase(req.body.otherLang),
+												'otherDisc': cleanCase(req.body.otherDisc),
+												'description': req.body.projectDescription,
+												'timeCreated': Date.now(),
+												'linkDescription' : linkTable[0],
+												'link' : linkTable[1]
+											}, {safe: true}, function(err,res) {});
+
+							//log the new user in:
+							collection.findOne({email: req.body.email}, function(err, user){
+								if(err) return res.redirect('/error?errCode=1002');
+
+								req.login(user, function(err) {
+								  if(err) return res.redirect('/error?errCode=1102');
+								  return res.redirect('/userMatches?page=0');;
+								});
 							});
 						});
 			        });
