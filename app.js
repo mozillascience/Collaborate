@@ -64,14 +64,20 @@ require('./routes.js');
 passport.use(new LocalStrategy(
     function(email, password, done) {
 		connect(function(err, db) {
+			console.log('Login connect failure')
+			console.log(err)
 			db.collection('Users', function(er, collection) {
+				console.log('Login database connection failure')
+				console.log(er)
 			    collection.findOne({ email: email }, function(err, user) {
-			    	//if (err) return res.render('error.jade');
+					console.log('Login database lookup failure')
+					console.log(err)
 			    	if (!user) {
 			    		return done(null, false, { message: 'Email not found.' });
 			    	}
 				    bcrypt.compare(password, user.Pass, function(err, isMatch) {
-				        //if (err) res.render('error.jade');
+						console.log('Login password validation failure')
+						console.log(err)
 				        if(isMatch)
 					        return done(null, user)
 					    else
