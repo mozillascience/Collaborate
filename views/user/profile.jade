@@ -16,8 +16,9 @@ html
 
           h1 #{user.uName}'s Profile
 
-          form(method='get', action='contactUser').pure-form
-            button(value=user._id, name='uniqueID').pure-button.pure-button-primary Contact #{user.uName}
+          if(loggedIn)
+            form(method='get', action='contactUser').pure-form
+              button(value=user._id, name='uniqueID').pure-button.pure-button-primary Contact #{user.uName}
 
           label Disciplines:
           p= user.discipline

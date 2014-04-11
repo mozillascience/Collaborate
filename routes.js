@@ -130,8 +130,8 @@ app.get('/userSearch', function(req, res){
 //view another user's profile
 app.get('/profile/:uName', function(req, res){
 	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
+	//if(!req.user)
+	//	return res.redirect('/login');
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
