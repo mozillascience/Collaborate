@@ -1,7 +1,7 @@
 include ../partials/head.jade
 include ../partials/header.jade
 include ../partials/footer.jade
-include ../partials/userStub.jade
+include ../partials/resultsUserStub.jade
 
 doctype html5
 html
@@ -16,7 +16,7 @@ html
         div.content-wrapper
 
           - for(var i = page * 10; i < Math.min(match.length, (parseInt(page,10) + 1) * 10); i++) {
-            +userStub(match[i].uName, match[i]._id, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline, match[i].description, match[i]._id)
+            +resultsUserStub(match[i].uName, match[i]._id, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline, match[i].description, match[i]._id)
           - }
 
           - if(match.length == 0) {
