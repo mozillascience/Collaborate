@@ -27,7 +27,10 @@
     "passport-local": "*",
     "bcrypt":"*",
     "nodemailer":"*",
-    "express-minify":"*"
+    "express-minify":"*",
+    "connect-redis":"1.4.7",
+    "express-session":"*"
+
   },
   "engines": {
     "node": "0.10.x",
