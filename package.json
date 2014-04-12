@@ -20,16 +20,16 @@
     "url": "https://github.com/BillMills/node-example/issues"
   },
   "dependencies": {
-    "express": "~3.4.7",
-    "mongodb": "~1.3.23",
-    "jade": "*",
-    "passport": "*",
-    "passport-local": "*",
-    "bcrypt":"*",
-    "nodemailer":"*",
-    "express-minify":"*",
+    "express": "3.4.8",
+    "mongodb": "1.3.23",
+    "jade": "1.1.5",
+    "passport": "0.2.0",
+    "passport-local": "0.1.6",
+    "bcrypt":"0.7.7",
+    "nodemailer":"0.6.1",
+    "express-minify":"0.0.7",
     "connect-redis":"1.4.7",
-    "express-session":"*"
+    "express-session":"1.0.2"
 
   },
   "engines": {
