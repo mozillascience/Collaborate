@@ -13,15 +13,15 @@ mixin resultsUserStub(displayName, uniqueID, hasContacted, isScientist, isDevelo
         div
           h4 Languages:
           ul  
-            each elt in languages
-              li= elt + ',&nbsp;'
+            each elt, index in languages
+              li= elt + ((index < languages.length-1)? ', ' : '')
 
-    if disciplines
-      div
-        h4 Disciplines:
-        ul
-          each elt in disciplines
-            li= elt + ',&nbsp;'
+      if disciplines
+        div
+          h4 Disciplines:
+          ul
+            each elt, index in disciplines
+              li= elt + ((index < disciplines.length-1)? ', ' : '')
 
     a.pure-button(href = '/profile/' + uniqueID) View Profile
 

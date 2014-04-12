@@ -3,8 +3,7 @@
  */
 
 express = require("express");		// route-a-ma-jigs
-session = require('express-session');
-RedisStore = require('connect-redis')(session);
+RedisStore = require('connect-redis')(express);
 app = express();					// init app obj
 
 /*
@@ -54,7 +53,7 @@ app.use(express.bodyParser());
 app.use(express.session({ secret: 'j4IjCQtMcWTsahgMCFCS' }));  //TODO get this out of the public repo lulz
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(session({ store: new RedisStore(), secret: 'keyboard cat' }))
+app.use(express.session({ store: new RedisStore }));
 
 // Load our routes
 require('./routes.js');
