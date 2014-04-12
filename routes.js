@@ -70,14 +70,10 @@ app.get('/requestDeleteProfile', function(req, res){
 
 //show a page of search results
 app.get('/searchResults', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
-
 	res.render('search/searchResults.jade', { loggedIn: !!req.user,	
-										searchResults: req.user.searchBuffer, 
+										searchResults: req.session.searchBuffer, 
 										page: req.query.page,  
-										hasContacted: req.user.hasContacted} );
+										hasContacted: ((!!req.user) ? req.user.hasContacted : []) } );
 });
 
 //user profile page
@@ -105,11 +101,11 @@ app.get('/userMatches', function(req, res){
 			if(req.user.language.indexOf('Any Language') == -1 )
 				query.language = {$in: req.user.language};
 	    	collection.find( query ).toArray(function(err, matches){
-	    		req.user.matchBuffer = matches.sort(helpers.sortByTimestamp);
+	    		req.session.matchBuffer = matches.sort(helpers.sortByTimestamp);
 	    		res.render('user/userMatches.jade', { loggedIn: !!req.user,
 	    										match: matches, 
 	    										page: req.query.page, 
-	    										nPages: Math.ceil(req.user.matchBuffer),
+	    										nPages: Math.ceil(req.session.matchBuffer),
 	    										hasContacted: req.user.hasContacted});
 	    	});
 	    });
@@ -119,12 +115,7 @@ app.get('/userMatches', function(req, res){
 
 //search page
 app.get('/userSearch', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
-
 	res.render('search/userSearch.jade', {loggedIn: !!req.user, languages: languages, disciplines: disciplines});
-
 });
 
 //view another user's profile
@@ -390,7 +381,7 @@ app.post('/search', function(req, res){
 	    	collection.find(query).toArray(function(err, matches){
 	    		if(err) return res.redirect('/error?errCode=1200');
 
-	    		req.user.searchBuffer = matches.sort(helpers.sortByTimestamp);
+	    		req.session.searchBuffer = matches.sort(helpers.sortByTimestamp);
 	    		return res.redirect('/searchResults?page=0');
 
 	    	});
