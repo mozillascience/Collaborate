@@ -1,0 +1,29 @@
+mixin resultsUserStub(displayName, uniqueID, hasContacted, isScientist, isDeveloper, languages, disciplines, uniqueID)
+  div.resultsUserStub
+    h3= displayName
+    div
+      if isScientist
+        h4 Profession:
+          span Scientist
+      if isDeveloper
+        h4 Profession: 
+          span Developer
+
+      if languages
+        div
+          h4 Languages:
+          ul  
+            each elt in languages
+              li= elt + ',&nbsp;'
+
+    if disciplines
+      div
+        h4 Disciplines:
+        ul
+          each elt in disciplines
+            li= elt + ',&nbsp;'
+
+    a.pure-button(href = '/profile/' + uniqueID) View Profile
+
+    - if(hasContacted.indexOf(uniqueID+'') != -1 )
+      div.already You have already contacted this user.

@@ -22,18 +22,20 @@ html
 
       section
         div.content-wrapper
+        h2 Search Results
 
-          - for(var i=page*10; i<Math.min(searchResults.length, (parseInt(page, 10)+1)*10); i++) {
-            +resultsUserStub(searchResults[i].uName, searchResults[i]._id, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline, searchResults[i].description, searchResults[i]._id)
+          - for(var i = page * 10; i < Math.min(searchResults.length, (parseInt(page, 10) + 1 ) * 10); i++) {
+            +resultsUserStub(searchResults[i].uName, searchResults[i]._id, hasContacted, searchResults[i].scientist, searchResults[i].developer, searchResults[i].language, searchResults[i].discipline, searchResults[i]._id)
           - }
 
           - if(searchResults.length == 0) {
-              p No matches... YET
+              p So far we don't have any matches for you.
+              p Probably we should direct the user to the search page here.
           - } 
 
           -if(searchResults.length > 10)
             h3 more results
-            - for(var j=0; j<Math.ceil(searchResults.length/10); j++ ){
+            - for(var j = 0; j < Math.ceil(searchResults.length / 10); j++ ){
               a(href='/searchResults?page='+j) Page #{j}
             - }
 

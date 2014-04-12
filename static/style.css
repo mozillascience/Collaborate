@@ -1433,8 +1433,34 @@ i.bigIcon{
 
 /* User Matches */
 
-#userMatches .pure-menu {
+#userMatches {
 
+}
+
+.resultsUserStub {
+  border: 1px solid red;
+}
+
+.resultsUserStub h3, .resultsUserStub h4 {
+  margin: 0.5em 0px;
+}
+
+.resultsUserStub h4 {
+  display: inline-block;
+  clear: both;
+}
+
+.resultsUserStub ul {
+  list-style-type: none;
+  content: '';
+  display: inline-block;
+  margin: 0;
+  padding-left: 0.5em;
+}
+
+.resultsUserStub ul li {
+  display: inline-block;
+  font-size: 80%;
 }
 
 /* Form Customizations */

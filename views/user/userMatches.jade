@@ -14,9 +14,10 @@ html
       
       section
         div.content-wrapper
-
+          h2 My Matches
+          p Based on the information in your profile, Interdisciplinary Programming has recommended the following profiles for you to check out.
           - for(var i = page * 10; i < Math.min(match.length, (parseInt(page,10) + 1) * 10); i++) {
-            +resultsUserStub(match[i].uName, match[i]._id, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline, match[i].description, match[i]._id)
+            +resultsUserStub(match[i].uName, match[i]._id, hasContacted, match[i].scientist, match[i].developer, match[i].language, match[i].discipline, match[i]._id)
           - }
 
           - if(match.length == 0) {
