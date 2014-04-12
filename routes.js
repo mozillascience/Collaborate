@@ -5,7 +5,7 @@ require('./models/users.js');
  */
 
 app.get('/', function(req, res){
-	app.userModel.getMostRecent(res);
+	app.userModel.getMostRecent(req, res);
 });
 
 //show login page
@@ -15,7 +15,7 @@ app.get('/login', function(req, res) {
 	if(req.query.loginError == 1)
 		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
 
-	res.render('auth/login.jade', {loginMessage: loginError})
+	res.render('auth/login.jade', {loggedIn: !!req.user, loginMessage: loginError})
 });
 
 //logout
@@ -51,12 +51,12 @@ app.get('/error', function(req, res){
 	if(req.query.errCode == 1300)
 		errorMessage = 'Error 1300: Email generation failed.'
 
-	res.render('error.jade', {errorMessage: errorMessage});
+	res.render('error.jade', {loggedIn: !!req.user, errorMessage: errorMessage});
 })
 
 //show registration page
 app.get('/register', function(req, res){
-	res.render('registration/register.jade', {disciplines: disciplines, languages: languages, user:{}});
+	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, user:{}});
 });
 
 //show page to confirm profile deletion
@@ -65,7 +65,7 @@ app.get('/requestDeleteProfile', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('user/confirmDeleteProfile.jade', {});
+	res.render('user/confirmDeleteProfile.jade', {loggedIn: !!req.user,});
 });
 
 //show a page of search results
@@ -74,7 +74,8 @@ app.get('/searchResults', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('search/searchResults.jade', {	searchResults: req.user.searchBuffer, 
+	res.render('search/searchResults.jade', { loggedIn: !!req.user,	
+										searchResults: req.user.searchBuffer, 
 										page: req.query.page,  
 										hasContacted: req.user.hasContacted} );
 });
@@ -85,7 +86,7 @@ app.get('/userProfile', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('user/userProfile.jade', {user: req.user, disciplines: disciplines, languages: languages});
+	res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines: disciplines, languages: languages});
 
 });
 
@@ -105,7 +106,8 @@ app.get('/userMatches', function(req, res){
 				query.language = {$in: req.user.language};
 	    	collection.find( query ).toArray(function(err, matches){
 	    		req.user.matchBuffer = matches.sort(helpers.sortByTimestamp);
-	    		res.render('user/userMatches.jade', {match: matches, 
+	    		res.render('user/userMatches.jade', { loggedIn: !!req.user,
+	    										match: matches, 
 	    										page: req.query.page, 
 	    										nPages: Math.ceil(req.user.matchBuffer),
 	    										hasContacted: req.user.hasContacted});
@@ -121,20 +123,20 @@ app.get('/userSearch', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('search/userSearch.jade', {languages: languages, disciplines: disciplines});
+	res.render('search/userSearch.jade', {loggedIn: !!req.user, languages: languages, disciplines: disciplines});
 
 });
 
 //view another user's profile
-app.get('/viewProfile', function(req, res){
+app.get('/profile/:uName', function(req, res){
 	//don't let a non-logged in person in:
 	if(!req.user)
 		return res.redirect('/login');
 
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
-	    	collection.findOne( {_id: ObjectID.createFromHexString(req.query.uniqueID)}, function(err, user){
-	    		res.render('user/profile.jade', {user: user});
+	    	collection.findOne( {uName: req.params.uName}, function(err, user){
+	    		res.render('user/profile.jade', {loggedIn: !!req.user, user: user});
 	    	});
 		});
 	});
@@ -149,7 +151,7 @@ app.get('/contactUser', function(req, res){
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 	    	collection.findOne( {_id: ObjectID.createFromHexString(req.query.uniqueID)}, function(err, user){
-	    		res.render('user/contactUser.jade', {user: user});
+	    		res.render('user/contactUser.jade', {loggedIn: !!req.user, user: user});
 	    	});
 		});
 	});
@@ -161,7 +163,7 @@ app.get('/changePasswordForm', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	return res.render('user/changePassword.jade');
+	return res.render('user/changePassword.jade', {loggedIn: !!req.user});
 
 });
 
@@ -171,7 +173,7 @@ app.get('/forgotPass', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('auth/recoverPassword.jade');
+	res.render('auth/recoverPassword.jade', {loggedIn: !!req.user});
 
 });
 
@@ -184,7 +186,7 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/userMatch
 
 //show registration page with email filled in
 app.post('/register', function(req, res){
-	res.render('registration/register.jade', {disciplines: disciplines, languages: languages, user:{}, email: req.body.email});
+	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, user:{}, email: req.body.email});
 });
 
 //register a new user
@@ -207,51 +209,62 @@ app.post('/regUser', function(req, res){
 		    		if(err) return res.redirect('/error?errCode=1002');
 
 		    		if(accounts.length != 0){ 
-		    			res.render('registration/register.jade', {disciplines: disciplines, languages: languages, emailError: true, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
+		    			res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, emailError: true, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
 		    			return;
 					}
-			        // hash the password along with our new salt:
-			        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-			        	if(err) return res.redirect('/error?errCode=1101');
 
-			        	var lang=[], disc=[], linkTable;
-			        	//build language and discipline arrays
-			        	if(req.body.language)
-			        		lang = lang.concat(req.body.language);
-			        	if(req.body.otherLang)
-			        		lang = lang.concat(cleanCase(req.body.otherLang));
-			        	if(req.body.discipline)
-			        		disc = disc.concat(req.body.discipline);
-			        	if(req.body.otherDisc)
-			        		disc = disc.concat(cleanCase(req.body.otherDisc));
+					//reject new account if username is already taken
+			    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
+			    		if(err) return res.redirect('/error?errCode=1002');
 
-			        	//scrub the link table into something sensible
-			        	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+			    		if(accounts.length != 0){ 
+			    			res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, uNameError: true, email:req.body.email, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
+			    			return;
+						}					
 
-		        		//register new user in the db:
-						collection.insert({	'uName':req.body.uName, 
-											'email': req.body.email, 
-											'Pass': hash,
-											'scientist': req.body.profession == 'scientist',
-											'developer': req.body.profession == 'developer',
-											'hasContacted': [],
-											'discipline': disc,
-											'language': lang,
-											'otherLang': cleanCase(req.body.otherLang),
-											'otherDisc': cleanCase(req.body.otherDisc),
-											'description': req.body.projectDescription,
-											'timeCreated': Date.now(),
-											'linkDescription' : linkTable[0],
-											'link' : linkTable[1]
-										}, {safe: true}, function(err,res) {});
+				        // hash the password along with our new salt:
+				        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+				        	if(err) return res.redirect('/error?errCode=1101');
 
-						//log the new user in:
-						collection.findOne({email: req.body.email}, function(err, user){
-							if(err) return res.redirect('/error?errCode=1002');
+				        	var lang=[], disc=[], linkTable;
+				        	//build language and discipline arrays
+				        	if(req.body.language)
+				        		lang = lang.concat(req.body.language);
+				        	if(req.body.otherLang)
+				        		lang = lang.concat(cleanCase(req.body.otherLang));
+				        	if(req.body.discipline)
+				        		disc = disc.concat(req.body.discipline);
+				        	if(req.body.otherDisc)
+				        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
-							req.login(user, function(err) {
-							  if(err) return res.redirect('/error?errCode=1102');
-							  return res.redirect('/userMatches?page=0');;
+				        	//scrub the link table into something sensible
+				        	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+
+			        		//register new user in the db:
+							collection.insert({	'uName':req.body.uName, 
+												'email': req.body.email, 
+												'Pass': hash,
+												'scientist': req.body.profession == 'scientist',
+												'developer': req.body.profession == 'developer',
+												'hasContacted': [],
+												'discipline': disc,
+												'language': lang,
+												'otherLang': cleanCase(req.body.otherLang),
+												'otherDisc': cleanCase(req.body.otherDisc),
+												'description': req.body.projectDescription,
+												'timeCreated': Date.now(),
+												'linkDescription' : linkTable[0],
+												'link' : linkTable[1]
+											}, {safe: true}, function(err,res) {});
+
+							//log the new user in:
+							collection.findOne({email: req.body.email}, function(err, user){
+								if(err) return res.redirect('/error?errCode=1002');
+
+								req.login(user, function(err) {
+								  if(err) return res.redirect('/error?errCode=1102');
+								  return res.redirect('/userMatches?page=0');;
+								});
 							});
 						});
 			        });
@@ -303,10 +316,10 @@ app.post('/updateUser', function(req, res){
 
 	    		//insist all fields have at least one option selected
 	    		if(!req.body.discipline && !req.body.otherDisc){
-	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
+	    			return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
 	    		}
 	    		if(!req.body.language && !req.body.otherLang){
-	    			return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
+	    			return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
 	    		}
 
 	    		//need to make sure that either the user hasn't changed their
@@ -338,7 +351,7 @@ app.post('/updateUser', function(req, res){
 
 	    			} else{
 	    				//update failed - need to inform user
-	    				return res.render('user/userProfile.jade', {user: req.user, disciplines:disciplines, languages:languages, emailError: 'That email address is already taken - keep your old one or choose another.'})
+	    				return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, emailError: 'That email address is already taken - keep your old one or choose another.'})
 	    			}
 	    		});
 			});
@@ -454,7 +467,7 @@ app.post('/updatePassword', function(req, res){
 		    	if(err) return res.redirect('/error?errCode=1100');
 
 		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade');
+		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade', {loggedIn: !!req.user});
 
 		        // hash the password along with our new salt:
 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {

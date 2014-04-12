@@ -10,15 +10,8 @@ html
     
   body.vanilla
 
-    //-
-      if searchResults
-        script.
-          window.sessionStorage.setItem('IPsearchResults', JSON.stringify(searchResults) )
-      else
-        - var searchResults = JSON.parse(sessionStorage.getItem('IPsearchResults'))
-
     div.page-wrapper
-      +header(true)
+      +header(loggedIn)
 
       section
         div.content-wrapper

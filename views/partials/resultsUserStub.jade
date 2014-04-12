@@ -25,5 +25,5 @@ mixin resultsUserStub(displayName, uniqueID, hasContacted, isScientist, isDevelo
 
     a.pure-button(href = '/profile/' + uniqueID) View Profile
 
-    - if(hasContacted.indexOf(uniqueID+'') != -1 )
+    - if(hasContacted && hasContacted.indexOf(uniqueID+'') != -1 )
       div.already You have already contacted this user.
