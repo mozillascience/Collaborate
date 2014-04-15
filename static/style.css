@@ -1406,7 +1406,7 @@ div#registrationDetails{
   transition: opacity 0.3s, max-height 0.3s ease; 
 }
 
-p#passError, p#disciplineError, p#languageError{
+p#passError, p#disciplineError, p#languageError, p#affiliationError{
   display:none;
 }
 

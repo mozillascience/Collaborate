@@ -6,7 +6,9 @@ function manageUserForm(){
 	var wrapperDiv = document.getElementById('registrationDetails')
 	,	isScientist
 	,	disciplineText = document.getElementById('disciplineText')
-	,	languageText = document.getElementById('languageText');
+	,	languageText = document.getElementById('languageText')
+	,	affiliationText = document.getElementById('affiliation')
+	,	paidText = document.getElementById('isPaid')
 
 	//switch the details section of the form to opacity=1 and allow height expansion:
 	if(wrapperDiv)
@@ -19,9 +21,13 @@ function manageUserForm(){
 	if(isScientist){
 		disciplineText.innerHTML = '*What is your discipline?';
 		languageText.innerHTML = '*What languages would you like to work in?';
+		affiliationText.innerHTML = '*What sort of organization are you affiliated with?  Check all that apply.'
+		paidText.innerHTML = '*Are you currently offering any paid positions for developers?';
 	} else {
 		disciplineText.innerHTML = '*What disciplines interest you?';
-		languageText.innerHTML = '*What languages are you comfortable working in?'
+		languageText.innerHTML = '*What languages are you comfortable working in?';
+		affiliationText.innerHTML = '*What sort of affiliations are you interested in working with?  Check all that apply.';
+		paidText.innerHTML = '*Are you only interested in paid positions, or is a volunteer engagement possible?';
 	}
 } 
 
@@ -36,6 +42,8 @@ function signupValidation(){
 	,	languageChosen = false
 	,	altDiscipline = otherDisc.value
 	,	altLanguage = otherLang.value
+	,	affiliations = document.querySelectorAll('input[name="affiliation[]"]')
+	,	affiliationChosen = false
 	,	passError = document.getElementById('passError')
 	,	disciplineError = document.getElementById('disciplineError')
 	, 	languageError = document.getElementById('languageError')
@@ -74,13 +82,25 @@ function signupValidation(){
 		languageError.style.display = 'none';
 	}
 
+	[].forEach.call(affiliations, function(affiliation){
+		affiliationChosen = affiliationChosen || affiliation.checked;
+	});
+	if(!affiliationChosen){
+		allOK = false;
+		affiliationError.style.display = 'block';
+	} else {
+		affiliationError.style.display = 'none';
+	}
+
 	//return to top of form if mistakes present
 	if(!allOK)
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-	//turn off email error - server will turn it back on if necessary
+	//turn off email & name error - server will turn it back on if necessary
 	if(document.getElementById('emailError'))
 		document.getElementById('emailError').style.display = 'none';
+	if(document.getElementById('uNameError'))
+		document.getElementById('uNameError').style.display = 'none';	
 
 	return allOK;
 }

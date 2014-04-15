@@ -56,7 +56,7 @@ app.get('/error', function(req, res){
 
 //show registration page
 app.get('/register', function(req, res){
-	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, user:{}});
+	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, affiliations: affiliations, user:{}});
 });
 
 //show page to confirm profile deletion
@@ -177,7 +177,7 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/userMatch
 
 //show registration page with email filled in
 app.post('/register', function(req, res){
-	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, user:{}, email: req.body.email});
+	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, affiliations: affiliations, user:{}, email: req.body.email});
 });
 
 //register a new user
@@ -200,7 +200,21 @@ app.post('/regUser', function(req, res){
 		    		if(err) return res.redirect('/error?errCode=1002');
 
 		    		if(accounts.length != 0){ 
-		    			res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, emailError: true, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
+		    			res.render('registration/register.jade', {	loggedIn: !!req.user, 
+		    														disciplines: disciplines, 
+		    														languages: languages, 
+		    														affiliations: affiliations, 
+		    														emailError: true, 
+		    														user:{	language: req.body.language, 
+		    																discipline: req.body.discipline, 
+		    																profession: req.body.profession, 
+		    																affiliation: req.body.affiliation,
+		    																otherLang: req.body.otherLang,
+		    																otherDisc: req.body.otherDisc, 
+		    																name: req.body.uName, 
+		    																projectDescription: req.body.projectDescription
+		    															} 
+		    														});
 		    			return;
 					}
 
@@ -209,7 +223,22 @@ app.post('/regUser', function(req, res){
 			    		if(err) return res.redirect('/error?errCode=1002');
 
 			    		if(accounts.length != 0){ 
-			    			res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, uNameError: true, email:req.body.email, user:{language: req.body.language, discipline: req.body.discipline, profession: req.body.profession, name: req.body.uName} });
+			    			res.render('registration/register.jade', {	loggedIn: !!req.user, 
+			    														disciplines: disciplines, 
+			    														languages: languages, 
+			    														affiliations: affiliations, 
+			    														uNameError: true, 
+			    														email:req.body.email, 
+			    														user:{	language: req.body.language, 
+			    																discipline: req.body.discipline,  
+			    																profession: req.body.profession,
+			    																affiliation: req.body.affiliation,
+		    																	otherLang: req.body.otherLang,
+		    																	otherDisc: req.body.otherDisc,
+			    																name: req.body.uName,
+			    																projectDescription: req.body.projectDescription
+			    															} 
+			    														});
 			    			return;
 						}					
 

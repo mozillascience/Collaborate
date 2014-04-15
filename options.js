@@ -50,4 +50,11 @@ languages = [ 	'BASIC',
 				'Verilog',
 				'VHDL',
 				'Any Language'
+			],
+
+affiliations = ['Academic Lab',
+				'Government Lab',
+				'Private Lab (For Profit)',
+				'Private Lab (Nonprofit)',
+				'Independent / Other'
 			];

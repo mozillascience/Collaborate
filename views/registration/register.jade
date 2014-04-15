@@ -67,8 +67,12 @@ html
                       span= disciplines[i]
                       input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i] checked = check)
                   - }
+                  if user.otherDisc
+                    - var otherDisc = user.otherDisc
+                  else
+                    - var otherDisc = ''
                   label(for='otherDisc').pure-checkbox= 'Other Discipline'
-                    input(type='text', name='otherDisc', id='otherDisc')
+                    input(type='text', name='otherDisc', id='otherDisc', value=otherDisc)
 
                   p(id='languageError', class="error") Please choose at least one language.
                   label#languageText *What language would you like to work in?
@@ -81,17 +85,50 @@ html
                       span= languages[i]
                       input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked = check)
                   - }
+                  if user.otherLang
+                    - var otherLang = user.otherLang
+                  else
+                    - var otherLang = ''
                   label(for='otherLang').pure-checkbox= 'Other Language'
-                    input(type='text', name='otherLang', id='otherLang')
+                    input(type='text', name='otherLang', id='otherLang', value=otherLang)
 
+                  p(id='affiliationError', class="error") Please choose at least one affiliation.
+                  label#affiliation *What sort of organization are you affiliated with?  Check all that apply.
+                  - for(i = 0; i < affiliations.length; i++){
+                    if user.affiliation
+                      - var check = user.affiliation.indexOf( affiliations[i] ) == -1 ? false : true
+                    else
+                      - var check = false
+                    label(for=affiliations[i]).pure-checkbox
+                      span= affiliations[i]
+                      input(type = 'checkbox', name = 'affiliation[]', value = affiliations[i], id = affiliations[i], checked = check)
+                  - }
+                  
+                  label#isPaid *Are you currently offering any paid positions for developers?
+                  label(for = 'yesPaid').pure-radio
+                    span Yes we are!
+                    input(type = 'radio', name = 'isPaid', value = 'yes', id = 'yesPaid', checked = true)
+                  label(for = 'noPaid').pure-radio
+                    span Not at this time.
+                    input(type = 'radio', name = 'isPaid', value = 'no', id = 'noPaid')
+
+                  if user.projectDescription
+                    - var description = user.projectDescription
+                  else
+                    - var description = ''
                   label#projectDescription *Tell us a bit about your project!
-                  textarea(name='projectDescription' required)
+                  textarea(id = 'projectDescription' name = 'projectDescription' required)= description
 
                   label#linkTitle Any links to papers, projects or repos you'd like to show off?
                   label Link:
                   input(type='text', name='linkDescription[]', placeholder='Description')
                   input(type='url', name='link[]', placeholder='URL', onchange='tweakURL.bind(this)()')
                   input(type='button', id='addURL' onclick='appendURL()' value='Add Another Link').pure-button
+
+                  label#TOS *By checking this box, I agree to the Interdisciplinary Programming Terms Of Service
+                  label(for = 'agreeToTerms').pure-checkbox
+                    span I agree.
+                    input(type = 'checkbox', name = 'agreeToTerms', value = 'agreeToTerms', id = 'agreeToTerms' required)
 
                   input(type='submit', value='Create Profile').pure-button.pure-button-primary
 
