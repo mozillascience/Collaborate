@@ -121,8 +121,16 @@ html
 
                   label#linkTitle Any links to papers, projects or repos you'd like to show off?
                   label Link:
-                  input(type='text', name='linkDescription[]', placeholder='Description')
-                  input(type='url', name='link[]', placeholder='URL', onchange='tweakURL.bind(this)()')
+                  if user.linkDescription
+                    - var linkDescription = user.linkDescription
+                    - var link = user.link
+                  else
+                    - var linkDescription = ['']
+                    - var link = ['']
+                  - for(i = 0; i < linkDescription.length; i++){
+                    input(type = 'text', name = 'linkDescription[]', placeholder = 'Description', value = linkDescription[i])
+                    input(type = 'url', name = 'link[]', placeholder = 'URL', value = link[i], onchange = 'tweakURL.bind(this)()')
+                  - }
                   input(type='button', id='addURL' onclick='appendURL()' value='Add Another Link').pure-button
 
                   label#TOS *By checking this box, I agree to the Interdisciplinary Programming Terms Of Service

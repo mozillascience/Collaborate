@@ -199,6 +199,9 @@ app.post('/regUser', function(req, res){
 		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
 		    		if(err) return res.redirect('/error?errCode=1002');
 
+		    		//scrub the links provided into something sensible:
+		    		var linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link);
+
 		    		if(accounts.length != 0){ 
 		    			res.render('registration/register.jade', {	loggedIn: !!req.user, 
 		    														disciplines: disciplines, 
@@ -212,7 +215,9 @@ app.post('/regUser', function(req, res){
 		    																otherLang: req.body.otherLang,
 		    																otherDisc: req.body.otherDisc, 
 		    																name: req.body.uName, 
-		    																projectDescription: req.body.projectDescription
+		    																projectDescription: req.body.projectDescription,
+																			linkDescription : linkTable[0],
+																			link : linkTable[1]
 		    															} 
 		    														});
 		    			return;
@@ -236,7 +241,9 @@ app.post('/regUser', function(req, res){
 		    																	otherLang: req.body.otherLang,
 		    																	otherDisc: req.body.otherDisc,
 			    																name: req.body.uName,
-			    																projectDescription: req.body.projectDescription
+			    																projectDescription: req.body.projectDescription,
+																				linkDescription : linkTable[0],
+																				link : linkTable[1]
 			    															} 
 			    														});
 			    			return;
@@ -246,7 +253,7 @@ app.post('/regUser', function(req, res){
 				        bcrypt.hash(req.body.pass, salt, function(err, hash) {
 				        	if(err) return res.redirect('/error?errCode=1101');
 
-				        	var lang=[], disc=[], linkTable;
+				        	var lang=[], disc=[];
 				        	//build language and discipline arrays
 				        	if(req.body.language)
 				        		lang = lang.concat(req.body.language);
@@ -256,9 +263,6 @@ app.post('/regUser', function(req, res){
 				        		disc = disc.concat(req.body.discipline);
 				        	if(req.body.otherDisc)
 				        		disc = disc.concat(cleanCase(req.body.otherDisc));
-
-				        	//scrub the link table into something sensible
-				        	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
 
 			        		//register new user in the db:
 							collection.insert({	'uName':req.body.uName, 
