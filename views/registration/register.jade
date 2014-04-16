@@ -133,10 +133,11 @@ html
                   - }
                   input(type='button', id='addURL' onclick='appendURL()' value='Add Another Link').pure-button
 
-                  label#TOS *By checking this box, I agree to the Interdisciplinary Programming Terms Of Service
+                  label#TOS *By checking this box, I agree to the 
+                    a(href='http://giphy.com/gifs/rDMGBIqjAJIys') Interdisciplinary Programming Terms Of Service
                   label(for = 'agreeToTerms').pure-checkbox
                     span I agree.
-                    input(type = 'checkbox', name = 'agreeToTerms', value = 'agreeToTerms', id = 'agreeToTerms' required)
+                    input(type = 'checkbox', name = 'agreeToTerms', value = 'agreed', id = 'agreeToTerms' required)
 
                   input(type='submit', value='Create Profile').pure-button.pure-button-primary
 

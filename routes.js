@@ -273,12 +273,15 @@ app.post('/regUser', function(req, res){
 												'hasContacted': [],
 												'discipline': disc,
 												'language': lang,
+												'affiliation': req.body.affiliation,
+												'isPaid': req.body.isPaid == 'yes',
 												'otherLang': cleanCase(req.body.otherLang),
 												'otherDisc': cleanCase(req.body.otherDisc),
 												'description': req.body.projectDescription,
 												'timeCreated': Date.now(),
 												'linkDescription' : linkTable[0],
-												'link' : linkTable[1]
+												'link' : linkTable[1],
+												'agreeTOS' : req.body.agreeToTerms == 'agreed'
 											}, {safe: true}, function(err,res) {});
 
 							//log the new user in:

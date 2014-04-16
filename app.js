@@ -81,6 +81,7 @@ passport.use(new LocalStrategy(
 						console.log(err)
 					}
 			    	if (!user) {
+			    		console.log('Email not found :(')
 			    		return done(null, false, { message: 'Email not found.' });
 			    	}
 				    bcrypt.compare(password, user.Pass, function(err, isMatch) {
@@ -90,8 +91,10 @@ passport.use(new LocalStrategy(
 						}
 				        if(isMatch)
 					        return done(null, user)
-					    else
+					    else{
+					    	console.log('Bad password :(')
 					    	return done(null, false, { message: 'Bad Password.' });
+					    }
 				    });
 			    });
 			});
