@@ -36,7 +36,9 @@ app.get('/error', function(req, res){
 	if(req.query.errCode == 1002)
 		errorMessage = 'Error 1002: Failed to find user email in database.'
 	if(req.query.errCode == 1003)
-		errorMessage = 'Error 1003: Failed to find user id in database.'	
+		errorMessage = 'Error 1003: Failed to find user id in database.'
+	if(req.query.errCode == 1004)
+		errorMessage = 'Error 1004: Failed to write user to database.'
 	//11xx - password & login problems
 	if(req.query.errCode == 1100)
 		errorMessage = 'Error 1100: Password salt generation failed.'
@@ -288,15 +290,21 @@ app.post('/regUser', function(req, res){
 												'linkDescription' : linkTable[0],
 												'link' : linkTable[1],
 												'agreeTOS' : req.body.agreeToTerms == 'agreed'
-											}, {safe: true}, function(err,res) {});
+											}, {safe: true}, function(err,res) {
+												if(err){
+													console.log(err);
+													return res.redirect('/error?errCode=1002');
+												}	
+											});
 
 							//log the new user in:
 							collection.findOne({email: req.body.email}, function(err, user){
-								if(err) return res.redirect('/error?errCode=1002');
+								if(err || !user) return res.redirect('/error?errCode=1002');
 
 								req.login(user, function(err) {
 								    if(err){
 								    	console.log(err)
+								    	console.log(user)
 								  		return res.redirect('/error?errCode=1102');
 								    }
 
