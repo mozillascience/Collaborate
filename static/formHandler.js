@@ -9,6 +9,8 @@ function manageUserForm(){
 	,	languageText = document.getElementById('languageText')
 	,	affiliationText = document.getElementById('affiliation')
 	,	paidText = document.getElementById('isPaid')
+	,	yesPaidText = document.getElementById('yesPaid')
+	,	noPaidText = document.getElementById('noPaid')
 
 	//switch the details section of the form to opacity=1 and allow height expansion:
 	if(wrapperDiv)
@@ -23,16 +25,20 @@ function manageUserForm(){
 		languageText.innerHTML = '*What languages would you like to work in?';
 		affiliationText.innerHTML = '*What sort of organization are you affiliated with?  Check all that apply.'
 		paidText.innerHTML = '*Are you currently offering any paid positions for developers?';
+		yesPaidText.innerHTML = 'Yes we are!';
+		noPaidText.innerHTML = 'Not at this time.';
 	} else {
 		disciplineText.innerHTML = '*What disciplines interest you?';
 		languageText.innerHTML = '*What languages are you comfortable working in?';
 		affiliationText.innerHTML = '*What sort of affiliations are you interested in working with?  Check all that apply.';
 		paidText.innerHTML = '*Are you only interested in paid positions, or is a volunteer engagement possible?';
+		yesPaidText.innerHTML = 'Paid positions only, please.'
+		noPaidText.innerHTML = 'I might have some volunteer time available.'
 	}
 } 
 
-//validate the signup form before submission
-function signupValidation(){
+//validate user profile forms
+function profileValidation(){
 	var allOK = true
 	,	pass = document.getElementById('pass')
 	,	repass = document.getElementById('repass')
@@ -49,15 +55,17 @@ function signupValidation(){
 	, 	languageError = document.getElementById('languageError')
 
 	//demand password match
-	if(pass.value != repass.value){
-		allOK = false;
-		pass.style.border = '2px solid #FF0000';
-		repass.style.border = '2px solid #FF0000';
-		passError.style.display = 'block';
-	} else {
-		pass.style.border = ''
-		repass.style.border = ''
-		passError.style.display = 'none';
+	if(pass){
+		if(pass.value != repass.value){
+			allOK = false;
+			pass.style.border = '2px solid #FF0000';
+			repass.style.border = '2px solid #FF0000';
+			passError.style.display = 'block';
+		} else {
+			pass.style.border = ''
+			repass.style.border = ''
+			passError.style.display = 'none';
+		}
 	}
 
 	//demand at least one member of each checkbox group is checked, and / or the 'other' field is filled out:

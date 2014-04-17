@@ -16,7 +16,7 @@ html
 
           h1= user.uName
 
-          form(method='post' action='updateUser').pure-form.pure-form-stacked
+          form(method='post' action='updateUser' onsubmit='return profileValidation()').pure-form.pure-form-stacked
             fieldset
 
               label *Required Field
@@ -27,9 +27,8 @@ html
               label(for='software').pure-radio= 'Developer'
                 input(id='software' type='radio' name='profession' value='developer' onclick='manageUserForm()' checked = user.developer)
 
-              
-              if disciplineError
-                p.error= disciplineError
+            
+              p(id='disciplineError', class="error") Please choose at least one discipline.
               label#disciplineText *What is your discipline?
               
               - for(var i=0; i<disciplines.length; i++){
@@ -40,8 +39,7 @@ html
               label(for='otherDisc').pure-checkbox= 'Other Discipline'
                 input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
 
-              if languageError
-                p.error= languageError
+              p(id='languageError', class="error") Please choose at least one language.
               label#languageText *What language would you like to work in?
               
               - for(i=0; i<languages.length; i++){
@@ -51,10 +49,30 @@ html
               - }
               label(for='otherLang').pure-checkbox= 'Other Language'
                 input(type='text', name='otherLang', id='otherLang', value=user.otherLang)               
-                
+
+              p(id='affiliationError', class="error") Please choose at least one affiliation.
+              label#affiliation *What sort of organization are you affiliated with?  Check all that apply.
+              - for(i = 0; i < affiliations.length; i++){
+                if user.affiliation
+                  - var check = user.affiliation.indexOf( affiliations[i] ) == -1 ? false : true
+                else
+                  - var check = false
+                label(for=affiliations[i]).pure-checkbox
+                  span= affiliations[i]
+                  input(type = 'checkbox', name = 'affiliation[]', value = affiliations[i], id = affiliations[i], checked = check)
+              - }
+
+              label#isPaid *Are you currently offering any paid positions for developers?
+              label(for = 'yesPaid').pure-radio
+                span#yesPaid Yes we are!
+                input(type = 'radio', name = 'isPaid', value = 'yes', id = 'yesPaid', checked = user.isPaid)
+              label(for = 'noPaid').pure-radio
+                span#noPaid Not at this time.
+                input(type = 'radio', name = 'isPaid', value = 'no', id = 'noPaid', checked = !user.isPaid)
+
               label *email
               if emailError
-                p.errorBanner= emailError
+                p(id ='emailError', class="error") That email address is already taken.
               input(type='email', name='email', value=user.email required)
 
               label#projectDescription *Tell us about your project!

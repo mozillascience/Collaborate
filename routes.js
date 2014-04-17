@@ -82,7 +82,7 @@ app.get('/userProfile', function(req, res){
 	if(!req.user)
 		return res.redirect('/login');
 
-	res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines: disciplines, languages: languages});
+	res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines: disciplines, languages: languages,  affiliations:affiliations});
 
 });
 
@@ -344,17 +344,11 @@ app.post('/updateUser', function(req, res){
 		    	req.user.language = lang || req.user.language;
 		    	req.user.otherLang = cleanCase(req.body.otherLang) || req.user.otherLang;
 		    	req.user.otherDisc = cleanCase(req.body.otherDisc) || req.user.otherDisc;
+		    	req.user.affiliation = req.body.affiliation,
+				req.user.isPaid	= req.body.isPaid == 'yes',
 		    	req.user.description = req.body.projectDescription;
 		    	req.user.linkDescription = linkTable[0];
 		    	req.user.link = linkTable[1];
-
-	    		//insist all fields have at least one option selected
-	    		if(!req.body.discipline && !req.body.otherDisc){
-	    			return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, disciplineError: 'Please choose at least one discipline'})
-	    		}
-	    		if(!req.body.language && !req.body.otherLang){
-	    			return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, languageError: 'Please choose at least one language'})
-	    		}
 
 	    		//need to make sure that either the user hasn't changed their
 	    		//email, or they've changed it to something not otherwise in the
@@ -373,6 +367,8 @@ app.post('/updateUser', function(req, res){
 				    								language : lang,
 				    								otherLang : cleanCase(req.body.otherLang),
 				    								otherDisc : cleanCase(req.body.otherDisc),
+				    								affiliation : req.body.affiliation,
+				    								isPaid : req.body.isPaid == 'yes',
 				    								email : req.body.email,
 				    								description: req.body.projectDescription,
 				    								linkDescription: linkTable[0],
@@ -385,7 +381,7 @@ app.post('/updateUser', function(req, res){
 
 	    			} else{
 	    				//update failed - need to inform user
-	    				return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, emailError: 'That email address is already taken - keep your old one or choose another.'})
+	    				return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, affiliations:affiliations, emailError: true})
 	    			}
 	    		});
 			});

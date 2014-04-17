@@ -14,7 +14,7 @@ html
           div.content
             h2 Register
             p= registerMessage
-            form(method='post', action='/regUser', onsubmit='return signupValidation()').pure-form.pure-form-stacked
+            form(method='post', action='/regUser', onsubmit='return profileValidation()').pure-form.pure-form-stacked
               fieldset
                 label *Required Field
 
@@ -35,10 +35,10 @@ html
                   input(type='text', name='uName' value=user.name required)
 
                   label *Password
-                  input(id = 'pass' type = 'password' name = 'pass')
+                  input(id = 'pass' type = 'password' name = 'pass' required)
 
                   label *Verify Password
-                  input(id = 'repass' type = 'password' name = 'repass')
+                  input(id = 'repass' type = 'password' name = 'repass' required)
 
                 div#profession
                   h3 *Are you a Scientist or a Developer?
@@ -106,10 +106,10 @@ html
                   
                   label#isPaid *Are you currently offering any paid positions for developers?
                   label(for = 'yesPaid').pure-radio
-                    span Yes we are!
+                    span#yesPaid Yes we are!
                     input(type = 'radio', name = 'isPaid', value = 'yes', id = 'yesPaid', checked = true)
                   label(for = 'noPaid').pure-radio
-                    span Not at this time.
+                    span#noPaid Not at this time.
                     input(type = 'radio', name = 'isPaid', value = 'no', id = 'noPaid')
 
                   if user.projectDescription
