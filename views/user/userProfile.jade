@@ -27,57 +27,30 @@ html
               label(for='software').pure-radio= 'Developer'
                 input(id='software' type='radio' name='profession' value='developer' onclick='manageUserForm()' checked = user.developer)
 
-              if user.scientist
-                if disciplineError
-                  p.error= disciplineError
-                label#disciplineText *What is your discipline?
-                
-                - for(var i=0; i<disciplines.length; i++){
-                  - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
-                     input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
-                - }
-                label(for='otherDisc').pure-checkbox= 'Other Discipline'
-                  input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
+              
+              if disciplineError
+                p.error= disciplineError
+              label#disciplineText *What is your discipline?
+              
+              - for(var i=0; i<disciplines.length; i++){
+                - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
+                label(for=disciplines[i]).pure-checkbox= disciplines[i]
+                   input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
+              - }
+              label(for='otherDisc').pure-checkbox= 'Other Discipline'
+                input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
 
-                if languageError
-                  p.error= languageError
-                label#languageText *What language would you like to work in?
-                
-                - for(i=0; i<languages.length; i++){
-                  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-                  label(for=languages[i]).pure-checkbox= languages[i]
-                    input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
-                - }
-                label(for='otherLang').pure-checkbox= 'Other Language'
-                  input(type='text', name='otherLang', id='otherLang', value=user.otherLang)
-                
-
-
-              if user.developer
-                if languageError
-                  p= languageError
-                label#languageText *What languages are you comfortable with?
-                
-                - for(i=0; i<languages.length; i++){
-                  - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
-                  label(for=languages[i]).pure-checkbox= languages[i]
-                    input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
-                - }
-                label(for='otherLang').pure-checkbox= 'Other Language'
-                  input(type='text', name='otherLang', id='otherLang', value=user.otherLang)                
-
-                if disciplineError
-                  p= disciplineError
-                label#disciplineText *What sciences interest you?
-                
-                - for(i=0; i<disciplines.length; i++){
-                  - var check = user.discipline.indexOf( disciplines[i] ) == -1 ? false : true
-                  label(for=disciplines[i]).pure-checkbox= disciplines[i]
-                    input(type='checkbox', name='discipline[]', value=disciplines[i], id=disciplines[i], checked=check )
-                - }
-                label(for='otherDisc').pure-checkbox= 'Other Discipline'
-                  input(type='text', name='otherDisc', id='otherDisc', value=user.otherDisc)
+              if languageError
+                p.error= languageError
+              label#languageText *What language would you like to work in?
+              
+              - for(i=0; i<languages.length; i++){
+                - var check = user.language.indexOf( languages[i] ) == -1 ? false : true
+                label(for=languages[i]).pure-checkbox= languages[i]
+                  input(type='checkbox', name='language[]', value=languages[i], id=languages[i], checked=check )
+              - }
+              label(for='otherLang').pure-checkbox= 'Other Language'
+                input(type='text', name='otherLang', id='otherLang', value=user.otherLang)               
                 
               label *email
               if emailError
@@ -105,4 +78,4 @@ html
 
       +footer()
 
-    script(src="static/formHandler.js")
+    script(src="static/formHandler.js", onload='manageUserForm()')

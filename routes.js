@@ -332,7 +332,10 @@ app.post('/updateUser', function(req, res){
 	        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
 				//scrub the link table into something sensible
-			  	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+				if(req.body.linkDescription)
+				  	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+				else
+					linkTable = [[],[]];
 
 		    	//update the local user object
 		    	req.user.scientist = req.body.profession=='scientist';
