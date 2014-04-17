@@ -24,8 +24,19 @@ html
           p= user.discipline
           label Languages:
           p= user.language
+          label Affiliations:
+          p= user.affiliation
           label Project Description:
           p= user.description
+
+          if(user.scientist && user.isPaid)
+            p Paid positions available!
+          if(user.scientist && !user.isPaid)
+            p Volunteers only.
+          if(user.developer && user.isPaid)
+            p Paid positions only, please.
+          if(user.developer && !user.isPaid)
+            p Volunteer hours available!
 
           label#linkTitle Notable Links
           ul
