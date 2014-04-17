@@ -47,6 +47,7 @@ app.use(minify({
     js_match: /javascript/,
     css_match: /css/
 }));
+app.use(express.compress());
 app.use('/static', express.static(__dirname + '/static'));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
