@@ -95,11 +95,17 @@ app.get('/userMatches', function(req, res){
 	connect(function(err, db) {
 		db.collection('Users', function(er, collection) {
 			//build query object first:
-			var query = {scientist: req.user.developer};
+			var query = {scientist: req.user.developer, affiliation: {$in: req.user.affiliation} };
 			if(req.user.discipline.indexOf('Any Discipline') == -1 )
 				query.discipline = {$in: req.user.discipline};
 			if(req.user.language.indexOf('Any Language') == -1 )
 				query.language = {$in: req.user.language};
+			//scientist not offering money only matches volunteer devs
+			if(req.user.scientist && !req.user.isPaid)
+				query.isPaid = false;
+			//developer demanding money only matches scientists offering money
+			if(req.user.developer && req.user.isPaid)
+				query.isPaid = true;
 	    	collection.find( query ).toArray(function(err, matches){
 	    		req.session.matchBuffer = matches.sort(helpers.sortByTimestamp);
 	    		res.render('user/userMatches.jade', { loggedIn: !!req.user,
@@ -115,7 +121,7 @@ app.get('/userMatches', function(req, res){
 
 //search page
 app.get('/userSearch', function(req, res){
-	res.render('search/userSearch.jade', {loggedIn: !!req.user, languages: languages, disciplines: disciplines});
+	res.render('search/userSearch.jade', {loggedIn: !!req.user, languages: languages, disciplines: disciplines, affiliations: affiliations});
 });
 
 //view another user's profile
@@ -399,23 +405,33 @@ app.post('/search', function(req, res){
 
 			var scientist = (req.body.profession == 'scientist') ? true : false,
 				query = {scientist: scientist};
-				//no box checked on a checkbox group matches anything, as does checking the 'Any' box
-				if(req.body.language && (req.body.language.indexOf('Any Language') == -1) ){
-					query.language = req.body.language;
-				    query.language.concat(cleanCase(req.body.otherLang)); //also tack on the freeform field
-				} else if(req.body.otherLang)
-					query.language = [cleanCase(req.body.otherLang)]; //just the freeform field
-				if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) ){
-					query.discipline = req.body.discipline;	
-					query.discipline.concat(cleanCase(req.body.otherDisc));
-				} else if(req.body.otherDisc)
-					query.discipline = [cleanCase(req.body.otherDisc)];
 
-				//just has arrays stuck into language and discipline, wrap in object
-				if(query.language)
-					query.language = {$in: query.language}
-				if(query.discipline)
-					query.discipline = {$in: query.discipline}
+			//no box checked on a checkbox group matches anything, as does checking the 'Any' box
+			if(req.body.language && (req.body.language.indexOf('Any Language') == -1) ){
+				query.language = req.body.language;
+			    query.language.concat(cleanCase(req.body.otherLang)); //also tack on the freeform field
+			} else if(req.body.otherLang)
+				query.language = [cleanCase(req.body.otherLang)]; //just the freeform field
+			if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) ){
+				query.discipline = req.body.discipline;	
+				query.discipline.concat(cleanCase(req.body.otherDisc));
+			} else if(req.body.otherDisc)
+				query.discipline = [cleanCase(req.body.otherDisc)];
+			if(req.body.affiliation)
+				query.affiliation = req.body.affiliation;
+			//just has arrays stuck into language, discipline and affiliation, wrap in object
+			if(query.language)
+				query.language = {$in: query.language}
+			if(query.discipline)
+				query.discipline = {$in: query.discipline}
+			if(query.affiliation)
+				query.affiliation = {$in: query.affiliation}
+			//looking for a scientist with money:
+			if(scientist && req.body.moneyConstraint)
+				query.isPaid = true;
+			//looking for a volunteer developer:
+			if(!scientist && req.body.moneyConstraint)
+				query.isPaid = false;
 
 	    	collection.find(query).toArray(function(err, matches){
 	    		if(err) return res.redirect('/error?errCode=1200');

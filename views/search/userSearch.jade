@@ -15,11 +15,11 @@ html
         div.content-wrapper      
 
           form(method='post', action='search').pure-form.pure-form-stacked
-            label Profession
+            label *Profession
             label(for='Scientist').pure-radio Scientist
-              input(type='radio', name='profession', value='scientist', id='Scientist', required)
+              input(type='radio', name='profession', value='scientist', id='Scientist', onclick='manageSearchForm()', required)
             label(for='Developer').pure-radio Developer
-              input(type='radio', name='profession', value='developer', id='Developer', required)
+              input(type='radio', name='profession', value='developer', id='Developer', onclick='manageSearchForm()', required)
 
             label Discipline
             - for(var i=0; i<disciplines.length; i++){
@@ -37,6 +37,18 @@ html
             label(for='otherLang').pure-checkbox= 'Other Language'
               input(type='text', name='otherLang', id='otherLang')
 
+            label Affiliation
+            - for(i = 0; i < affiliations.length; i++){
+              label(for=affiliations[i]).pure-checkbox= affiliations[i]
+                input(type = 'checkbox', name = 'affiliation[]', value = affiliations[i], id = affiliations[i])
+            - }
+
+            label Pay Status
+              label(for='payStatus')#isPaid.pure-checkbox Paid Positions Only
+                input(type = 'checkbox', name = 'moneyConstraint', value=true, id = 'payStatus')
+
             input(type='submit', value='Search Users').pure-button.pure-button-primary
 
       +footer()
+
+    script(src="static/formHandler.js")

@@ -37,6 +37,19 @@ function manageUserForm(){
 	}
 } 
 
+//manage context-dependent text in search form
+function manageSearchForm(){
+	var	moneyQuestion = document.getElementById('isPaid')
+	,	isScientist = document.getElementById('Scientist').checked;
+
+	//be careful to keep the checkbox when changing the inner html of the label that wraps it.
+	if(isScientist){
+		moneyQuestion.innerHTML = 'Paid Positions Only' + moneyQuestion.innerHTML.slice(moneyQuestion.innerHTML.indexOf('<'));
+	} else {
+		moneyQuestion.innerHTML = 'Volunteers Only' + moneyQuestion.innerHTML.slice(moneyQuestion.innerHTML.indexOf('<'))
+	}
+}
+
 //validate user profile forms
 function profileValidation(){
 	var allOK = true
