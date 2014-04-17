@@ -289,7 +289,11 @@ app.post('/regUser', function(req, res){
 								if(err) return res.redirect('/error?errCode=1002');
 
 								req.login(user, function(err) {
-								  if(err) return res.redirect('/error?errCode=1102');
+								    if(err){
+								    	console.log(err)
+								  		return res.redirect('/error?errCode=1102');
+								    }
+
 								  return res.redirect('/userMatches?page=0');;
 								});
 							});
