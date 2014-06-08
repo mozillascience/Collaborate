@@ -1,5 +1,6 @@
 /* Typography */
 
+
 body {
    font-size: 1em;
    line-height: 1.5em;
@@ -1530,7 +1531,16 @@ i.bigIcon{
     }
 }
 
+/* pilot study style */
 
+.pure-g {
+  letter-spacing: normal; /* no idea why letter spacing gets messed up in  upper .content */
+}
 
+header, .ribbon, .ribbon-alt {
+    display: none;
+}
 
-
+.pilot-footer{
+    background: #fff;
+}
