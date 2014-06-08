@@ -1544,3 +1544,17 @@ header, .ribbon, .ribbon-alt {
 .pilot-footer{
     background: #fff;
 }
+
+.splash {
+    border: 3px solid #fff;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    height: 42%;
+}
+
+.splash-head {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
