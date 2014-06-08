@@ -64,16 +64,17 @@ mixin splash
               form(method='post' action='/emailIP').pure-form.pure-form-stacked
                 fieldset
                   label(for='email') Your Email
-                  input#email(type='email', name='email' placeholder='Your Email' required)
-                  textarea(cols=40, rows=10, name='body' required)
+                  input#email(type='email', name='email' required)
+                  label(for='message') Message
+                  textarea#message(cols=40, rows=10, name='body' required)
                   button.pure-button(type='submit') Get Involved
             div.l-box-lrg.pure-u-1.pure-u-med-3-5
               h4 Contact Us
               p
-                | The InterdisciplinaryProgramming team is here to help.  Direct any questions about how it all
-                | works, how to write a great project proposal, what to expect or just say hi at abyss@noreply.lolno 
+                | The Interdisciplinary Programming team is here to help.  Use the form on this page to submit your project proposal |or ask any questions; a copy of your email will be cc'ed to you and the IP team.
+                |  
               h4 More Information
               p
-                | Copyright 2014 Pixel the Cat
+                | Picture credit <a href='http://www.flickr.com/photos/amylovesyah/4528869007/'>Amy Loves Yah</a>
 
 

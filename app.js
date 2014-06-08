@@ -22,15 +22,17 @@ LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the in
 bcrypt = require('bcrypt');			// hashes passwords before putting them in DB
 SALT_WORK_FACTOR = 10;				// how many times to scramble a pass before returning the final hash?
 
+
 mail = require("nodemailer");	// handles sending mail from the server side - no emails exposed in browser
 
 smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
     service: "Gmail",
     auth: {
-        user: "xxx",
-        pass: "xxx"
+        user: "interdisciplinaryprogramming@gmail.com",
+        pass: "Kirin-Omega"
     }
 });
+
 
 minify = require('express-minify');		//minification tool
 

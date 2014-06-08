@@ -610,10 +610,12 @@ app.post('/sendEmail', function(req, res){
 });
 
 app.post('/emailIP', function(req, res){
+
 	var mailOptions = {
 	    from: req.body.email, // sender address
 	    to: 'mills.wj@gmail.com', // list of receivers
-	    subject: 'IP contact form', // Subject line
+	    cc: req.body.email,
+	    subject: 'Hello from Interdisciplinary Programming!', // Subject line
 	    text: req.body.body // body
 	};
 
@@ -621,10 +623,10 @@ app.post('/emailIP', function(req, res){
 	smtpTransport.sendMail(mailOptions, function(error, response){
 		if(error) return res.redirect('/error?errCode=1300');
 	    else{
-	        console.log("Message sent: " + response.message);
+	        res.redirect('/');
 	    }
 
 	    // if you don't want to use this transport object anymore, uncomment following line
 	    //smtpTransport.close(); // shut down the connection pool, no more messages
-	});	
+	});
 });
