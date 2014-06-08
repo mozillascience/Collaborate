@@ -62,11 +62,12 @@ mixin splash
           h2.content-head.is-center Together We Can
           div.pure-g
             div.l-box-lrg.pure-u-1.pure-u-med-2-5
-              form(method='post' action='/register').pure-form.pure-form-stacked
+              form(method='post' action='/emailIP').pure-form.pure-form-stacked
                 fieldset
                   label(for='email') Your Email
-                  input#email(type='email', name='email' placeholder='Your Email')
-                  button.pure-button(type='submit') Sign Up
+                  input#email(type='email', name='email' placeholder='Your Email' required)
+                  textarea(cols=40, rows=10, name='body' required)
+                  button.pure-button(type='submit') Get Involved
             div.l-box-lrg.pure-u-1.pure-u-med-3-5
               h4 Contact Us
               p
