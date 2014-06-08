@@ -1531,7 +1531,8 @@ i.bigIcon{
     }
 }
 
-/* pilot study style */
+/* pilot study styles */
+
 
 .pure-g {
   letter-spacing: normal; /* no idea why letter spacing gets messed up in  upper .content */
@@ -1544,3 +1545,16 @@ header, .ribbon, .ribbon-alt {
 .pilot-footer{
     background: #fff;
 }
+
+.splash {
+    border: 3px solid #fff;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.splash-head {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
