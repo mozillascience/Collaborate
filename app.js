@@ -40,8 +40,9 @@ require('./options.js');			// all the arrays of profile options - TODO name this
 helpers = require('./helpers.js');			// some generic helper functions
 cleanCase = helpers.cleanCase;
 
-mongoHelpers = require('./mongoHelpers.js');                    //helper functions for interacting with mongo
-connect = mongoHelpers.connect;
+//no need for db in static pilot page
+//mongoHelpers = require('./mongoHelpers.js');                    //helper functions for interacting with mongo
+//connect = mongoHelpers.connect;
 
 // setup the app
 app.set('views', __dirname + '/views');
@@ -61,10 +62,11 @@ app.use(express.session({ store: new RedisStore }));
 // Load our routes
 require('./routes.js');
 
+//no users in static pilot
 /*
  * User Authentication Config
  */
-
+/*
 // configure the passport authentication
 passport.use(new LocalStrategy(
     function(email, password, done) {
@@ -114,7 +116,7 @@ passport.deserializeUser(function(obj, done) {
 
 	done(null, obj);
 });
-
+*/
 /*
  * START SERVING DELICIOUS INTERNETS
  * A PROGRAMMER IS YOU!
