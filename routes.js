@@ -176,6 +176,29 @@ app.get('/forgotPass', function(req, res){
 
 });
 
+app.get('/projectDemo', function(req, res){
+	res.render('project/project.jade', {
+										title: 'Alcubierre Drive Prototype', 
+										subjects: ['Space Exploration', 'Particle & Gravity Physics'],
+										languages: ['JavaScript'],
+										paid: true,
+										lead: 'Geordi LaForge',
+										institute: 'Starfleet',
+										summaryText: projectText['demo'],
+										repo: 'http://giphy.com/gifs/huffingtonpost-pandas-huffington-post-panda-gif-142evzSqCBACis',
+										page: 'http://giphy.com/gifs/huffingtonpost-pandas-huffington-post-panda-gif-142evzSqCBACis',
+										moreInfo: [
+											{'title': 'Blog', 'link': ''},
+											{'title': 'Project Details', 'link': ''}
+										],
+										goals: [
+											'Isolate negative mass exotic matter',
+											'Create proof-of-principle warp bubble',
+											'Demonstration pleasure cruise to Pluto for investors'
+										]
+									});
+});
+
 ////////////////////////////////////////////////////////
 //post requests/////////////////////////////////////////
 ////////////////////////////////////////////////////////

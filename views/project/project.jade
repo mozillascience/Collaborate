@@ -1,0 +1,52 @@
+include ../partials/head.jade
+include ../partials/footer.jade
+
+doctype html5
+html
+  head
+    +head()
+    
+  body.vanilla
+    div.page-wrapper
+      section
+        div.content-wrapper      
+          h1.content-head.projectHead= title
+          div.tagWrap
+            - for(var i=0; i<subjects.length; i++) {
+              div.tag.subject= subjects[i]
+            - }
+            - for(i=0; i<languages.length; i++) {
+              div.tag.language= languages[i]
+            - }
+            - if(paid){
+              div.tag.money Paid Position
+            - } else {
+              div.tag.money Volunteers Needed
+            - }
+
+          div.summaryWrap
+            h2.content-head.briefTitle Project Brief
+            div.projectLead= lead
+            div.institute= institute
+            p.summaryText= summaryText
+            h2.content-head.briefTitle Main Deliverables 
+            ul.goals
+              - for(i=0; i<goals.length; i++){
+                li= goals[i]
+              - }
+            - if(repo)
+              a.pure-button.projectLink(href= repo) Code
+            - if(page)
+              a.pure-button.projectLink(href= page) Project Page
+
+          div.sidebar
+            <img src=static/img/alcubierre.jpg class=projectPic></img>
+            a.pure-button.projectLink Get In Touch
+            - if(moreInfo)
+              h4 More Information
+              - for(i=0; i<moreInfo.length; i++){
+                a.infoLink(href= moreInfo[i].link)= moreInfo[i].title
+              - }
+    div.projectFooter
+      div Interdisciplinary Programming
+      div In partnership with Mozilla Science Lab

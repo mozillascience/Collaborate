@@ -1248,7 +1248,7 @@ a.pure-button-primary {
 /* Footer Styles */
 
 .page-wrapper {
-	display: table;
+	/*display: table;*/
 	height: 100%;
 	width: 70%;
 	margin: 0 auto;
@@ -1259,7 +1259,7 @@ a.pure-button-primary {
 }
 
 footer {
-	display: table-row;
+	/*display: table-row;*/
 	height: 1px;
 	color: #000;
 }
@@ -1386,7 +1386,7 @@ footer p{
 }
 
 .vanilla .content-wrapper {
-	width: 70%;
+	/*width: 70%;*/
 	margin: 0 auto;
 	position: static;
 	margin-top: 12%;
@@ -1564,3 +1564,113 @@ header, .ribbon, .ribbon-alt {
   background-color: #EEEEEE;
 }
 
+.MSLlogo{
+  max-width:50%;
+}
+
+/* pilot study project page styles */
+div.tagWrap {
+  width:100%;
+}
+
+div.tag {
+  color: #EEEEEE;
+  line-height: 1em;
+  padding: 0.5em;
+  margin-right: 1em;
+  border-radius: 1em;
+  display: inline-block;
+  margin-bottom: 1em;
+}
+
+div.subject {
+  background-color: #8e44ad;
+}
+
+div.language {
+  background-color: #d35400;
+}
+
+div.money {
+  background-color: #27ae60;
+}
+
+div.sidebar {
+  max-width: 40%;
+  float:left;
+  margin-right: 1em;
+}
+
+img.projectPic {
+  max-width: 100%;
+  margin-bottom: 1em;
+}
+
+div.summaryWrap {
+  float:right;
+  max-width: calc(60% - 1em);
+}
+
+div.projectLead {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+div.institute {
+  display: inline-block;
+}
+
+a.projectLink {
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+a.infoLink{
+  float:left;
+  clear:both;
+  margin-bottom: 1em;
+}
+
+h2.briefTitle{
+  margin-top: 0em;
+}
+
+ul.goals{
+  margin-left: 0em;
+}
+
+div.projectFooter{
+  width:100%;
+  background-color: #EEEEEE;
+  clear:both;
+  text-align: center;
+  padding:1em;
+}
+
+h1.projectHead{
+  margin-top: 0em;
+  margin-bottom: 0.5em;
+}
+
+@media screen and (max-width: 35.5em) {
+  img.projectPic{
+    display:none;
+  }
+
+  div.summaryWrap{
+    max-width: 100%;
+
+  }
+
+  div.tagWrap{
+    margin-bottom: 1em;
+  }
+
+  div.sidebar{
+    max-width:100%;
+  }
+
+  div.tag {
+    margin-bottom: 2px;
+  }
+}

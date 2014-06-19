@@ -25,6 +25,11 @@ SALT_WORK_FACTOR = 10;				// how many times to scramble a pass before returning 
 
 mail = require("nodemailer");	// handles sending mail from the server side - no emails exposed in browser
 
+projectText = {
+	'demo' : 'Ethical butcher try-hard Pitchfork, umami tofu polaroid organic Godard. Whatever Vice master cleanse, polaroid mixtape Williamsburg locavore raw denim tousled slow-carb pug. Shabby chic Tumblr direct trade small batch narwhal biodiesel fixie, Neutra banh mi letterpress distillery kale chips. Artisan bespoke actually next level normcore. Before they sold out ennui ethical, Cosby sweater wayfarers narwhal umami bitters Vice letterpress Godard. Messenger bag cray Echo Park, Pinterest mlkshk fingerstache vinyl normcore gluten-free kogi 3 wolf moon organic. Gentrify flexitarian swag meggings High Life.'
+}
+
+
 smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
     service: "Gmail",
     auth: {
