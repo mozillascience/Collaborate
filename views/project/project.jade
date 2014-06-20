@@ -13,21 +13,33 @@ html
           h1.content-head.projectHead= title
           div.tagWrap
             - for(var i=0; i<subjects.length; i++) {
-              div.tag.subject= subjects[i]
+              div.tag.subject
+                i.fa.fa-flask
+                label.tag= subjects[i]
             - }
             - for(i=0; i<languages.length; i++) {
-              div.tag.language= languages[i]
+              div.tag.language
+                i.fa.fa-code
+                label.tag= languages[i]
             - }
             - if(paid){
-              div.tag.money Paid Position
+              div.tag.money
+                i.fa.fa-dollar
+                label.tag Paid Position 
             - } else {
-              div.tag.money Volunteers Needed
+              div.tag.money
+                i.fa.fa-heart-o
+                label.tag Volunteers Needed
             - }
 
           div.summaryWrap
             h2.content-head.briefTitle Project Brief
-            div.projectLead= lead
-            div.institute= institute
+            div.projectLead 
+              i.fa.fa-user
+              label.altTag= lead
+            div.institute 
+              i.fa.fa-institution
+              label.altTag= institute
             p.summaryText= summaryText
             h2.content-head.briefTitle Main Deliverables 
             ul.goals

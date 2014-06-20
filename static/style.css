@@ -1576,9 +1576,9 @@ div.tagWrap {
 div.tag {
   color: #EEEEEE;
   line-height: 1em;
-  padding: 0.5em;
+  padding: 1em;
   margin-right: 1em;
-  border-radius: 1em;
+  border-radius: 2em;
   display: inline-block;
   margin-bottom: 1em;
 }
@@ -1650,6 +1650,15 @@ div.projectFooter{
 h1.projectHead{
   margin-top: 0em;
   margin-bottom: 0.5em;
+}
+
+label.tag {
+  color: #EEEEEE;
+  margin-left: 0.5em;
+}
+
+label.altTag {
+  margin-left: 0.5em;
 }
 
 @media screen and (max-width: 35.5em) {
