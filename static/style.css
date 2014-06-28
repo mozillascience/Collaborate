@@ -1688,11 +1688,11 @@ label.altTag {
 
   div.summaryWrap{
     max-width: 100%;
-
+    margin-bottom: 3em;
   }
 
   div.tagWrap{
-    margin-bottom: 1em;
+    margin-bottom: 3em;
   }
 
   div.sidebar{
