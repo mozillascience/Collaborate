@@ -1647,6 +1647,26 @@ div.projectFooter{
   padding:1em;
 }
 
+div.projectHeader{
+  width:100%;
+  background: url('img/splash-1.jpg') scroll 80% 0%;
+  clear:both;
+  text-align: center;
+  padding:1em;
+}
+
+div.projectHeader h1{
+  color: #EEEEEE;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.5em;
+  display:inline-block;
+}
+
+section.projectSection{
+  margin-top: 0px;
+}
+
 h1.projectHead{
   margin-top: 0em;
   margin-bottom: 0.5em;

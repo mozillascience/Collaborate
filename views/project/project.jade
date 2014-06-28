@@ -7,9 +7,13 @@ html
     +head()
     
   body.vanilla
+    div.projectHeader
+      h1.content-head Interdisciplinary Programming
+
     div.page-wrapper
-      section
-        div.content-wrapper      
+      section.projectSection
+        div.content-wrapper
+
           h1.content-head.projectHead= title
           div.tagWrap
             - for(var i=0; i<subjects.length; i++) {
@@ -61,4 +65,5 @@ html
               - }
     div.projectFooter
       div Interdisciplinary Programming
-      div In partnership with Mozilla Science Lab
+      div In partnership with <a href='http://mozillascience.org/'>Mozilla Science Lab</a>
+      div Header picture credit <a href='http://www.flickr.com/photos/amylovesyah/4528869007/'>Amy Loves Yah</a>
