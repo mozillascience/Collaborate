@@ -1571,6 +1571,7 @@ header, .ribbon, .ribbon-alt {
 /* pilot study project page styles */
 div.tagWrap {
   width:100%;
+  margin-bottom: 3em;
 }
 
 div.tag {
@@ -1609,6 +1610,7 @@ img.projectPic {
 div.summaryWrap {
   float:right;
   max-width: calc(60% - 1em);
+  margin-bottom: 3em;
 }
 
 div.projectLead {
@@ -1663,7 +1665,7 @@ div.projectHeader h1{
   display:inline-block;
 }
 
-section.projectSection{
+.projectSection{
   margin-top: 0px;
 }
 
@@ -1688,13 +1690,9 @@ label.altTag {
 
   div.summaryWrap{
     max-width: 100%;
-    margin-bottom: 3em;
-  }
 
-  div.tagWrap{
-    margin-bottom: 3em;
   }
-
+  
   div.sidebar{
     max-width:100%;
   }

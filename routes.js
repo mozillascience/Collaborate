@@ -176,27 +176,37 @@ app.get('/forgotPass', function(req, res){
 
 });
 
-app.get('/projectDemo', function(req, res){
-	res.render('project/project.jade', {
-										title: 'Alcubierre Drive Prototype', 
-										subjects: ['Space Exploration', 'Particle & Gravity Physics'],
-										languages: ['JavaScript'],
-										paid: true,
-										lead: 'Geordi LaForge',
-										institute: 'Starfleet',
-										summaryText: projectText['demo'],
-										repo: 'http://giphy.com/gifs/huffingtonpost-pandas-huffington-post-panda-gif-142evzSqCBACis',
-										page: 'http://giphy.com/gifs/huffingtonpost-pandas-huffington-post-panda-gif-142evzSqCBACis',
-										moreInfo: [
-											{'title': 'Blog', 'link': ''},
-											{'title': 'Project Details', 'link': ''}
-										],
-										goals: [
-											'Isolate negative mass exotic matter',
-											'Create proof-of-principle warp bubble',
-											'Demonstration pleasure cruise to Pluto for investors'
-										]
-									});
+//view project page
+app.get('/projects/:route', function(req, res){
+
+	connect(function(err, db) {
+		db.collection('projects', function(er, collection) {
+	    	collection.findOne( {route: req.params.route}, function(err, project){
+
+				res.render('project/project.jade', {
+													title: project.title, 
+													imageName: '/static/img/' + project.imageName,
+													subjects: project.subjects,
+													languages: project.languages,
+													paid: project.paid == true,
+													lead: project.lead,
+													institute: project.institute,
+													summaryText: project.summary,
+													repo: project.repoURL,
+													page: project.pageURL,
+													moreInfo: JSON.parse(project.moreinfo),
+													goals: project.goals
+												});
+
+	    	});
+		});
+	});
+});
+
+app.get('/defineProject', function(req, res){
+
+	res.render('project/regForm.jade', {});
+
 });
 
 ////////////////////////////////////////////////////////
@@ -651,5 +661,55 @@ app.post('/emailIP', function(req, res){
 
 	    // if you don't want to use this transport object anymore, uncomment following line
 	    //smtpTransport.close(); // shut down the connection pool, no more messages
+	});
+});
+
+app.post('/defineProject', function(req, res){
+	var route = req.body.route,
+		title = req.body.title,
+		imageName = req.body.imageName,
+		subjects = req.body.subjects.split(','),
+		languages = req.body.languages.split(','),
+		paid = (req.body.paid) ? true : false,
+		lead = req.body.lead,
+		institute = req.body.institute,
+		summary = req.body.summary,
+		requirements = req.body.requirements,
+		repoURL = req.body.repoURL,
+		pageURL = req.body.pageURL,
+		moreinfo = req.body.moreinfo,
+		goals = req.body.goals.split(',');
+
+	connect(function(err, db) {
+
+		db.collection('projects', function(er, collection) {
+
+			//reject new page if route already taken	    	
+	    	collection.find({route: route}).toArray(function(err, projects){
+	    		if(projects.length != 0){
+	    			return res.redirect('/defineProject');
+	    		} else {
+
+		    		//register new user in the db:
+					collection.insert({	'route':route, 
+										'title':title,
+										'imageName':imageName, 
+										'subjects':subjects,
+										'languages':languages,
+										'paid': paid,
+										'lead': lead,
+										'institute': institute,
+										'summary': summary,
+										'requirements': requirements,
+										'repoURL': repoURL,
+										'pageURL': pageURL,
+										'moreinfo': moreinfo,
+										'goals': goals
+									}, {safe: true}, function(err,response) {
+										return res.redirect('/');
+									});	
+				}
+			});	    
+		});			
 	});
 });

@@ -6,12 +6,12 @@ express = require("express");		// route-a-ma-jigs
 RedisStore = require('connect-redis')(express);
 app = express();					// init app obj
 
-/*
+
 mongo = require('mongodb'); 		// database
 mongoUri = process.env.MONGOLAB_URI 
 	|| process.env.MONGOHQ_URL 
 	|| 'mongodb://127.0.0.1:27017/test';
-*/
+
 ObjectID = require('mongodb').ObjectID;					// tool for reconstructing mongo-style ids out of their hex encodings
 MongoClient = require('mongodb').MongoClient;           // database client
 database = null;                                        //going to populate this with a persistent db connection
@@ -24,11 +24,6 @@ SALT_WORK_FACTOR = 10;				// how many times to scramble a pass before returning 
 
 
 mail = require("nodemailer");	// handles sending mail from the server side - no emails exposed in browser
-
-projectText = {
-	'demo' : 'Ethical butcher try-hard Pitchfork, umami tofu polaroid organic Godard. Whatever Vice master cleanse, polaroid mixtape Williamsburg locavore raw denim tousled slow-carb pug. Shabby chic Tumblr direct trade small batch narwhal biodiesel fixie, Neutra banh mi letterpress distillery kale chips. Artisan bespoke actually next level normcore. Before they sold out ennui ethical, Cosby sweater wayfarers narwhal umami bitters Vice letterpress Godard. Messenger bag cray Echo Park, Pinterest mlkshk fingerstache vinyl normcore gluten-free kogi 3 wolf moon organic. Gentrify flexitarian swag meggings High Life.'
-}
-
 
 smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
     service: "Gmail",
@@ -46,8 +41,8 @@ helpers = require('./helpers.js');			// some generic helper functions
 cleanCase = helpers.cleanCase;
 
 //no need for db in static pilot page
-//mongoHelpers = require('./mongoHelpers.js');                    //helper functions for interacting with mongo
-//connect = mongoHelpers.connect;
+mongoHelpers = require('./mongoHelpers.js');                    //helper functions for interacting with mongo
+connect = mongoHelpers.connect;
 
 // setup the app
 app.set('views', __dirname + '/views');
