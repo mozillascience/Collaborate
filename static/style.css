@@ -1652,6 +1652,7 @@ div.projectFooter{
 div.projectHeader{
   width:100%;
   background: url('img/splash-1.jpg') scroll 80% 0%;
+  background-size: 100%;
   clear:both;
   text-align: center;
   padding:1em;
