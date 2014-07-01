@@ -29,7 +29,7 @@ smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
     service: "Gmail",
     auth: {
         user: "interdisciplinaryprogramming@gmail.com",
-        pass: "Kirin-Omega"
+        pass: "***"
     }
 });
 
