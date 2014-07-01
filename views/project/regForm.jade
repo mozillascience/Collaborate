@@ -1,0 +1,58 @@
+include ../partials/head.jade
+include ../partials/footer.jade
+
+doctype html5
+html
+  head
+    +head()
+    
+  body.vanilla
+    div.page-wrapper
+      section
+        div.content-wrapper
+          form(method='post', action='/defineProject')
+            label(for='pass') Pass
+            input(type='password' name='pass' id='pass')
+            label(for='route') Route
+            input(type='text' name='route' id='route')
+            <br>
+            label(for='title') Title
+            input(type='text' name='title' id='title')
+            <br>
+            label(for='imageName') Image Name
+            input(type='text' name='imageName' id='imageName')
+            <br>
+            label(for='subjects') Subjects (CSV no space)
+            input(type='text' name='subjects' id='subjects')
+            <br>
+            label(for='languages') Languages (CSV no space)
+            input(type='text' name='languages' id='languages')
+            <br>
+            label(for='paid') Paid Position
+            input(type='checkbox' name='paid' value='paid' id='paid')
+            <br>
+            label(for='lead') Lead
+            input(type='text' name='lead' id='lead')
+            <br>
+            label(for='institute') Institute
+            input(type='text' name='institute' id='institute')
+            <br>
+            label(for='summary') Project Summary
+            textarea(name='summary' id='summary')
+            <br>
+            label(for='requirements') Requirements
+            textarea(name='requirements' id='requirements')
+            <br>
+            label(for='repoURL') Repo URL
+            input(type='text' name='repoURL' id='repoURL')
+            <br>
+            label(for='pageURL') Page URL
+            input(type='text' name='pageURL' id='pageURL')
+            <br>
+            label(for='moreinfo') title,link JSON
+            textarea(name='moreinfo' id='moreinfo')
+            <br>
+            label(for='goals') Goals (CSV no space)
+            textarea(name='goals' id='goals')
+            <br>
+            button Submit
