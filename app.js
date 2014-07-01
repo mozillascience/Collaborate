@@ -106,7 +106,9 @@ passport.use(new LocalStrategy(
 		});
     })
 );
+*/
 
+/*
 // passport serialize / deserialize magics
 passport.serializeUser(function(user, done) {
 	done(null, user);

@@ -684,32 +684,42 @@ app.post('/defineProject', function(req, res){
 
 		db.collection('projects', function(er, collection) {
 
-			//reject new page if route already taken	    	
-	    	collection.find({route: route}).toArray(function(err, projects){
-	    		if(projects.length != 0){
-	    			return res.redirect('/defineProject');
-	    		} else {
+			db.collection('admin', function(er, admin) {
+				admin.findOne({ 'name':'pass' }, function(err, entry){
 
-		    		//register new user in the db:
-					collection.insert({	'route':route, 
-										'title':title,
-										'imageName':imageName, 
-										'subjects':subjects,
-										'languages':languages,
-										'paid': paid,
-										'lead': lead,
-										'institute': institute,
-										'summary': summary,
-										'requirements': requirements,
-										'repoURL': repoURL,
-										'pageURL': pageURL,
-										'moreinfo': moreinfo,
-										'goals': goals
-									}, {safe: true}, function(err,response) {
-										return res.redirect('/');
-									});	
-				}
-			});	    
+					bcrypt.compare(req.body.pass, entry.pw, function(err, isMatch) {
+						console.log(isMatch);
+						if(!isMatch) return res.redirect('/defineProject');
+				        		
+						//reject new page if route already taken	    	
+				    	collection.find({route: route}).toArray(function(err, projects){
+				    		if(projects.length != 0){
+				    			return res.redirect('/defineProject');
+				    		} else {
+
+					    		//register new user in the db:
+								collection.insert({	'route':route, 
+													'title':title,
+													'imageName':imageName, 
+													'subjects':subjects,
+													'languages':languages,
+													'paid': paid,
+													'lead': lead,
+													'institute': institute,
+													'summary': summary,
+													'requirements': requirements,
+													'repoURL': repoURL,
+													'pageURL': pageURL,
+													'moreinfo': moreinfo,
+													'goals': goals
+												}, {safe: true}, function(err,response) {
+													return res.redirect('/');
+												});	
+							}
+						});
+					});
+				});	
+			});    
 		});			
 	});
 });
