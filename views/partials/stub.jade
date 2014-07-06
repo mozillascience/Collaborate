@@ -1,0 +1,30 @@
+mixin stub(project)
+  div.stub
+    h1= project.title
+
+    div.tagWrap.stubWrap
+      - for(var i=0; i<project.subjects.length; i++) {
+        div.tag.subject
+          i.fa.fa-flask
+          label.tag= project.subjects[i]
+      - }
+      - for(i=0; i<project.languages.length; i++) {
+        div.tag.language
+          i.fa.fa-code
+          label.tag= project.languages[i]
+      - }
+      - if(project.paid){
+        div.tag.money
+          i.fa.fa-dollar
+          label.tag Paid Position 
+      - } else {
+        div.tag.money
+          i.fa.fa-heart-o
+          label.tag Volunteers Needed
+      - }
+
+    - var image = 'static/img/'+project.imageName
+    img.thumbnail(src= image)
+    p.line-clamp= project.summary
+    - var route = 'projects/'+project.route
+    a(href= route).pure-button.projectLink Learn More
