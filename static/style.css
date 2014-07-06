@@ -1249,7 +1249,7 @@ a.pure-button-primary {
 
 .page-wrapper {
 	/*display: table;*/
-	height: 100%;
+	/*height: 100%;*/
 	width: 70%;
 	margin: 0 auto;
 }
@@ -1574,6 +1574,10 @@ div.tagWrap {
   margin-bottom: 3em;
 }
 
+div.stubWrap {
+  margin-bottom: 1em;
+}
+
 div.tag {
   color: #EEEEEE;
   line-height: 1em;
@@ -1656,6 +1660,7 @@ div.projectHeader{
   clear:both;
   text-align: center;
   padding:1em;
+  max-height: 12em;
 }
 
 div.projectHeader h1{
@@ -1664,6 +1669,7 @@ div.projectHeader h1{
   background: rgba(0, 0, 0, 0.6);
   padding: 0.5em;
   display:inline-block;
+  margin: 1em 0 1em 0;
 }
 
 .projectSection{
@@ -1684,9 +1690,44 @@ label.altTag {
   margin-left: 0.5em;
 }
 
+p.line-clamp:after {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  bottom: 0;
+  content: "...";
+  font-weight: bold;
+  padding: 0 20px 1px 45px;
+  position: absolute;
+  right: 0;
+}
+
+p.line-clamp {
+  height: 5.6em;
+  line-height: 1.4em;
+  overflow: hidden;
+  position: relative;
+
+  width: 90%;
+  display: inline-block;
+  padding-left: 1em;
+}
+
+img.thumbnail {
+  max-width: 10%;
+  display: inline-block;
+  margin-bottom: 1em;
+}
+
+div.stub {
+  border-bottom: 1px solid #BBBBBB;
+}
+
 @media screen and (max-width: 35.5em) {
   img.projectPic{
     display:none;
+  }
+
+  img.thumbnail {
+    display: none;
   }
 
   div.summaryWrap{

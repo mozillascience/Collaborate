@@ -209,6 +209,23 @@ app.get('/defineProject', function(req, res){
 
 });
 
+app.get('/projects', function(req, res){
+
+	connect(function(err, db) {
+		db.collection('projects', function(er, collection) {
+			collection.find( {}).toArray(function(err, results){
+/*
+	    		console.log(results)
+	    		res.redirect('/');
+*/
+				res.render('projectList.jade', {projects: results});
+
+	    	});
+		});
+	});
+
+});
+
 ////////////////////////////////////////////////////////
 //post requests/////////////////////////////////////////
 ////////////////////////////////////////////////////////
