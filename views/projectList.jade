@@ -1,0 +1,28 @@
+include partials/head.jade
+include partials/footer.jade
+include partials/stub.jade
+
+doctype html5
+html
+  head
+    +head()
+    
+  body.vanilla
+    div.projectHeader
+      h1.content-head Interdisciplinary Programming
+
+    div.page-wrapper
+      section.projectSection
+        div.content-wrapper
+
+          - for(var i=0; i<projects.length; i++){
+            - if(projects[i].title)
+              +stub(projects[i])
+          - }
+
+
+
+    div.projectFooter
+      div Interdisciplinary Programming
+      div In partnership with <a href='http://mozillascience.org/'>Mozilla Science Lab</a>
+      div Header picture credit <a href='http://www.flickr.com/photos/amylovesyah/4528869007/'>Amy Loves Yah</a>
