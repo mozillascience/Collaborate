@@ -1721,6 +1721,10 @@ div.stub {
   border-bottom: 1px solid #BBBBBB;
 }
 
+div#bigLink{
+  font-size: 200%;
+}
+
 @media screen and (max-width: 35.5em) {
   img.projectPic{
     display:none;
