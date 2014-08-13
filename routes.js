@@ -194,10 +194,9 @@ app.get('/projects/:route', function(req, res){
 													summaryText: project.summary,
 													repo: project.repoURL,
 													page: project.pageURL,
-													moreInfo: JSON.parse(project.moreinfo),
+													moreInfo: project.moreinfo,
 													goals: project.goals
 												});
-
 	    	});
 		});
 	});
