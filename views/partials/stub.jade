@@ -16,7 +16,7 @@ mixin stub(project)
       - if(project.paid){
         div.tag.money
           i.fa.fa-dollar
-          label.tag Paid Position 
+          label.tag Paid Position
       - } else {
         div.tag.money
           i.fa.fa-heart-o
@@ -25,6 +25,6 @@ mixin stub(project)
 
     - var image = 'static/img/'+project.imageName
     img.thumbnail(src= image)
-    p.line-clamp= project.summary
+    p.line-clamp= project.what
     - var route = 'projects/'+project.route
     a(href= route).pure-button.projectLink Learn More

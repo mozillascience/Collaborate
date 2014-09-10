@@ -72,9 +72,9 @@ app.get('/requestDeleteProfile', function(req, res){
 
 //show a page of search results
 app.get('/searchResults', function(req, res){
-	res.render('search/searchResults.jade', { loggedIn: !!req.user,	
-										searchResults: req.session.searchBuffer, 
-										page: req.query.page,  
+	res.render('search/searchResults.jade', { loggedIn: !!req.user,
+										searchResults: req.session.searchBuffer,
+										page: req.query.page,
 										hasContacted: ((!!req.user) ? req.user.hasContacted : []) } );
 });
 
@@ -111,8 +111,8 @@ app.get('/userMatches', function(req, res){
 	    	collection.find( query ).toArray(function(err, matches){
 	    		req.session.matchBuffer = matches.sort(helpers.sortByTimestamp);
 	    		res.render('user/userMatches.jade', { loggedIn: !!req.user,
-	    										match: matches, 
-	    										page: req.query.page, 
+	    										match: matches,
+	    										page: req.query.page,
 	    										nPages: Math.ceil(req.session.matchBuffer),
 	    										hasContacted: req.user.hasContacted});
 	    	});
@@ -184,14 +184,16 @@ app.get('/projects/:route', function(req, res){
 	    	collection.findOne( {route: req.params.route}, function(err, project){
 
 				res.render('project/project.jade', {
-													title: project.title, 
+													title: project.title,
 													imageName: '/static/img/' + project.imageName,
 													subjects: project.subjects,
 													languages: project.languages,
 													paid: project.paid == true,
 													lead: project.lead,
 													institute: project.institute,
-													summaryText: project.summary,
+													//summaryText: project.summary,
+													who: project.who,
+													what: project.what,
 													repo: project.repoURL,
 													page: project.pageURL,
 													moreInfo: project.moreinfo,
@@ -250,38 +252,38 @@ app.post('/regUser', function(req, res){
 		if(err) return res.redirect('/error?errCode=1000');
 
 		db.collection('Users', function(er, collection) {
-			if(er) return res.redirect('/error?errCode=1001');			
+			if(er) return res.redirect('/error?errCode=1001');
 
 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		    	if(err) return res.redirect('/error?errCode=1100');
 
 		    	//make sure the password was entered the same way twice
 		    	if(req.body.pass != req.body.repass) return res.redirect('/register?registerError=2');
-	
-				//reject new account if email is already taken	    	
+
+				//reject new account if email is already taken
 		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
 		    		if(err) return res.redirect('/error?errCode=1002');
 
 		    		//scrub the links provided into something sensible:
 		    		var linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link);
 
-		    		if(accounts.length != 0){ 
-		    			res.render('registration/register.jade', {	loggedIn: !!req.user, 
-		    														disciplines: disciplines, 
-		    														languages: languages, 
-		    														affiliations: affiliations, 
-		    														emailError: true, 
-		    														user:{	language: req.body.language, 
-		    																discipline: req.body.discipline, 
-		    																profession: req.body.profession, 
+		    		if(accounts.length != 0){
+		    			res.render('registration/register.jade', {	loggedIn: !!req.user,
+		    														disciplines: disciplines,
+		    														languages: languages,
+		    														affiliations: affiliations,
+		    														emailError: true,
+		    														user:{	language: req.body.language,
+		    																discipline: req.body.discipline,
+		    																profession: req.body.profession,
 		    																affiliation: req.body.affiliation,
 		    																otherLang: req.body.otherLang,
-		    																otherDisc: req.body.otherDisc, 
-		    																name: req.body.uName, 
+		    																otherDisc: req.body.otherDisc,
+		    																name: req.body.uName,
 		    																projectDescription: req.body.projectDescription,
 																			linkDescription : linkTable[0],
 																			link : linkTable[1]
-		    															} 
+		    															}
 		    														});
 		    			return;
 					}
@@ -290,15 +292,15 @@ app.post('/regUser', function(req, res){
 			    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
 			    		if(err) return res.redirect('/error?errCode=1002');
 
-			    		if(accounts.length != 0){ 
-			    			res.render('registration/register.jade', {	loggedIn: !!req.user, 
-			    														disciplines: disciplines, 
-			    														languages: languages, 
-			    														affiliations: affiliations, 
-			    														uNameError: true, 
-			    														email:req.body.email, 
-			    														user:{	language: req.body.language, 
-			    																discipline: req.body.discipline,  
+			    		if(accounts.length != 0){
+			    			res.render('registration/register.jade', {	loggedIn: !!req.user,
+			    														disciplines: disciplines,
+			    														languages: languages,
+			    														affiliations: affiliations,
+			    														uNameError: true,
+			    														email:req.body.email,
+			    														user:{	language: req.body.language,
+			    																discipline: req.body.discipline,
 			    																profession: req.body.profession,
 			    																affiliation: req.body.affiliation,
 		    																	otherLang: req.body.otherLang,
@@ -307,10 +309,10 @@ app.post('/regUser', function(req, res){
 			    																projectDescription: req.body.projectDescription,
 																				linkDescription : linkTable[0],
 																				link : linkTable[1]
-			    															} 
+			    															}
 			    														});
 			    			return;
-						}					
+						}
 
 				        // hash the password along with our new salt:
 				        bcrypt.hash(req.body.pass, salt, function(err, hash) {
@@ -328,8 +330,8 @@ app.post('/regUser', function(req, res){
 				        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
 			        		//register new user in the db:
-							collection.insert({	'uName':req.body.uName, 
-												'email': req.body.email, 
+							collection.insert({	'uName':req.body.uName,
+												'email': req.body.email,
 												'Pass': hash,
 												'scientist': req.body.profession == 'scientist',
 												'developer': req.body.profession == 'developer',
@@ -363,7 +365,7 @@ app.post('/regUser', function(req, res){
 
 													  return res.redirect('/userMatches?page=0');;
 													});
-												});	
+												});
 											});
 						});
 			        });
@@ -378,7 +380,7 @@ app.post('/updateUser', function(req, res){
 
 	//open link to the database
 	connect(function(err, db) {
-		if(err) return res.redirect('/error?errCode=1000'); 
+		if(err) return res.redirect('/error?errCode=1000');
 
 		db.collection('Users', function(er, collection) {
 			if(er) return res.redirect('/error?errCode=1001');
@@ -428,10 +430,10 @@ app.post('/updateUser', function(req, res){
 	    			if(!user2 || req.user.email == req.body.email){
 	    				//email checks out - update the DB
 
-				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')}, 
+				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')},
 				    						{$set:{	scientist : req.body.profession=='scientist',
 				    								developer : req.body.profession=='developer',
-				    								discipline : disc, 
+				    								discipline : disc,
 				    								language : lang,
 				    								otherLang : cleanCase(req.body.otherLang),
 				    								otherDisc : cleanCase(req.body.otherDisc),
@@ -444,7 +446,7 @@ app.post('/updateUser', function(req, res){
 				    							}
 				    						},
 				    						function(){
-												return res.redirect('/userMatches?page=0');									
+												return res.redirect('/userMatches?page=0');
 				    						});
 
 	    			} else{
@@ -454,7 +456,7 @@ app.post('/updateUser', function(req, res){
 	    		});
 			});
 		});
-	});	
+	});
 });
 
 //run a search using the given parameters
@@ -475,7 +477,7 @@ app.post('/search', function(req, res){
 			} else if(req.body.otherLang)
 				query.language = [cleanCase(req.body.otherLang)]; //just the freeform field
 			if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) ){
-				query.discipline = req.body.discipline;	
+				query.discipline = req.body.discipline;
 				query.discipline.concat(cleanCase(req.body.otherDisc));
 			} else if(req.body.otherDisc)
 				query.discipline = [cleanCase(req.body.otherDisc)];
@@ -534,7 +536,7 @@ app.post('/emailNewPassword', function(req, res){
 
 				        	//update db
 				        	collection.update({email : req.body.email}, {$set:{Pass : hash}}, function(){});
-							
+
 				        });
 			    });
 
@@ -612,10 +614,10 @@ app.post('/deleteProfile', function(req, res){
 		    	//dump user from DB and return to landing page:
 		    	collection.remove({email : user.email}, true, function(){
 		    		return res.redirect('/');
-		    	});									
+		    	});
 			});
 		});
-	});	
+	});
 });
 
 //send an email to the user indicated by _id, and the initiating user
@@ -652,10 +654,10 @@ app.post('/sendEmail', function(req, res){
 				//make a note in the initiating user's database that they've now contacted this user
 				collection.findOne({_id: ObjectID.createFromHexString(req.user._id+'')}, function(err, user){
 					if(err) return res.redirect('/error?errCode=1003');
-			    	collection.update(	{email : user.email}, 
-			    						{$addToSet:{hasContacted : req.body.uniqueID} }, 
+			    	collection.update(	{email : user.email},
+			    						{$addToSet:{hasContacted : req.body.uniqueID} },
 			    						function(){
-											return res.redirect('/userMatches?page=0');									
+											return res.redirect('/userMatches?page=0');
 			    						});
 				});
 
@@ -685,7 +687,7 @@ app.post('/emailIP', function(req, res){
 	    //smtpTransport.close(); // shut down the connection pool, no more messages
 	});
 });
-
+/*
 app.post('/defineProject', function(req, res){
 	var route = req.body.route,
 		title = req.body.title,
@@ -712,17 +714,17 @@ app.post('/defineProject', function(req, res){
 					bcrypt.compare(req.body.pass, entry.pw, function(err, isMatch) {
 						console.log(isMatch);
 						if(!isMatch) return res.redirect('/defineProject');
-				        		
-						//reject new page if route already taken	    	
+
+						//reject new page if route already taken
 				    	collection.find({route: route}).toArray(function(err, projects){
 				    		if(projects.length != 0){
 				    			return res.redirect('/defineProject');
 				    		} else {
 
 					    		//register new user in the db:
-								collection.insert({	'route':route, 
+								collection.insert({	'route':route,
 													'title':title,
-													'imageName':imageName, 
+													'imageName':imageName,
 													'subjects':subjects,
 													'languages':languages,
 													'paid': paid,
@@ -736,12 +738,13 @@ app.post('/defineProject', function(req, res){
 													'goals': goals
 												}, {safe: true}, function(err,response) {
 													return res.redirect('/');
-												});	
+												});
 							}
 						});
 					});
-				});	
-			});    
-		});			
+				});
+			});
+		});
 	});
 });
+*/

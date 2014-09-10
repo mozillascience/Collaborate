@@ -5,11 +5,11 @@ doctype html5
 html
   head
     +head()
-    
+
   body.vanilla
     div.projectHeader
       h1.content-head Interdisciplinary Programming
-    
+
     div.page-wrapper
       section.projectSection
         div.content-wrapper
@@ -29,7 +29,7 @@ html
             - if(paid){
               div.tag.money
                 i.fa.fa-dollar
-                label.tag Paid Position 
+                label.tag Paid Position
             - } else {
               div.tag.money
                 i.fa.fa-heart-o
@@ -38,14 +38,17 @@ html
 
           div.summaryWrap
             h2.content-head.briefTitle Project Brief
-            div.projectLead 
+            div.projectLead
               i.fa.fa-user
               label.altTag= lead
-            div.institute 
+            div.institute
               i.fa.fa-institution
               label.altTag= institute
-            p.summaryText= summaryText
-            h2.content-head.briefTitle Main Deliverables 
+            h3.content-head.briefTitle Who We Are
+            p.summaryText= who
+            h3.content-head.breifTitle What We're Doing
+            p.summaryText= what
+            h2.content-head.briefTitle Main Deliverables
             ul.goals
               - for(i=0; i<goals.length; i++){
                 li!= goals[i]
