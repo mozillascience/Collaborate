@@ -1,5 +1,25 @@
 mixin footer
-  footer.l-box.is-center.block
-    p Footer Stuff
-    div#scripts
+  footer
+    img(src='static/img/footer-design.png').footer-design
+    div.page-wrapper
+      div.footer-main
+        div.pure-u-1.pure-u-med-1-2
+          p
+            img(src='static/img/footer-mozilla-white.png')
+        div.pure-u-1.pure-u-med-1-4
+          em FOLLOW US
+          div.social-icons
+            a(href="https://twitter.com/MozillaScience").pure-button
+              i.fa.fa-twitter.fa-lg
+        div.pure-u-1.pure-u-med-1-4
+          em MAILING LIST
+          p
+            small Occasional e-mail updates & news.
+          input(placeholder="Sign up with your e-mail")
+          //button.pure-button.pure-button-primary
+            i.fa.fa-care-right
+        div
+          p links to privacy and license and stuff
+        div#scripts
+
 

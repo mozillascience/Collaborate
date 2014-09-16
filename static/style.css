@@ -6,7 +6,7 @@ body {
    line-height: 1.5em;
    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
    color: #444;
-   padding: 0 0 50px;
+   padding: 0;
 }
 
 p {
@@ -1125,7 +1125,7 @@ br {
  */
 body {
     line-height: 1.7em;
-    color: #7f8c8d;
+    color: #515657;
     font-size: 13px;
 }
 
@@ -1182,10 +1182,10 @@ label {
     border-radius: 5px;
 }
 
-a.pure-button-primary {
+.pure-button-primary {
     background: white;
     color: #1f8dd6;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 120%;
 }
 
@@ -1197,14 +1197,15 @@ a.pure-button-primary {
     text-align: center;
     box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
 }
-.home-menu.pure-menu-open {
-    background: #FFFFFF;
-}
-.pure-menu.pure-menu-open.pure-menu-fixed {
+
+.pure-menu.pure-menu-open.pure-menu-horizontal {
     /* Fixed menus normally have a border at the bottom. */
     border-bottom: none;
-    /* I need a higher z-index here because of the scroll-over effect. */
-    z-index: 4;
+}
+
+.pure-menu-horizontal ul {
+  float:right;
+  clear:both;
 }
 
 .home-menu .pure-menu-heading {
@@ -1231,6 +1232,7 @@ a.pure-button-primary {
 
 .page-wrapper {
   width: 75%;
+  max-width:1170px;
   margin: 0 auto;
 }
 
@@ -1239,13 +1241,55 @@ a.pure-button-primary {
 }
 
 footer {
-	/*display: table-row;*/
-	height: 1px;
-	color: #000;
+  color: #FFF;
+  background:rgb(239, 64, 54);
+  margin: 50px 0 0;
+  border-top:12px solid #c9e3f6;
+  position:relative;
 }
 
-footer p{
-	margin: 0;
+footer .footer-design {
+  width:200px;
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: -25px;
+}
+
+footer p {
+  color: #CCC;
+}
+
+footer .footer-main {
+  padding: 50px 0;
+}
+
+footer .social-icons .pure-button {
+  border-radius: 100%;
+  font-size:1em;
+  padding:0.7em;
+  height:2.5em;
+  width:2.5em;
+  margin:1em 0;
+}
+
+footer .social-icons i {
+  color:white;
+}
+
+::-webkit-input-placeholder {
+   font-style: italic;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   font-style: italic;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   font-style: italic;
+}
+
+:-ms-input-placeholder {
+   font-style: italic;
 }
 
 /* Header + Header Menu */
@@ -1256,24 +1300,11 @@ footer p{
 
 .splash {
     text-align: center;
+    clear:both;
 }
 
-/* This is the main heading that appears on the blue section */
-.splash-head {
-    font-size: 20px;
-    font-weight: bold;
-    border: 3px solid white;
-    padding: 1em 1.6em;
-    font-weight: 100;
-    border-radius: 5px;
-    line-height: 1em;
-}
-
-/* This is the subheading that appears on the blue section */
-.splash-subhead {
-    letter-spacing: 0.05em;
-    opacity: 1;
-    margin: 0 0 2.4em 0;
+.splash h1 {
+  font-size: 4em;
 }
 
 .content-wrapper {
@@ -1445,7 +1476,7 @@ i.bigIcon{
 @media (min-width: 48em) {
 
     body {
-        font-size: 16px;
+        font-size: 13px;
     }
 
     .content {
@@ -1459,11 +1490,6 @@ i.bigIcon{
         .home-menu ul {
             float: right;
         }
-
-
-    .splash-head {
-        font-size: 250%;
-    }
 
     .l-box-lrg {
         border: none;
@@ -1506,21 +1532,18 @@ header, .ribbon, .ribbon-alt {
 }
 
 .content-contrast {
-  background-color: #EEEEEE;
+  background-color: #c9e3f6;
 }
 
 .MSLlogo{
-  max-width:30%;
+  width:260px;
+  margin:1em 0;
 }
 
 /* pilot study project page styles */
 div.tagWrap {
   width:100%;
   margin-bottom: 3em;
-}
-
-div.stubWrap {
-  margin-bottom: 1em;
 }
 
 div.tag {
@@ -1662,8 +1685,30 @@ img.thumbnail {
   margin-bottom: 1em;
 }
 
-div.stub {
-  border-bottom: 1px solid #BBBBBB;
+.project {
+  margin: 2em 0;
+}
+
+.project i.fa {
+  font-size:1.5em;
+  margin-right:0.4em;
+}
+
+.project .crop {
+  height:7.5em;
+  width:90%;
+  overflow:hidden;
+}
+.project h3 {
+  margin:0;
+  padding:0;
+  font-size:1.2em;
+  font-weight:bold;
+}
+
+
+.projects {
+  margin-top:4em;
 }
 
 div#bigLink{

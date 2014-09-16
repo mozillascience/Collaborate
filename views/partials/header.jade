@@ -1,27 +1,23 @@
 mixin header(loggedIn)
   header
     div
-
       a(href="https://www.mozilla.org/" id="tabzilla") mozilla
       link(href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css" rel="stylesheet")
       script(src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js")
 
+
+
+    div.pure-menu.pure-menu-open.pure-menu-horizontal
+
       //a(href='http://mozillascience.org/')
+      //a(href='#')
 
-      a(href='#')
-        img(src='static/img/MSL.png').MSLlogo
+      img(src='static/img/MSL.png').MSLlogo
 
-
-
-
-      //ul
+      ul
         if(loggedIn)
           li
             a(href='/userProfile') Profile
-          li
-            a(href='/userSearch') Search
-          li
-            a(href='/userMatches?page=0') Matches
           li
             a(href='/logout') Logout
         else

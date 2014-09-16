@@ -5,7 +5,20 @@ require('./models/users.js');
  */
 
 app.get('/', function(req, res){
-	app.userModel.getMostRecent(req, res);
+	// app.userModel.getMostRecent(req, res);
+
+	connect(function(err, db) {
+		db.collection('projects', function(er, collection) {
+			collection.find( {}).toArray(function(err, results){
+/*
+	    		console.log(results)
+	    		res.redirect('/');
+*/
+				res.render('index.jade', {projects: results});
+
+	    	});
+		});
+	});
 });
 
 //show login page
