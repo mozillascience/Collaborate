@@ -1,16 +1,16 @@
 include partials/head.jade
 include partials/header.jade
-include splash.jade
+include welcome.jade
 include partials/footer.jade
 
 doctype html5
 html
   head
-    +head() 
-  body  
+    +head()
+  body
     div.page-wrapper
       +header(loggedIn)
       section
-        +splash()
-      
+        +welcome()
+
 

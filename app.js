@@ -2,30 +2,30 @@
  * Globals. Haters gonna hate.
  */
 
-express = require("express");		// route-a-ma-jigs
+express = require("express");        // route-a-ma-jigs
 RedisStore = require('connect-redis')(express);
-app = express();					// init app obj
+app = express();                    // init app obj
 
 
-mongo = require('mongodb'); 		// database
-mongoUri = process.env.MONGOLAB_URI 
-	|| process.env.MONGOHQ_URL 
-	|| 'mongodb://127.0.0.1:27017/test';
+mongo = require('mongodb');         // database
+mongoUri = process.env.MONGOLAB_URI
+    || process.env.MONGOHQ_URL
+    || 'mongodb://127.0.0.1:27017/test';
 
-ObjectID = require('mongodb').ObjectID;					// tool for reconstructing mongo-style ids out of their hex encodings
+ObjectID = require('mongodb').ObjectID;                 // tool for reconstructing mongo-style ids out of their hex encodings
 MongoClient = require('mongodb').MongoClient;           // database client
 database = null;                                        //going to populate this with a persistent db connection
 
-passport = require('passport');		// user authentication
+passport = require('passport');        // user authentication
 LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the internet said to do this. - Bill
 
-bcrypt = require('bcrypt');			// hashes passwords before putting them in DB
-SALT_WORK_FACTOR = 10;				// how many times to scramble a pass before returning the final hash?
+bcrypt = require('bcrypt');            // hashes passwords before putting them in DB
+SALT_WORK_FACTOR = 10;                // how many times to scramble a pass before returning the final hash?
 
 
-mail = require("nodemailer");	// handles sending mail from the server side - no emails exposed in browser
+mail = require("nodemailer");    // handles sending mail from the server side - no emails exposed in browser
 
-smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
+smtpTransport = mail.createTransport("SMTP",{    //transport service for nodemailer
     service: "Gmail",
     auth: {
         user: "interdisciplinaryprogramming@gmail.com",
@@ -34,10 +34,10 @@ smtpTransport = mail.createTransport("SMTP",{	//transport service for nodemailer
 });
 
 
-minify = require('express-minify');		//minification tool
+minify = require('express-minify');        //minification tool
 
-require('./options.js');			// all the arrays of profile options - TODO name this file something more specific
-helpers = require('./helpers.js');			// some generic helper functions
+require('./options.js');            // all the arrays of profile options - TODO name this file something more specific
+helpers = require('./helpers.js');            // some generic helper functions
 cleanCase = helpers.cleanCase;
 
 //no need for db in static pilot page
@@ -70,40 +70,40 @@ require('./routes.js');
 // configure the passport authentication
 passport.use(new LocalStrategy(
     function(email, password, done) {
-		connect(function(err, db) {
-			if(err){
-				console.log('Login connect failure')
-				console.log(err)
-			}
-			db.collection('Users', function(er, collection) {
-				if(er){
-					console.log('Login database connection failure')
-					console.log(er)
-				}
-			    collection.findOne({ email: email }, function(err, user) {
-			    	if(err){
-						console.log('Login database lookup failure')
-						console.log(err)
-					}
-			    	if (!user) {
-			    		console.log('Email not found :(')
-			    		return done(null, false, { message: 'Email not found.' });
-			    	}
-				    bcrypt.compare(password, user.Pass, function(err, isMatch) {
-				    	if(err){
-							console.log('Login password validation failure')
-							console.log(err)
-						}
-				        if(isMatch)
-					        return done(null, user)
-					    else{
-					    	console.log('Bad password :(')
-					    	return done(null, false, { message: 'Bad Password.' });
-					    }
-				    });
-			    });
-			});
-		});
+        connect(function(err, db) {
+            if(err){
+                console.log('Login connect failure')
+                console.log(err)
+            }
+            db.collection('Users', function(er, collection) {
+                if(er){
+                    console.log('Login database connection failure')
+                    console.log(er)
+                }
+                collection.findOne({ email: email }, function(err, user) {
+                    if(err){
+                        console.log('Login database lookup failure')
+                        console.log(err)
+                    }
+                    if (!user) {
+                        console.log('Email not found :(')
+                        return done(null, false, { message: 'Email not found.' });
+                    }
+                    bcrypt.compare(password, user.Pass, function(err, isMatch) {
+                        if(err){
+                            console.log('Login password validation failure')
+                            console.log(err)
+                        }
+                        if(isMatch)
+                            return done(null, user)
+                        else{
+                            console.log('Bad password :(')
+                            return done(null, false, { message: 'Bad Password.' });
+                        }
+                    });
+                });
+            });
+        });
     })
 );
 */
@@ -111,12 +111,12 @@ passport.use(new LocalStrategy(
 /*
 // passport serialize / deserialize magics
 passport.serializeUser(function(user, done) {
-	done(null, user);
+    done(null, user);
 });
 
 passport.deserializeUser(function(obj, done) {
 
-	done(null, obj);
+    done(null, obj);
 });
 */
 /*

@@ -1,8 +1,20 @@
 mixin header(loggedIn)
   header
-    div.home-menu.pure-menu.pure-menu-open.pure-menu-horizontal.pure-menu-fixed
-      a(href='/').pure-menu-heading Interdisciplinary Programming
-      ul
+    div
+
+      a(href="https://www.mozilla.org/" id="tabzilla") mozilla
+      link(href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css" rel="stylesheet")
+      script(src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js")
+
+      //a(href='http://mozillascience.org/')
+
+      a(href='#')
+        img(src='static/img/MSL.png').MSLlogo
+
+
+
+
+      //ul
         if(loggedIn)
           li
             a(href='/userProfile') Profile
