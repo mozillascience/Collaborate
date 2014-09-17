@@ -1137,6 +1137,8 @@ h5,
 h6,
 label {
     color: #34495e;
+    font-family:'Fira Sans',Arial,"Lucida Grande",sans-serif;
+    font-weight:300;
 }
 
 .pure-img-responsive {
@@ -1698,6 +1700,8 @@ img.thumbnail {
   height:7.5em;
   width:90%;
   overflow:hidden;
+  border:1px solid #999;
+  margin-top:0.4em;
 }
 .project h3 {
   margin:0;

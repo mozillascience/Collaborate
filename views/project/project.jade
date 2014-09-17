@@ -1,20 +1,20 @@
 include ../partials/head.jade
+include ../partials/header.jade
 include ../partials/footer.jade
 
 doctype html5
 html
   head
     +head()
-
-  body.vanilla
-    div.projectHeader
-      h1.content-head Interdisciplinary Programming
-
+  body
     div.page-wrapper
-      section.projectSection
-        div.content-wrapper
+      +header()
 
-          h1.content-head.projectHead= title
+      section
+        div
+
+          h1.projectHead= title
+
           div.tagWrap
             - for(var i=0; i<subjects.length; i++) {
               div.tag.subject
@@ -36,19 +36,19 @@ html
                 label.tag Volunteers Needed
             - }
 
-          div.summaryWrap
-            h2.content-head.briefTitle Project Brief
+          div
+            h2.briefTitle Project Brief
             div.projectLead
               i.fa.fa-user
               label.altTag= lead
             div.institute
               i.fa.fa-institution
               label.altTag= institute
-            h3.content-head.briefTitle Who We Are
+            h3.briefTitle Who We Are
             p.summaryText= who
-            h3.content-head.breifTitle What We're Doing
+            h3.breifTitle What We're Doing
             p.summaryText= what
-            h2.content-head.briefTitle Main Deliverables
+            h2.briefTitle Main Deliverables
             ul.goals
               - for(i=0; i<goals.length; i++){
                 li!= goals[i]
@@ -58,7 +58,7 @@ html
             - if(page)
               a.pure-button.projectLink(href= page) Project Page
 
-          div.sidebar
+          div
             img.projectPic(src= imageName)
             a.pure-button.projectLink(href='/contact') Get In Touch
             - if(moreInfo)
@@ -66,10 +66,5 @@ html
               - for(i=0; i<moreInfo.length; i++){
                 a.infoLink(href= moreInfo[i].link)= moreInfo[i].title
               - }
-    div.projectFooter
-      div Interdisciplinary Programming
-      div In partnership with <a href='http://mozillascience.org/'>Mozilla Science Lab</a>
-      div Header picture credit <a href='http://www.flickr.com/photos/amylovesyah/4528869007/'>Amy Loves Yah</a>
-      div
-        <a href='https://www.mozilla.org/en-US/privacy/websites/'>Privacy Policy</a>
-        <a href='https://www.mozilla.org/en-US/about/legal/'>Terms of Use</a>
+
+    +footer()
