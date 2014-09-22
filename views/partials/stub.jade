@@ -1,7 +1,7 @@
 mixin stub(project)
+  - var route = 'projects/'+project.route
   div.project.pure-g
     div.pure-u-1.pure-u-med-1-4
-      - var route = 'projects/'+project.route
       a(href= route)
         h3= project.title
       div
@@ -17,38 +17,9 @@ mixin stub(project)
         i.fa.fa-tag
         label= project.languages.join(', ')
     div.pure-u-1.pure-u-med-1-4
-      div.crop
-        - var image = 'static/img/'+project.imageName
-        img(src= image)
+      a(href= route)
+        div.crop
+          - var image = 'static/img/'+project.imageName
+          img(src= image)
     div.pure-u-1.pure-u-med-3-4
       p= project.summary.slice(0, 400) + "..."
-
-  //div.stub
-    h1= project.title
-
-    div.tagWrap.stubWrap
-      - for(var i=0; i<project.subjects.length; i++) {
-        div.tag.subject
-          i.fa.fa-flask
-          label.tag= project.subjects[i]
-      - }
-      - for(i=0; i<project.languages.length; i++) {
-        div.tag.language
-          i.fa.fa-code
-          label.tag= project.languages[i]
-      - }
-      - if(project.paid){
-        div.tag.money
-          i.fa.fa-dollar
-          label.tag Paid Position
-      - } else {
-        div.tag.money
-          i.fa.fa-heart-o
-          label.tag Volunteers Needed
-      - }
-
-    - var image = 'static/img/'+project.imageName
-    img.thumbnail(src= image)
-    p.line-clamp= project.what
-    - var route = 'projects/'+project.route
-    a(href= route).pure-button.projectLink Learn More

@@ -10,61 +10,58 @@ html
     div.page-wrapper
       +header()
 
-      section
+      section.project
         div
+          a.pure-button.projectLink(href= "/") &larr; &nbsp; Back to Project List
+          h1= title
+          p
+            i= subjects.join(', ')
 
-          h1.projectHead= title
-
-          div.tagWrap
-            - for(var i=0; i<subjects.length; i++) {
-              div.tag.subject
-                i.fa.fa-flask
-                label.tag= subjects[i]
-            - }
-            - for(i=0; i<languages.length; i++) {
-              div.tag.language
-                i.fa.fa-code
-                label.tag= languages[i]
-            - }
-            - if(paid){
-              div.tag.money
-                i.fa.fa-dollar
-                label.tag Paid Position
-            - } else {
-              div.tag.money
-                i.fa.fa-heart-o
-                label.tag Volunteers Needed
-            - }
-
-          div
-            h2.briefTitle Project Brief
-            div.projectLead
-              i.fa.fa-user
-              label.altTag= lead
-            div.institute
-              i.fa.fa-institution
-              label.altTag= institute
-            h3.briefTitle Who We Are
-            p.summaryText= who
-            h3.breifTitle What We're Doing
-            p.summaryText= what
-            h2.briefTitle Main Deliverables
-            ul.goals
-              - for(i=0; i<goals.length; i++){
-                li!= goals[i]
-              - }
-            - if(repo)
-              a.pure-button.projectLink(href= repo) Code
-            - if(page)
-              a.pure-button.projectLink(href= page) Project Page
-
-          div
-            img.projectPic(src= imageName)
-            a.pure-button.projectLink(href='/contact') Get In Touch
+          div.pure-u-1.pure-u-med-1-4
+            div.crop
+              img(src= imageName)
+            h3 PARTICIPANTS
             - if(moreInfo)
-              h4 More Information
-              - for(i=0; i<moreInfo.length; i++){
-                a.infoLink(href= moreInfo[i].link)= moreInfo[i].title
-              - }
+              h3 MORE INFORMATION
+              ul.infolink
+                - for(i=0; i<moreInfo.length; i++){
+                  li
+                    a(href= moreInfo[i].link)= moreInfo[i].title
+                - }
+          div.pure-u-med-3-4
+            div.pure-u-1.pure-u-lrg-1-3
+                i.fa.fa-user
+                span= lead
+            div.pure-u-1.pure-u-lrg-1-3
+                i.fa.fa-map-marker
+                span= institute
+            div.pure-u-1.pure-u-lrg-1-3
+                i.fa.fa-circle.text-success
+                span Active Project
+            div.pure-u-1
+              p
+                span= 'Tags: ' + languages.join(', ')
+            //div.pure-u-1
+              h4 Who We Are
+              p.summaryText= who
+              h4 What We're Doing
+              p.summaryText= what
+              h4 Main Deliverables
+              ul.goals
+                - for(i=0; i<goals.length; i++){
+                  li!= goals[i]
+                - }
+            div.pure-u-1
+              p.summary= summaryText
+
+            div.project-links
+              - if(page)
+                a.pure-button.projectLink(href= page) Website
+              - if(repo)
+                a.pure-button.projectLink(href= repo) Go to the Repo
+            div.pure-u-1
+              h3 REPO PREVIEW
+
+
 
     +footer()

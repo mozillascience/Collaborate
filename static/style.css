@@ -1178,10 +1178,10 @@ label {
 
 /* Button Styles */
 .pure-button {
-    background-color: #1f8dd6;
-    color: white;
+    background-color: #c9e3f6;
+    color: black;
     padding: 0.5em 2em;
-    border-radius: 5px;
+    border-radius: 0;
 }
 
 .pure-button-primary {
@@ -1265,17 +1265,8 @@ footer .footer-main {
   padding: 50px 0;
 }
 
-footer .social-icons .pure-button {
-  border-radius: 100%;
-  font-size:1em;
-  padding:0.7em;
-  height:2.5em;
-  width:2.5em;
-  margin:1em 0;
-}
-
-footer .social-icons i {
-  color:white;
+footer .social-icons {
+  color: #55ACEE;
 }
 
 footer .email input {
@@ -1315,8 +1306,9 @@ footer .email .pure-button {
     clear:both;
 }
 
-.splash h1 {
+h1 {
   font-size: 4em;
+  margin-bottom:0.2em;
 }
 
 .content-wrapper {
@@ -1523,6 +1515,9 @@ i.bigIcon{
 
 /* pilot study styles */
 
+.text-success {
+  color: #61BA9E;
+}
 
 .pure-g {
   letter-spacing: normal; /* no idea why letter spacing gets messed up in  upper .content */
@@ -1611,10 +1606,10 @@ a.projectLink {
   margin-bottom: 1em;
 }
 
-a.infoLink{
-  float:left;
-  clear:both;
-  margin-bottom: 1em;
+ul.infoLink{
+  list-style: none;
+  padding:0;
+  margin:0;
 }
 
 h2.briefTitle{
@@ -1713,7 +1708,16 @@ img.thumbnail {
   border:1px solid #999;
   margin-top:0.4em;
 }
-.project h3 {
+
+section.project .crop {
+  height:auto;
+}
+
+.project .project-links {
+  float:right;
+}
+
+div.project h3 {
   margin:0;
   padding:0;
   font-size:1.2em;
