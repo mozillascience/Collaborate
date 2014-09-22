@@ -1278,6 +1278,16 @@ footer .social-icons i {
   color:white;
 }
 
+footer .email input {
+  padding: 0.5em;
+}
+
+footer .email .pure-button {
+  padding: 0.5em 1em;
+  margin:0 0.5em;
+  border-radius: 0;
+}
+
 ::-webkit-input-placeholder {
    font-style: italic;
 }
