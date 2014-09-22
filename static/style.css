@@ -1182,6 +1182,7 @@ label {
     color: black;
     padding: 0.5em 2em;
     border-radius: 0;
+    margin: 0 1em 1em 0;
 }
 
 .pure-button-primary {
@@ -1531,7 +1532,6 @@ header, .ribbon, .ribbon-alt {
     background: #fff;
 }
 
-
 .splash-head {
   margin: 0;
   border: none;
@@ -1548,149 +1548,6 @@ header, .ribbon, .ribbon-alt {
 }
 
 /* pilot study project page styles */
-div.tagWrap {
-  width:100%;
-  margin-bottom: 3em;
-}
-
-div.tag {
-  color: #EEEEEE;
-  line-height: 1em;
-  padding: 1em;
-  margin-right: 1em;
-  border-radius: 2em;
-  display: inline-block;
-  margin-bottom: 1em;
-}
-
-div.subject {
-  background-color: #8e44ad;
-}
-
-div.language {
-  background-color: #d35400;
-}
-
-div.money {
-  background-color: #27ae60;
-}
-
-div.sidebar {
-  max-width: 40%;
-  float:left;
-  margin-right: 1em;
-}
-
-img.projectPic {
-  max-width: 100%;
-  margin-bottom: 1em;
-}
-
-div.summaryWrap {
-  float:right;
-  max-width: calc(60% - 1em);
-  margin-bottom: 3em;
-}
-
-div.projectLead {
-  display: inline-block;
-  margin-right: 1em;
-}
-
-div.institute {
-  display: inline-block;
-}
-
-a.projectLink {
-  margin-right: 1em;
-  margin-bottom: 1em;
-}
-
-ul.infoLink{
-  list-style: none;
-  padding:0;
-  margin:0;
-}
-
-h2.briefTitle{
-  margin-top: 0em;
-}
-
-ul.goals{
-  margin-left: 0em;
-}
-
-div.projectFooter{
-  width:100%;
-  background-color: #EEEEEE;
-  clear:both;
-  text-align: center;
-  padding:1em;
-}
-
-div.projectHeader{
-  width:100%;
-  background: url('img/splash-1.jpg') scroll 80% 0%;
-  background-size: 100%;
-  clear:both;
-  text-align: center;
-  padding:1em;
-  max-height: 12em;
-}
-
-div.projectHeader h1{
-  color: #EEEEEE;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 0.5em;
-  display:inline-block;
-  margin: 1em 0 1em 0;
-}
-
-.projectSection{
-  margin-top: 0px;
-}
-
-h1.projectHead{
-  margin-top: 0em;
-  margin-bottom: 0.5em;
-}
-
-label.tag {
-  color: #EEEEEE;
-  margin-left: 0.5em;
-}
-
-label.altTag {
-  margin-left: 0.5em;
-}
-
-p.line-clamp:after {
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), #FFFFFF 50%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  bottom: 0;
-  content: "...";
-  font-weight: bold;
-  padding: 0 20px 1px 45px;
-  position: absolute;
-  right: 0;
-}
-
-p.line-clamp {
-  height: 5.6em;
-  line-height: 1.4em;
-  overflow: hidden;
-  position: relative;
-
-  width: 90%;
-  display: inline-block;
-  padding-left: 1em;
-}
-
-img.thumbnail {
-  max-width: 10%;
-  display: inline-block;
-  margin-bottom: 1em;
-}
 
 .project {
   margin: 2em 0;
@@ -1713,6 +1570,10 @@ section.project .crop {
   height:auto;
 }
 
+section.project label {
+  font-size:1.3em;
+}
+
 .project .project-links {
   float:right;
 }
@@ -1724,34 +1585,12 @@ div.project h3 {
   font-weight:bold;
 }
 
-
 .projects {
   margin-top:4em;
 }
 
-div#bigLink{
-  font-size: 200%;
-}
-
-@media screen and (max-width: 35.5em) {
-  img.projectPic{
-    display:none;
-  }
-
-  img.thumbnail {
-    display: none;
-  }
-
-  div.summaryWrap{
-    max-width: 100%;
-
-  }
-
-  div.sidebar{
-    max-width:100%;
-  }
-
-  div.tag {
-    margin-bottom: 2px;
-  }
+ul.infolink {
+  margin:0;
+  padding:0;
+  list-style: none;
 }

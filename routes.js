@@ -204,7 +204,7 @@ app.get('/projects/:route', function(req, res){
 													paid: project.paid == true,
 													lead: project.lead,
 													institute: project.institute,
-													//summaryText: project.summary,
+													summaryText: project.summary,
 													who: project.who,
 													what: project.what,
 													repo: project.repoURL,
