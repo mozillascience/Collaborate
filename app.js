@@ -44,6 +44,21 @@ cleanCase = helpers.cleanCase;
 mongoHelpers = require('./mongoHelpers.js');                    //helper functions for interacting with mongo
 connect = mongoHelpers.connect;
 
+// Github
+var GitHubApi = require("github");
+
+github = new GitHubApi({
+    // required
+    version: "3.0.0",
+    // optional
+    // debug: true,
+    protocol: "https",
+    host: "api.github.com",
+    timeout: 5000
+});
+
+
+
 // setup the app
 app.set('views', __dirname + '/views');
 app.use(express.compress());

@@ -194,25 +194,46 @@ app.get('/projects/:route', function(req, res){
 
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
-	    	collection.findOne( {route: req.params.route}, function(err, project){
+				collection.findOne( {route: req.params.route}, function(err, project){
 
-				res.render('project/project.jade', {
-													title: project.title,
-													imageName: '/static/img/' + project.imageName,
-													subjects: project.subjects,
-													languages: project.languages,
-													paid: project.paid == true,
-													lead: project.lead,
-													institute: project.institute,
-													summaryText: project.summary,
-													who: project.who,
-													what: project.what,
-													repo: project.repoURL,
-													page: project.pageURL,
-													moreInfo: project.moreinfo,
-													goals: project.goals
-												});
-	    	});
+					var repo = project.repoURL.split('github.com/')[1].split('/'),
+							args = (repo[1]) ? {user: repo[0]} : {org: repo[0]},
+							vars = {
+												title: project.title,
+												imageName: '/static/img/' + project.imageName,
+												subjects: project.subjects,
+												languages: project.languages,
+												lead: project.lead,
+												institute: project.institute,
+												summaryText: project.summary,
+												who: project.who,
+												what: project.what,
+												repo: project.repoURL,
+												page: project.pageURL,
+												moreInfo: project.moreinfo,
+												goals: project.goals,
+												content: {}
+											};
+
+					// WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AND ORG??!??!
+					if(repo[1]) {
+						args.repo = repo[1];
+						github.repos.getContributors(args, function(err, r){
+							if(r) vars.contributors = r;
+							args.path = '';
+							github.repos.getContent(args, function(err, r){
+								if(r) vars.content = r;
+								console.log(r);
+								res.render('project/project.jade', vars);
+							})
+						});
+					} else {
+						github.orgs.getPublicMembers(args, function(err, r){
+							if(r) vars.contributors = r;
+							res.render('project/project.jade', vars);
+						});
+					}
+				});
 		});
 	});
 });
