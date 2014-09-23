@@ -12,8 +12,8 @@
     "nodemailer":"0.6.1",
     "express-minify":"0.0.7",
     "connect-redis":"1.4.7",
-    "express-session":"1.0.2"
-
+    "express-session":"1.0.2",
+    "github":"0.2.2"
   },
   "engines": {
     "node": "0.10.x",
