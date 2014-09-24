@@ -212,10 +212,10 @@ app.get('/projects/:route', function(req, res){
 												page: project.pageURL,
 												moreInfo: project.moreinfo,
 												goals: project.goals,
-												content: {}
+												type: 'repo'
 											};
 
-					// WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AND ORG??!??!
+					// WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
 					if(repo[1]) {
 						args.repo = repo[1];
 						github.repos.getContributors(args, function(err, r){
@@ -228,9 +228,14 @@ app.get('/projects/:route', function(req, res){
 							})
 						});
 					} else {
+						vars.type = 'org';
 						github.orgs.getPublicMembers(args, function(err, r){
 							if(r) vars.contributors = r;
-							res.render('project/project.jade', vars);
+							github.repos.getFromOrg(args, function(err, r){
+								if(r) vars.content = r;
+								console.log(r);
+								res.render('project/project.jade', vars);
+							})
 						});
 					}
 				});

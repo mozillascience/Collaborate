@@ -9,10 +9,8 @@ mixin header(loggedIn)
 
     div.pure-menu.pure-menu-open.pure-menu-horizontal
 
-      //a(href='http://mozillascience.org/')
-      //a(href='#')
-
-      img(src='/static/img/MSL.png').MSLlogo
+      a(href='/' id="logo")
+        img(src='/static/img/MSL.png').MSLlogo
 
       ul
         if(loggedIn)

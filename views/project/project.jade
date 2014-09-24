@@ -69,16 +69,33 @@ html
                 h3 REPO PREVIEW
 
                 ul.pure-u-1.repo
-                  each c in content
-                    if(c.type != 'file')
-                      li
-                        i.fa.fa-folder
-                        a(href= c.html_url)= c.name
-                  each c in content
-                    if(c.type == 'file')
-                      li
-                        i.fa.fa-file-text-o
-                        a(href= c.html_url)= c.name
+                  if(type == 'org')
+                    each c in content
+                        li
+                          div.pure-u-3-5
+                            i.fa.fa-book
+                            a(href= c.html_url)= c.name
+                          div.pure-u-2-5.fade.repo-info
+                            div
+                              span= c.language
+                              a(href= c.html_url + '/stargazers').fade
+                                i.fa.fa-star
+                                span= c.stargazers_count
+                              a(href= c.html_url + '/network').fade
+                                i.fa.fa-code-fork
+                                span= c.forks_count
+                          div= c.description
+                  else
+                    each c in content
+                      if(c.type != 'file')
+                        li
+                          i.fa.fa-folder
+                          a(href= c.html_url)= c.name
+                    each c in content
+                      if(c.type == 'file')
+                        li
+                          i.fa.fa-file-text-o
+                          a(href= c.html_url)= c.name
 
 
 

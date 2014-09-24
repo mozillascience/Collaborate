@@ -96,6 +96,7 @@ a:visited {
 
 a:hover {
    border-bottom: none;
+   color:#1f8dd6;
 }
 
 a:active {
@@ -1516,6 +1517,10 @@ i.bigIcon{
 
 /* pilot study styles */
 
+.fade {
+  color: #888;
+}
+
 .text-success {
   color: #61BA9E;
 }
@@ -1545,6 +1550,13 @@ header, .ribbon, .ribbon-alt {
 .MSLlogo{
   width:260px;
   margin:1em 0;
+}
+
+/* weird pure css alignment stuff */
+#logo {
+  padding:0;
+  margin:0;
+  display:inline;
 }
 
 /* pilot study project page styles */
@@ -1598,9 +1610,26 @@ section.project ul.repo {
   font-size: 1em;
 }
 
+.project .repo-info{
+  float:right;
+}
+
+.project .repo-info i {
+  font-size: 1em;
+  margin-left:1em;
+}
+
+.project .repo-info>div {
+  float:right;
+}
+
 section.project ul.repo li {
   padding: 1em;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid #999;
+}
+
+section.project ul.repo li:last-child {
+  border:none;
 }
 
 div.project h3 {
