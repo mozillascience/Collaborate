@@ -82,19 +82,18 @@ p.pquote {
 }
 
 a {
-   color: #444;
+   color: #083A5C;
    text-decoration: none;
    outline: 0;
    cursor: pointer;
 }
 
 a:visited {
-   color: #444;
    text-decoration: none;
    outline: 0;
 }
 
-a:hover {
+a:hover{
    border-bottom: none;
    color:#1f8dd6;
 }
@@ -1525,6 +1524,10 @@ i.bigIcon{
   color: #61BA9E;
 }
 
+.btn-success {
+  background: #61BA9E;
+}
+
 .pure-g {
   letter-spacing: normal; /* no idea why letter spacing gets messed up in  upper .content */
 }
@@ -1562,7 +1565,7 @@ header, .ribbon, .ribbon-alt {
 /* pilot study project page styles */
 
 .project {
-  margin: 2em 0;
+  margin: 2em 0 1em;
 }
 
 .project i.fa {
@@ -1588,6 +1591,7 @@ section.project label {
 
 .project .sidebar {
   padding-right:1.5em;
+  padding-bottom: 1em;
 }
 
 .project .project-links {

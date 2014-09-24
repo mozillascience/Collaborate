@@ -223,7 +223,6 @@ app.get('/projects/:route', function(req, res){
 							args.path = '';
 							github.repos.getContent(args, function(err, r){
 								if(r) vars.content = r;
-								console.log(r);
 								res.render('project/project.jade', vars);
 							})
 						});
@@ -233,7 +232,6 @@ app.get('/projects/:route', function(req, res){
 							if(r) vars.contributors = r;
 							github.repos.getFromOrg(args, function(err, r){
 								if(r) vars.content = r;
-								console.log(r);
 								res.render('project/project.jade', vars);
 							})
 						});
