@@ -1,11 +1,15 @@
 /*
  * Globals. Haters gonna hate.
+ *
+ *   "AHHHH, WHYYYYY???!?" - Abby
  */
 
 express = require("express");        // route-a-ma-jigs
-RedisStore = require('connect-redis')(express);
+var MongoStore = require('connect-mongo')(express);
 app = express();                    // init app obj
 
+var dotenv = require('dotenv');
+dotenv.load();
 
 mongo = require('mongodb');         // database
 mongoUri = process.env.MONGOLAB_URI
@@ -18,6 +22,11 @@ database = null;                                        //going to populate this
 
 passport = require('passport');        // user authentication
 LocalStrategy = require('passport-local').Strategy; // REALTALK: I 'unno, the internet said to do this. - Bill
+GitHubStrategy = require('passport-github').Strategy;
+
+var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+var GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 bcrypt = require('bcrypt');            // hashes passwords before putting them in DB
 SALT_WORK_FACTOR = 10;                // how many times to scramble a pass before returning the final hash?
@@ -57,6 +66,12 @@ github = new GitHubApi({
     timeout: 5000
 });
 
+// OAuth2
+github.authenticate({
+    type: "oauth",
+    token: GITHUB_TOKEN
+});
+
 
 
 // setup the app
@@ -69,10 +84,14 @@ app.use(minify({
 app.use('/static', express.static(__dirname + '/static'));
 app.use(express.cookieParser());
 app.use(express.bodyParser());
-app.use(express.session({ secret: 'j4IjCQtMcWTsahgMCFCS' }));  //TODO get this out of the public repo lulz
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.session({ store: new RedisStore }));
+app.use(express.session({
+  store: new MongoStore({
+    url: mongoUri
+  }),
+  secret: process.env.MONGO_SECRET
+}));
 
 // Load our routes
 require('./routes.js');
@@ -123,17 +142,45 @@ passport.use(new LocalStrategy(
 );
 */
 
-/*
-// passport serialize / deserialize magics
+/* Github authentication */
+
+passport.use(new GitHubStrategy({
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:5000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate({ githubId: profile.id }, function (err, user) {
+      return done(err, user);
+    });
+		// console.log(profile);
+		// asynchronous verification, for effect...
+		// process.nextTick(function () {
+		// 	// To keep the example simple, the user's GitHub profile is returned to
+		// 	// represent the logged-in user. In a typical application, you would want
+		// 	// to associate the GitHub account with a user record in your database,
+		// 	// and return that user instead.
+		// 	return done(null, profile);
+		// });
+  }
+));
+
+
+// Passport session setup.
+// To support persistent login sessions, Passport needs to be able to
+// serialize users into and deserialize users out of the session. Typically,
+// this will be as simple as storing the user ID when serializing, and finding
+// the user by ID when deserializing. However, since this example does not
+// have a database of user records, the complete GitHub profile is serialized
+// and deserialized.
 passport.serializeUser(function(user, done) {
-    done(null, user);
+	done(null, user);
 });
-
 passport.deserializeUser(function(obj, done) {
-
-    done(null, obj);
+	done(null, obj);
 });
-*/
+
+
 /*
  * START SERVING DELICIOUS INTERNETS
  * A PROGRAMMER IS YOU!

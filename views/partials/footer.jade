@@ -6,10 +6,11 @@ mixin footer
         div.pure-u-1.pure-u-med-1-2
           p
             img(src='/static/img/footer-mozilla-white.png')
+
         div.pure-u-1.pure-u-med-1-4
           em FOLLOW US
           div
-            a(href="https://twitter.com/MozillaScience").fa-stack.fa-lg
+            a(href="https://twitter.com/MozillaScience" target="_blank").fa-stack.fa-lg
               i.fa.fa-circle.fa-stack-2x.social-icons
               i.fa.fa-twitter.fa-stack-1x.fa-inverse
         div.pure-u-1.pure-u-med-1-4.email
@@ -20,7 +21,11 @@ mixin footer
           button.pure-button.pure-button-primary
             i.fa.fa-caret-right
         div
-          p links to privacy and license and stuff
+          p
+            a(href="http://creativecommons.org/licenses/by/3.0/deed.en_US" target="_blank")
+              i.fa.fa-cc.fa-inverse
+              small.fa-inverse  Creative Commons Attribution 3.0 Unported License
+
 
         div#scripts
 

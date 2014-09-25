@@ -10,13 +10,8 @@ app.get('/', function(req, res){
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 			collection.find( {}).toArray(function(err, results){
-/*
-	    		console.log(results)
-	    		res.redirect('/');
-*/
 				res.render('index.jade', {projects: results});
-
-	    	});
+			});
 		});
 	});
 });
@@ -212,11 +207,11 @@ app.get('/projects/:route', function(req, res){
 												page: project.pageURL,
 												moreInfo: project.moreinfo,
 												goals: project.goals,
-												type: 'repo'
+												type: (args.org) ? 'org' : 'repo'
 											};
 
 					// WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
-					if(repo[1]) {
+					if(vars.type == 'repo') {
 						args.repo = repo[1];
 						github.repos.getContributors(args, function(err, r){
 							if(r) vars.contributors = r;
@@ -227,7 +222,6 @@ app.get('/projects/:route', function(req, res){
 							})
 						});
 					} else {
-						vars.type = 'org';
 						github.orgs.getPublicMembers(args, function(err, r){
 							if(r) vars.contributors = r;
 							github.repos.getFromOrg(args, function(err, r){
@@ -252,13 +246,9 @@ app.get('/projects', function(req, res){
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 			collection.find( {}).toArray(function(err, results){
-/*
-	    		console.log(results)
-	    		res.redirect('/');
-*/
 				res.render('projectList.jade', {projects: results});
 
-	    	});
+				});
 		});
 	});
 
@@ -495,6 +485,28 @@ app.post('/updateUser', function(req, res){
 		});
 	});
 });
+
+
+
+app.get('/auth/github',
+  passport.authenticate('github'));
+
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
+// Simple route middleware to ensure user is authenticated.
+// Use this route middleware on any resource that needs to be protected. If
+// the request is authenticated (typically via a persistent login session),
+// the request will proceed. Otherwise, the user will be redirected to the
+// login page.
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) { return next(); }
+	res.redirect('/login')
+}
 
 //run a search using the given parameters
 app.post('/search', function(req, res){

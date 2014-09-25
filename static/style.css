@@ -82,7 +82,7 @@ p.pquote {
 }
 
 a {
-   color: #083A5C;
+   color: #248CC8;
    text-decoration: none;
    outline: 0;
    cursor: pointer;
@@ -95,7 +95,7 @@ a:visited {
 
 a:hover{
    border-bottom: none;
-   color:#1f8dd6;
+   color:#f47e3c;
 }
 
 a:active {
@@ -1574,7 +1574,7 @@ header, .ribbon, .ribbon-alt {
 }
 
 .project .crop {
-  height:7.5em;
+  max-height:10em;
   width:100%;
   overflow:hidden;
   border:1px solid #999;
