@@ -14,12 +14,9 @@ mixin header(loggedIn)
 
       ul
         if(loggedIn)
-          li
-            a(href='/userProfile') Profile
+          li= 'Welcome ' + user.name
           li
             a(href='/logout') Logout
         else
           li
-            a(href='/login') Login
-          li
-            a(href='/register') Signup
+            a(href='/auth/github') Login

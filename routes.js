@@ -1,29 +1,19 @@
-require('./models/users.js');
+var ObjectID = require('mongodb').ObjectID;                 // tool for reconstructing mongo-style ids out of their hex encodings
 
 /*
  * GET Requests
  */
 
 app.get('/', function(req, res){
-	// app.userModel.getMostRecent(req, res);
-
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
-			collection.find( {}).toArray(function(err, results){
-				res.render('index.jade', {projects: results});
+			collection.find({}).toArray(function(err, results){
+				res.render('index.jade', {loggedIn: !!req.user,
+																	projects: results,
+																	user : req.user || undefined});
 			});
 		});
 	});
-});
-
-//show login page
-app.get('/login', function(req, res) {
-	var loginError = null;
-
-	if(req.query.loginError == 1)
-		loginError = 'Whooops!  Bad user / pass combo, try again plz:';
-
-	res.render('auth/login.jade', {loggedIn: !!req.user, loginMessage: loginError})
 });
 
 //logout
@@ -64,133 +54,117 @@ app.get('/error', function(req, res){
 	res.render('error.jade', {loggedIn: !!req.user, errorMessage: errorMessage});
 })
 
-//show registration page
-app.get('/register', function(req, res){
-	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, affiliations: affiliations, user:{}});
-});
+// //show a page of search results
+// app.get('/searchResults', function(req, res){
+// 	res.render('search/searchResults.jade', { loggedIn: !!req.user,
+// 										searchResults: req.session.searchBuffer,
+// 										page: req.query.page,
+// 										hasContacted: ((!!req.user) ? req.user.hasContacted : []) } );
+// });
 
-//show page to confirm profile deletion
-app.get('/requestDeleteProfile', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
+// //user profile page
+// app.get('/userProfile', function(req, res){
+// 	//don't let a non-logged in person in:
+// 	if(!req.user)
+// 		return res.redirect('/login');
 
-	res.render('user/confirmDeleteProfile.jade', {loggedIn: !!req.user,});
-});
+// 	res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines: disciplines, languages: languages,  affiliations:affiliations});
 
-//show a page of search results
-app.get('/searchResults', function(req, res){
-	res.render('search/searchResults.jade', { loggedIn: !!req.user,
-										searchResults: req.session.searchBuffer,
-										page: req.query.page,
-										hasContacted: ((!!req.user) ? req.user.hasContacted : []) } );
-});
+// });
 
-//user profile page
-app.get('/userProfile', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
+// //show the first 10 user matches, with links to subsequnt batches of 10
+// app.get('/userMatches', function(req, res){
+// 	//don't let a non-logged in person in:
+// 	if(!req.user)
+// 		return res.redirect('/login');
 
-	res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines: disciplines, languages: languages,  affiliations:affiliations});
-
-});
-
-//show the first 10 user matches, with links to subsequnt batches of 10
-app.get('/userMatches', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
-
-	connect(function(err, db) {
-		db.collection('Users', function(er, collection) {
-			//build query object first:
-			var query = {scientist: req.user.developer, affiliation: {$in: req.user.affiliation} };
-			if(req.user.discipline.indexOf('Any Discipline') == -1 )
-				query.discipline = {$in: req.user.discipline};
-			if(req.user.language.indexOf('Any Language') == -1 )
-				query.language = {$in: req.user.language};
-			//scientist not offering money only matches volunteer devs
-			if(req.user.scientist && !req.user.isPaid)
-				query.isPaid = false;
-			//developer demanding money only matches scientists offering money
-			if(req.user.developer && req.user.isPaid)
-				query.isPaid = true;
-	    	collection.find( query ).toArray(function(err, matches){
-	    		req.session.matchBuffer = matches.sort(helpers.sortByTimestamp);
-	    		res.render('user/userMatches.jade', { loggedIn: !!req.user,
-	    										match: matches,
-	    										page: req.query.page,
-	    										nPages: Math.ceil(req.session.matchBuffer),
-	    										hasContacted: req.user.hasContacted});
-	    	});
-	    });
-	});
-});
+// 	connect(function(err, db) {
+// 		db.collection('Users', function(er, collection) {
+// 			//build query object first:
+// 			var query = {scientist: req.user.developer, affiliation: {$in: req.user.affiliation} };
+// 			if(req.user.discipline.indexOf('Any Discipline') == -1 )
+// 				query.discipline = {$in: req.user.discipline};
+// 			if(req.user.language.indexOf('Any Language') == -1 )
+// 				query.language = {$in: req.user.language};
+// 			//scientist not offering money only matches volunteer devs
+// 			if(req.user.scientist && !req.user.isPaid)
+// 				query.isPaid = false;
+// 			//developer demanding money only matches scientists offering money
+// 			if(req.user.developer && req.user.isPaid)
+// 				query.isPaid = true;
+// 	    	collection.find( query ).toArray(function(err, matches){
+// 	    		req.session.matchBuffer = matches.sort(helpers.sortByTimestamp);
+// 	    		res.render('user/userMatches.jade', { loggedIn: !!req.user,
+// 	    										match: matches,
+// 	    										page: req.query.page,
+// 	    										nPages: Math.ceil(req.session.matchBuffer),
+// 	    										hasContacted: req.user.hasContacted});
+// 	    	});
+// 	    });
+// 	});
+// });
 
 
-//search page
-app.get('/userSearch', function(req, res){
-	res.render('search/userSearch.jade', {loggedIn: !!req.user, languages: languages, disciplines: disciplines, affiliations: affiliations});
-});
+// //search page
+// app.get('/userSearch', function(req, res){
+// 	res.render('search/userSearch.jade', {loggedIn: !!req.user, languages: languages, disciplines: disciplines, affiliations: affiliations});
+// });
 
-//view another user's profile
-app.get('/profile/:uName', function(req, res){
-	//don't let a non-logged in person in:
-	//if(!req.user)
-	//	return res.redirect('/login');
+// //view another user's profile
+// app.get('/profile/:uName', function(req, res){
+// 	//don't let a non-logged in person in:
+// 	//if(!req.user)
+// 	//	return res.redirect('/login');
 
-	connect(function(err, db) {
-		db.collection('Users', function(er, collection) {
-	    	collection.findOne( {uName: req.params.uName}, function(err, user){
-	    		res.render('user/profile.jade', {loggedIn: !!req.user, user: user});
-	    	});
-		});
-	});
-});
+// 	connect(function(err, db) {
+// 		db.collection('Users', function(er, collection) {
+// 	    	collection.findOne( {uName: req.params.uName}, function(err, user){
+// 	    		res.render('user/profile.jade', {loggedIn: !!req.user, user: user});
+// 	    	});
+// 		});
+// 	});
+// });
 
-//show the page to contact a user
-app.get('/contactUser', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
+// //show the page to contact a user
+// app.get('/contactUser', function(req, res){
+// 	//don't let a non-logged in person in:
+// 	if(!req.user)
+// 		return res.redirect('/login');
 
-	connect(function(err, db) {
-		db.collection('Users', function(er, collection) {
-	    	collection.findOne( {_id: ObjectID.createFromHexString(req.query.uniqueID)}, function(err, user){
-	    		res.render('user/contactUser.jade', {loggedIn: !!req.user, user: user});
-	    	});
-		});
-	});
-});
+// 	connect(function(err, db) {
+// 		db.collection('Users', function(er, collection) {
+// 	    	collection.findOne( {_id: ObjectID.createFromHexString(req.query.uniqueID)}, function(err, user){
+// 	    		res.render('user/contactUser.jade', {loggedIn: !!req.user, user: user});
+// 	    	});
+// 		});
+// 	});
+// });
 
-//go to the change password form
-app.get('/changePasswordForm', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
+// //go to the change password form
+// app.get('/changePasswordForm', function(req, res){
+// 	//don't let a non-logged in person in:
+// 	if(!req.user)
+// 		return res.redirect('/login');
 
-	return res.render('user/changePassword.jade', {loggedIn: !!req.user});
+// 	return res.render('user/changePassword.jade', {loggedIn: !!req.user});
 
-});
+// });
 
-//go to the password recovery page
-app.get('/forgotPass', function(req, res){
-	//don't let a non-logged in person in:
-	if(!req.user)
-		return res.redirect('/login');
+// //go to the password recovery page
+// app.get('/forgotPass', function(req, res){
+// 	//don't let a non-logged in person in:
+// 	if(!req.user)
+// 		return res.redirect('/login');
 
-	res.render('auth/recoverPassword.jade', {loggedIn: !!req.user});
+// 	res.render('auth/recoverPassword.jade', {loggedIn: !!req.user});
 
-});
+// });
 
 //view project page
 app.get('/projects/:route', function(req, res){
-
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 				collection.findOne( {route: req.params.route}, function(err, project){
-
 					var repo = project.repoURL.split('github.com/')[1].split('/'),
 							args = (repo[1]) ? {user: repo[0]} : {org: repo[0]},
 							vars = {
@@ -207,9 +181,11 @@ app.get('/projects/:route', function(req, res){
 												page: project.pageURL,
 												moreInfo: project.moreinfo,
 												goals: project.goals,
-												type: (args.org) ? 'org' : 'repo'
+												type: (args.org) ? 'org' : 'repo',
+												loggedIn: !!req.user,
+												user: req.user
 											};
-
+					if(req.user) vars.user = req.user;
 					// WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
 					if(vars.type == 'repo') {
 						args.repo = repo[1];
@@ -235,11 +211,11 @@ app.get('/projects/:route', function(req, res){
 	});
 });
 
-app.get('/defineProject', function(req, res){
+// app.get('/defineProject', function(req, res){
 
-	res.render('project/regForm.jade', {});
+// 	res.render('project/regForm.jade', {});
 
-});
+// });
 
 app.get('/projects', function(req, res){
 
@@ -254,237 +230,237 @@ app.get('/projects', function(req, res){
 
 });
 
-app.get('/contact', function(req, res){
+// app.get('/contact', function(req, res){
 
-	res.render('contact.jade', {});
+// 	res.render('contact.jade', {});
 
-});
+// });
 
 ////////////////////////////////////////////////////////
 //post requests/////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-//validate login attempt
-app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/login?loginError=1'}) );
+// //validate login attempt
+// app.post('/login', passport.authenticate('local', { successRedirect: '/userMatches?page=0', failureRedirect: '/login?loginError=1'}) );
 
-//show registration page with email filled in
-app.post('/register', function(req, res){
-	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, affiliations: affiliations, user:{}, email: req.body.email});
-});
+// //show registration page with email filled in
+// app.post('/register', function(req, res){
+// 	res.render('registration/register.jade', {loggedIn: !!req.user, disciplines: disciplines, languages: languages, affiliations: affiliations, user:{}, email: req.body.email});
+// });
 
-//register a new user
-app.post('/regUser', function(req, res){
+// //register a new user
+// app.post('/regUser', function(req, res){
 
-	connect(function(err, db) {
-		if(err) return res.redirect('/error?errCode=1000');
+// 	connect(function(err, db) {
+// 		if(err) return res.redirect('/error?errCode=1000');
 
-		db.collection('Users', function(er, collection) {
-			if(er) return res.redirect('/error?errCode=1001');
+// 		db.collection('Users', function(er, collection) {
+// 			if(er) return res.redirect('/error?errCode=1001');
 
-		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.redirect('/error?errCode=1100');
+// 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+// 		    	if(err) return res.redirect('/error?errCode=1100');
 
-		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.redirect('/register?registerError=2');
+// 		    	//make sure the password was entered the same way twice
+// 		    	if(req.body.pass != req.body.repass) return res.redirect('/register?registerError=2');
 
-				//reject new account if email is already taken
-		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
-		    		if(err) return res.redirect('/error?errCode=1002');
+// 				//reject new account if email is already taken
+// 		    	collection.find({email: req.body.email}).toArray(function(err, accounts){
+// 		    		if(err) return res.redirect('/error?errCode=1002');
 
-		    		//scrub the links provided into something sensible:
-		    		var linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link);
+// 		    		//scrub the links provided into something sensible:
+// 		    		var linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link);
 
-		    		if(accounts.length != 0){
-		    			res.render('registration/register.jade', {	loggedIn: !!req.user,
-		    														disciplines: disciplines,
-		    														languages: languages,
-		    														affiliations: affiliations,
-		    														emailError: true,
-		    														user:{	language: req.body.language,
-		    																discipline: req.body.discipline,
-		    																profession: req.body.profession,
-		    																affiliation: req.body.affiliation,
-		    																otherLang: req.body.otherLang,
-		    																otherDisc: req.body.otherDisc,
-		    																name: req.body.uName,
-		    																projectDescription: req.body.projectDescription,
-																			linkDescription : linkTable[0],
-																			link : linkTable[1]
-		    															}
-		    														});
-		    			return;
-					}
+// 		    		if(accounts.length != 0){
+// 		    			res.render('registration/register.jade', {	loggedIn: !!req.user,
+// 		    														disciplines: disciplines,
+// 		    														languages: languages,
+// 		    														affiliations: affiliations,
+// 		    														emailError: true,
+// 		    														user:{	language: req.body.language,
+// 		    																discipline: req.body.discipline,
+// 		    																profession: req.body.profession,
+// 		    																affiliation: req.body.affiliation,
+// 		    																otherLang: req.body.otherLang,
+// 		    																otherDisc: req.body.otherDisc,
+// 		    																name: req.body.uName,
+// 		    																projectDescription: req.body.projectDescription,
+// 																			linkDescription : linkTable[0],
+// 																			link : linkTable[1]
+// 		    															}
+// 		    														});
+// 		    			return;
+// 					}
 
-					//reject new account if username is already taken
-			    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
-			    		if(err) return res.redirect('/error?errCode=1002');
+// 					//reject new account if username is already taken
+// 			    	collection.find({uName: req.body.uName}).toArray(function(err, accounts){
+// 			    		if(err) return res.redirect('/error?errCode=1002');
 
-			    		if(accounts.length != 0){
-			    			res.render('registration/register.jade', {	loggedIn: !!req.user,
-			    														disciplines: disciplines,
-			    														languages: languages,
-			    														affiliations: affiliations,
-			    														uNameError: true,
-			    														email:req.body.email,
-			    														user:{	language: req.body.language,
-			    																discipline: req.body.discipline,
-			    																profession: req.body.profession,
-			    																affiliation: req.body.affiliation,
-		    																	otherLang: req.body.otherLang,
-		    																	otherDisc: req.body.otherDisc,
-			    																name: req.body.uName,
-			    																projectDescription: req.body.projectDescription,
-																				linkDescription : linkTable[0],
-																				link : linkTable[1]
-			    															}
-			    														});
-			    			return;
-						}
+// 			    		if(accounts.length != 0){
+// 			    			res.render('registration/register.jade', {	loggedIn: !!req.user,
+// 			    														disciplines: disciplines,
+// 			    														languages: languages,
+// 			    														affiliations: affiliations,
+// 			    														uNameError: true,
+// 			    														email:req.body.email,
+// 			    														user:{	language: req.body.language,
+// 			    																discipline: req.body.discipline,
+// 			    																profession: req.body.profession,
+// 			    																affiliation: req.body.affiliation,
+// 		    																	otherLang: req.body.otherLang,
+// 		    																	otherDisc: req.body.otherDisc,
+// 			    																name: req.body.uName,
+// 			    																projectDescription: req.body.projectDescription,
+// 																				linkDescription : linkTable[0],
+// 																				link : linkTable[1]
+// 			    															}
+// 			    														});
+// 			    			return;
+// 						}
 
-				        // hash the password along with our new salt:
-				        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-				        	if(err) return res.redirect('/error?errCode=1101');
+// 				        // hash the password along with our new salt:
+// 				        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+// 				        	if(err) return res.redirect('/error?errCode=1101');
 
-				        	var lang=[], disc=[];
-				        	//build language and discipline arrays
-				        	if(req.body.language)
-				        		lang = lang.concat(req.body.language);
-				        	if(req.body.otherLang)
-				        		lang = lang.concat(cleanCase(req.body.otherLang));
-				        	if(req.body.discipline)
-				        		disc = disc.concat(req.body.discipline);
-				        	if(req.body.otherDisc)
-				        		disc = disc.concat(cleanCase(req.body.otherDisc));
+// 				        	var lang=[], disc=[];
+// 				        	//build language and discipline arrays
+// 				        	if(req.body.language)
+// 				        		lang = lang.concat(req.body.language);
+// 				        	if(req.body.otherLang)
+// 				        		lang = lang.concat(cleanCase(req.body.otherLang));
+// 				        	if(req.body.discipline)
+// 				        		disc = disc.concat(req.body.discipline);
+// 				        	if(req.body.otherDisc)
+// 				        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
-			        		//register new user in the db:
-							collection.insert({	'uName':req.body.uName,
-												'email': req.body.email,
-												'Pass': hash,
-												'scientist': req.body.profession == 'scientist',
-												'developer': req.body.profession == 'developer',
-												'hasContacted': [],
-												'discipline': disc,
-												'language': lang,
-												'affiliation': req.body.affiliation,
-												'isPaid': req.body.isPaid == 'yes',
-												'otherLang': cleanCase(req.body.otherLang),
-												'otherDisc': cleanCase(req.body.otherDisc),
-												'description': req.body.projectDescription,
-												'timeCreated': Date.now(),
-												'linkDescription' : linkTable[0],
-												'link' : linkTable[1],
-												'agreeTOS' : req.body.agreeToTerms == 'agreed'
-											}, {safe: true}, function(err,response) {
-												if(err){
-													console.log(err);
-													return res.redirect('/error?errCode=1004');
-												}
-												//log the new user in:
-												collection.findOne({email: req.body.email}, function(err, user){
-													if(err || !user) return res.redirect('/error?errCode=1002');
+// 			        		//register new user in the db:
+// 							collection.insert({	'uName':req.body.uName,
+// 												'email': req.body.email,
+// 												'Pass': hash,
+// 												'scientist': req.body.profession == 'scientist',
+// 												'developer': req.body.profession == 'developer',
+// 												'hasContacted': [],
+// 												'discipline': disc,
+// 												'language': lang,
+// 												'affiliation': req.body.affiliation,
+// 												'isPaid': req.body.isPaid == 'yes',
+// 												'otherLang': cleanCase(req.body.otherLang),
+// 												'otherDisc': cleanCase(req.body.otherDisc),
+// 												'description': req.body.projectDescription,
+// 												'timeCreated': Date.now(),
+// 												'linkDescription' : linkTable[0],
+// 												'link' : linkTable[1],
+// 												'agreeTOS' : req.body.agreeToTerms == 'agreed'
+// 											}, {safe: true}, function(err,response) {
+// 												if(err){
+// 													console.log(err);
+// 													return res.redirect('/error?errCode=1004');
+// 												}
+// 												//log the new user in:
+// 												collection.findOne({email: req.body.email}, function(err, user){
+// 													if(err || !user) return res.redirect('/error?errCode=1002');
 
-													req.login(user, function(err) {
-													    if(err){
-													    	console.log(err)
-													    	console.log(user)
-													  		return res.redirect('/error?errCode=1102');
-													    }
+// 													req.login(user, function(err) {
+// 													    if(err){
+// 													    	console.log(err)
+// 													    	console.log(user)
+// 													  		return res.redirect('/error?errCode=1102');
+// 													    }
 
-													  return res.redirect('/userMatches?page=0');;
-													});
-												});
-											});
-						});
-			        });
-		    	});
-		    });
-		});
-	});
-});
+// 													  return res.redirect('/userMatches?page=0');;
+// 													});
+// 												});
+// 											});
+// 						});
+// 			        });
+// 		    	});
+// 		    });
+// 		});
+// 	});
+// });
 
-//update a user's profile
-app.post('/updateUser', function(req, res){
+// //update a user's profile
+// app.post('/updateUser', function(req, res){
 
-	//open link to the database
-	connect(function(err, db) {
-		if(err) return res.redirect('/error?errCode=1000');
+// 	//open link to the database
+// 	connect(function(err, db) {
+// 		if(err) return res.redirect('/error?errCode=1000');
 
-		db.collection('Users', function(er, collection) {
-			if(er) return res.redirect('/error?errCode=1001');
+// 		db.collection('Users', function(er, collection) {
+// 			if(er) return res.redirect('/error?errCode=1001');
 
-			//find the user
-			collection.findOne({ email: req.user.email }, function(err, user){
-				var lang=[], disc=[], linkTable;
+// 			//find the user
+// 			collection.findOne({ email: req.user.email }, function(err, user){
+// 				var lang=[], disc=[], linkTable;
 
-		    	if (err || !user) return res.redirect('/error?errCode=1002');
+// 		    	if (err || !user) return res.redirect('/error?errCode=1002');
 
-	        	//build language and discipline arrays
-	        	if(req.body.language)
-	        		lang = lang.concat(req.body.language);
-	        	if(req.body.otherLang)
-	        		lang = lang.concat(cleanCase(req.body.otherLang));
-	        	if(req.body.discipline)
-	        		disc = disc.concat(req.body.discipline);
-	        	if(req.body.otherDisc)
-	        		disc = disc.concat(cleanCase(req.body.otherDisc));
+// 	        	//build language and discipline arrays
+// 	        	if(req.body.language)
+// 	        		lang = lang.concat(req.body.language);
+// 	        	if(req.body.otherLang)
+// 	        		lang = lang.concat(cleanCase(req.body.otherLang));
+// 	        	if(req.body.discipline)
+// 	        		disc = disc.concat(req.body.discipline);
+// 	        	if(req.body.otherDisc)
+// 	        		disc = disc.concat(cleanCase(req.body.otherDisc));
 
-				//scrub the link table into something sensible
-				if(req.body.linkDescription)
-				  	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
-				else
-					linkTable = [[],[]];
+// 				//scrub the link table into something sensible
+// 				if(req.body.linkDescription)
+// 				  	linkTable = helpers.buildLinkTable(req.body.linkDescription, req.body.link)
+// 				else
+// 					linkTable = [[],[]];
 
-		    	//update the local user object
-		    	req.user.scientist = req.body.profession=='scientist';
-		    	req.user.developer = req.body.profession=='developer';
-		    	req.user.discipline = disc || req.user.discipline;
-		    	req.user.language = lang || req.user.language;
-		    	req.user.otherLang = cleanCase(req.body.otherLang) || req.user.otherLang;
-		    	req.user.otherDisc = cleanCase(req.body.otherDisc) || req.user.otherDisc;
-		    	req.user.affiliation = req.body.affiliation,
-				req.user.isPaid	= req.body.isPaid == 'yes',
-		    	req.user.description = req.body.projectDescription;
-		    	req.user.linkDescription = linkTable[0];
-		    	req.user.link = linkTable[1];
+// 		    	//update the local user object
+// 		    	req.user.scientist = req.body.profession=='scientist';
+// 		    	req.user.developer = req.body.profession=='developer';
+// 		    	req.user.discipline = disc || req.user.discipline;
+// 		    	req.user.language = lang || req.user.language;
+// 		    	req.user.otherLang = cleanCase(req.body.otherLang) || req.user.otherLang;
+// 		    	req.user.otherDisc = cleanCase(req.body.otherDisc) || req.user.otherDisc;
+// 		    	req.user.affiliation = req.body.affiliation,
+// 				req.user.isPaid	= req.body.isPaid == 'yes',
+// 		    	req.user.description = req.body.projectDescription;
+// 		    	req.user.linkDescription = linkTable[0];
+// 		    	req.user.link = linkTable[1];
 
-	    		//need to make sure that either the user hasn't changed their
-	    		//email, or they've changed it to something not otherwise in the
-	    		//database
-	    		collection.findOne({ email: req.body.email }, function(err, user2){
+// 	    		//need to make sure that either the user hasn't changed their
+// 	    		//email, or they've changed it to something not otherwise in the
+// 	    		//database
+// 	    		collection.findOne({ email: req.body.email }, function(err, user2){
 
-	    			if(err) return res.redirect('/error?errCode=1002');
+// 	    			if(err) return res.redirect('/error?errCode=1002');
 
-	    			if(!user2 || req.user.email == req.body.email){
-	    				//email checks out - update the DB
+// 	    			if(!user2 || req.user.email == req.body.email){
+// 	    				//email checks out - update the DB
 
-				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')},
-				    						{$set:{	scientist : req.body.profession=='scientist',
-				    								developer : req.body.profession=='developer',
-				    								discipline : disc,
-				    								language : lang,
-				    								otherLang : cleanCase(req.body.otherLang),
-				    								otherDisc : cleanCase(req.body.otherDisc),
-				    								affiliation : req.body.affiliation,
-				    								isPaid : req.body.isPaid == 'yes',
-				    								email : req.body.email,
-				    								description: req.body.projectDescription,
-				    								linkDescription: linkTable[0],
-				    								link: linkTable[1]
-				    							}
-				    						},
-				    						function(){
-												return res.redirect('/userMatches?page=0');
-				    						});
+// 				    	collection.update(	{_id: ObjectID.createFromHexString(user._id+'')},
+// 				    						{$set:{	scientist : req.body.profession=='scientist',
+// 				    								developer : req.body.profession=='developer',
+// 				    								discipline : disc,
+// 				    								language : lang,
+// 				    								otherLang : cleanCase(req.body.otherLang),
+// 				    								otherDisc : cleanCase(req.body.otherDisc),
+// 				    								affiliation : req.body.affiliation,
+// 				    								isPaid : req.body.isPaid == 'yes',
+// 				    								email : req.body.email,
+// 				    								description: req.body.projectDescription,
+// 				    								linkDescription: linkTable[0],
+// 				    								link: linkTable[1]
+// 				    							}
+// 				    						},
+// 				    						function(){
+// 												return res.redirect('/userMatches?page=0');
+// 				    						});
 
-	    			} else{
-	    				//update failed - need to inform user
-	    				return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, affiliations:affiliations, emailError: true})
-	    			}
-	    		});
-			});
-		});
-	});
-});
+// 	    			} else{
+// 	    				//update failed - need to inform user
+// 	    				return res.render('user/userProfile.jade', {loggedIn: !!req.user, user: req.user, disciplines:disciplines, languages:languages, affiliations:affiliations, emailError: true})
+// 	    			}
+// 	    		});
+// 			});
+// 		});
+// 	});
+// });
 
 
 
@@ -508,166 +484,166 @@ function ensureAuthenticated(req, res, next) {
 	res.redirect('/login')
 }
 
-//run a search using the given parameters
-app.post('/search', function(req, res){
-	connect(function(err, db) {
-		if(err) return res.redirect('/error?errCode=1000');
+// //run a search using the given parameters
+// app.post('/search', function(req, res){
+// 	connect(function(err, db) {
+// 		if(err) return res.redirect('/error?errCode=1000');
 
-		db.collection('Users', function(er, collection) {
-			if(er) return res.redirect('/error?errCode=1001');
+// 		db.collection('Users', function(er, collection) {
+// 			if(er) return res.redirect('/error?errCode=1001');
 
-			var scientist = (req.body.profession == 'scientist') ? true : false,
-				query = {scientist: scientist};
+// 			var scientist = (req.body.profession == 'scientist') ? true : false,
+// 				query = {scientist: scientist};
 
-			//no box checked on a checkbox group matches anything, as does checking the 'Any' box
-			if(req.body.language && (req.body.language.indexOf('Any Language') == -1) ){
-				query.language = req.body.language;
-			    query.language.concat(cleanCase(req.body.otherLang)); //also tack on the freeform field
-			} else if(req.body.otherLang)
-				query.language = [cleanCase(req.body.otherLang)]; //just the freeform field
-			if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) ){
-				query.discipline = req.body.discipline;
-				query.discipline.concat(cleanCase(req.body.otherDisc));
-			} else if(req.body.otherDisc)
-				query.discipline = [cleanCase(req.body.otherDisc)];
-			if(req.body.affiliation)
-				query.affiliation = req.body.affiliation;
-			//just has arrays stuck into language, discipline and affiliation, wrap in object
-			if(query.language)
-				query.language = {$in: query.language}
-			if(query.discipline)
-				query.discipline = {$in: query.discipline}
-			if(query.affiliation)
-				query.affiliation = {$in: query.affiliation}
-			//looking for a scientist with money:
-			if(scientist && req.body.moneyConstraint)
-				query.isPaid = true;
-			//looking for a volunteer developer:
-			if(!scientist && req.body.moneyConstraint)
-				query.isPaid = false;
+// 			//no box checked on a checkbox group matches anything, as does checking the 'Any' box
+// 			if(req.body.language && (req.body.language.indexOf('Any Language') == -1) ){
+// 				query.language = req.body.language;
+// 			    query.language.concat(cleanCase(req.body.otherLang)); //also tack on the freeform field
+// 			} else if(req.body.otherLang)
+// 				query.language = [cleanCase(req.body.otherLang)]; //just the freeform field
+// 			if(req.body.discipline && (req.body.discipline.indexOf('Any Discipline') == -1) ){
+// 				query.discipline = req.body.discipline;
+// 				query.discipline.concat(cleanCase(req.body.otherDisc));
+// 			} else if(req.body.otherDisc)
+// 				query.discipline = [cleanCase(req.body.otherDisc)];
+// 			if(req.body.affiliation)
+// 				query.affiliation = req.body.affiliation;
+// 			//just has arrays stuck into language, discipline and affiliation, wrap in object
+// 			if(query.language)
+// 				query.language = {$in: query.language}
+// 			if(query.discipline)
+// 				query.discipline = {$in: query.discipline}
+// 			if(query.affiliation)
+// 				query.affiliation = {$in: query.affiliation}
+// 			//looking for a scientist with money:
+// 			if(scientist && req.body.moneyConstraint)
+// 				query.isPaid = true;
+// 			//looking for a volunteer developer:
+// 			if(!scientist && req.body.moneyConstraint)
+// 				query.isPaid = false;
 
-	    	collection.find(query).toArray(function(err, matches){
-	    		if(err) return res.redirect('/error?errCode=1200');
+// 	    	collection.find(query).toArray(function(err, matches){
+// 	    		if(err) return res.redirect('/error?errCode=1200');
 
-	    		req.session.searchBuffer = matches.sort(helpers.sortByTimestamp);
-	    		return res.redirect('/searchResults?page=0');
+// 	    		req.session.searchBuffer = matches.sort(helpers.sortByTimestamp);
+// 	    		return res.redirect('/searchResults?page=0');
 
-	    	});
-		});
-	});
-});
+// 	    	});
+// 		});
+// 	});
+// });
 
-//password recovery - generate a random password, hash it, update the db, and mail it to the user
-app.post('/emailNewPassword', function(req, res){
+// //password recovery - generate a random password, hash it, update the db, and mail it to the user
+// app.post('/emailNewPassword', function(req, res){
 
-	//open link to the database
-	connect(function(err, db) {
-		if(err) return res.redirect('/error?errCode=1000');
+// 	//open link to the database
+// 	connect(function(err, db) {
+// 		if(err) return res.redirect('/error?errCode=1000');
 
-		db.collection('Users', function(er, collection) {
-			if(er) return res.redirect('/error?errCode=1001');
+// 		db.collection('Users', function(er, collection) {
+// 			if(er) return res.redirect('/error?errCode=1001');
 
-			//find the user
-			collection.findOne({ email: req.body.email }, function(err, user){
-				var newPass;
+// 			//find the user
+// 			collection.findOne({ email: req.body.email }, function(err, user){
+// 				var newPass;
 
-		    	if(err || !user) return res.redirect('/error?errCode=1002');
+// 		    	if(err || !user) return res.redirect('/error?errCode=1002');
 
-		    	//generate a new password, bunch of random characters
-		    	newPass = (Math.random() + 1).toString(36);
+// 		    	//generate a new password, bunch of random characters
+// 		    	newPass = (Math.random() + 1).toString(36);
 
-			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-			    	if(err) return res.redirect('/error?errCode=1100');
+// 			    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+// 			    	if(err) return res.redirect('/error?errCode=1100');
 
-				        // hash the password along with our new salt:
-				        bcrypt.hash(newPass, salt, function(err, hash) {
-				        	if(err) return res.redirect('/error?errCode=1101');
+// 				        // hash the password along with our new salt:
+// 				        bcrypt.hash(newPass, salt, function(err, hash) {
+// 				        	if(err) return res.redirect('/error?errCode=1101');
 
-				        	//update db
-				        	collection.update({email : req.body.email}, {$set:{Pass : hash}}, function(){});
+// 				        	//update db
+// 				        	collection.update({email : req.body.email}, {$set:{Pass : hash}}, function(){});
 
-				        });
-			    });
+// 				        });
+// 			    });
 
-				var mailOptions = {
-				    from: "Fred Foo <foo@blurdybloop.com>", // sender address
-				    to: req.body.email, // list of receivers
-				    subject: "Password Reset from InterdisciplinaryProgramming", // Subject line
-				    text: newPass // body
-				};
+// 				var mailOptions = {
+// 				    from: "Fred Foo <foo@blurdybloop.com>", // sender address
+// 				    to: req.body.email, // list of receivers
+// 				    subject: "Password Reset from InterdisciplinaryProgramming", // Subject line
+// 				    text: newPass // body
+// 				};
 
-				// send mail with defined transport object
-				smtpTransport.sendMail(mailOptions, function(error, response){
-				    if(error) return res.redirect('/error?errCode=1300');
-				    else{
-				        console.log("Message sent: " + response.message);
-				    }
+// 				// send mail with defined transport object
+// 				smtpTransport.sendMail(mailOptions, function(error, response){
+// 				    if(error) return res.redirect('/error?errCode=1300');
+// 				    else{
+// 				        console.log("Message sent: " + response.message);
+// 				    }
 
-				    // if you don't want to use this transport object anymore, uncomment following line
-				    //smtpTransport.close(); // shut down the connection pool, no more messages
-				});
+// 				    // if you don't want to use this transport object anymore, uncomment following line
+// 				    //smtpTransport.close(); // shut down the connection pool, no more messages
+// 				});
 
-				res.redirect('/')
-			});
-		});
-	});
-});
+// 				res.redirect('/')
+// 			});
+// 		});
+// 	});
+// });
 
-//validate and register the new password
-app.post('/updatePassword', function(req, res){
+// //validate and register the new password
+// app.post('/updatePassword', function(req, res){
 
-	connect(function(err, db) {
-		if(err) return res.redirect('/error?errCode=1000');
+// 	connect(function(err, db) {
+// 		if(err) return res.redirect('/error?errCode=1000');
 
-		db.collection('Users', function(er, collection) {
-			if(er) return res.redirect('/error?errCode=1001');
+// 		db.collection('Users', function(er, collection) {
+// 			if(er) return res.redirect('/error?errCode=1001');
 
-		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		    	if(err) return res.redirect('/error?errCode=1100');
+// 		    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+// 		    	if(err) return res.redirect('/error?errCode=1100');
 
-		    	//make sure the password was entered the same way twice
-		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade', {loggedIn: !!req.user});
+// 		    	//make sure the password was entered the same way twice
+// 		    	if(req.body.pass != req.body.repass) return res.render('changePassword.jade', {loggedIn: !!req.user});
 
-		        // hash the password along with our new salt:
-		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
-		        	if(err) return res.redirect('/error?errCode=1101');
+// 		        // hash the password along with our new salt:
+// 		        bcrypt.hash(req.body.pass, salt, function(err, hash) {
+// 		        	if(err) return res.redirect('/error?errCode=1101');
 
-	        		//register new password in the db:
-	        		collection.update({email : req.user.email}, {$set:{Pass : hash}}, function(){
-	        			return res.redirect('/userMatches?page=0');
-	        		});
-		        });
-		    });
-		});
-	});
-});
+// 	        		//register new password in the db:
+// 	        		collection.update({email : req.user.email}, {$set:{Pass : hash}}, function(){
+// 	        			return res.redirect('/userMatches?page=0');
+// 	        		});
+// 		        });
+// 		    });
+// 		});
+// 	});
+// });
 
-//delete the profile of the currently logged in user
-app.post('/deleteProfile', function(req, res){
+// //delete the profile of the currently logged in user
+// app.post('/deleteProfile', function(req, res){
 
-	//open link to the database
-	connect(function(err, db) {
-		if(err) return res.redirect('/error?errCode=1000');
+// 	//open link to the database
+// 	connect(function(err, db) {
+// 		if(err) return res.redirect('/error?errCode=1000');
 
-		db.collection('Users', function(er, collection) {
-			if(er) return res.redirect('/error?errCode=1001');
+// 		db.collection('Users', function(er, collection) {
+// 			if(er) return res.redirect('/error?errCode=1001');
 
-			//find the user
-			collection.findOne({ email: req.user.email }, function(err, user){
+// 			//find the user
+// 			collection.findOne({ email: req.user.email }, function(err, user){
 
-		    	if(err || !user) return res.redirect('/error?errCode=1002');
+// 		    	if(err || !user) return res.redirect('/error?errCode=1002');
 
-		    	//logout
-		    	req.logout();
+// 		    	//logout
+// 		    	req.logout();
 
-		    	//dump user from DB and return to landing page:
-		    	collection.remove({email : user.email}, true, function(){
-		    		return res.redirect('/');
-		    	});
-			});
-		});
-	});
-});
+// 		    	//dump user from DB and return to landing page:
+// 		    	collection.remove({email : user.email}, true, function(){
+// 		    		return res.redirect('/');
+// 		    	});
+// 			});
+// 		});
+// 	});
+// });
 
 //send an email to the user indicated by _id, and the initiating user
 app.post('/sendEmail', function(req, res){
