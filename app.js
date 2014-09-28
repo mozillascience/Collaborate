@@ -116,7 +116,7 @@ if(GITHUB_TOKEN){
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:5000/auth/github/callback"
+    callbackURL: process.env.GITHUB_CALLBACK || "http://localhost:5000/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
 		process.nextTick(function () {
