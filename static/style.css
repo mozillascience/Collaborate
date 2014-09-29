@@ -1211,6 +1211,20 @@ label {
   clear:both;
 }
 
+.pure-menu-horizontal a {
+  border:none;
+}
+
+.pure-menu-horizontal.navigation ul {
+  float:none;
+  background: #c9e3f6;
+  border-radius:1em;
+  margin:2em 0;
+}
+.pure-menu-horizontal.navigation a {
+  border-radius: 1em;
+}
+
 .home-menu .pure-menu-heading {
     color: white;
     font-weight: 400;
@@ -1308,7 +1322,7 @@ footer .email .pure-button {
 }
 
 h1 {
-  font-size: 4em;
+  font-size: 3em;
   margin-bottom:0.2em;
 }
 
@@ -1534,10 +1548,6 @@ i.bigIcon{
 
 header, .ribbon, .ribbon-alt {
     /*display: none;*/
-}
-
-.pilot-footer{
-    background: #fff;
 }
 
 .splash-head {

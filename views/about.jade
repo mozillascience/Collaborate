@@ -1,0 +1,37 @@
+include partials/head.jade
+include partials/header.jade
+include partials/footer.jade
+
+
+doctype html5
+html
+  head
+    +head()
+  body
+    div.page-wrapper
+      +header(loggedIn)
+
+
+
+      section.about.splash
+        h1 About Science Lab Code Projects
+
+      section
+        h3 Helping the research community build new tools and solve problems together
+        p Write this.
+
+        h3 History
+        p Link to blog post and talk. Originally introduced as 'Interdisciplinary Programming', this project was created by Bill Mills and Angelina Fabbro. Copy text from blog.
+
+        h3 FAQ
+        b Can I submit my project?
+        p No, this is our pilot test
+
+        b How can I help?
+        p many ways
+
+
+
+
+    +footer()
+

@@ -121,7 +121,6 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
 		process.nextTick(function () {
 			console.log('User profile after github login - ', profile);
-			console.log('Access token - ', accessToken);
 			profile.token = accessToken;
 			github.authenticate({
 				type: "oauth",
@@ -133,7 +132,6 @@ passport.use(new GitHubStrategy({
 				if(err) { // OAuth error
 					return done(err);
 				} else if (user) { // User record in the database
-					console.log("User is in the database", user);
 
 					// update information from github
 					user.avatar_url = profile._json.avatar_url;
@@ -145,7 +143,6 @@ passport.use(new GitHubStrategy({
 					user.save();
 					return done(null, user);
 				} else { // record not in database
-					console.log("New User", user);
 					var reg = new Users({
 						name: profile._json.name,
 						email: profile._json.email,
@@ -155,7 +152,6 @@ passport.use(new GitHubStrategy({
 						token: profile.token,
 						avatar_url: profile._json.avatar_url
 					});
-					console.log("New User", reg);
 					reg.save();
 					return done(null, reg);
 				}

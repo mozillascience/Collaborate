@@ -9,7 +9,7 @@ mixin header(loggedIn)
 
     div.pure-menu.pure-menu-open.pure-menu-horizontal
 
-      a(href='/' id="logo")
+      a(href='//mozillascience.org' id="logo")
         img(src='/static/img/MSL.png').MSLlogo
 
       ul
@@ -22,3 +22,14 @@ mixin header(loggedIn)
             a(href='/auth/github')
               i.fa.fa-github
               span  Sign in with Github
+
+    div.pure-menu.pure-menu-open.pure-menu-horizontal.navigation.is-center
+      ul
+        li
+          a(href='//mozillascience.org/about') ABOUT
+        li
+          a(href='//mozillascience.org/blog') BLOG
+        li
+          a(href='//mozillascience.org/get-involved') GET INVOLVED
+        li.pure-menu-selected
+          a(href='/') PROJECTS
