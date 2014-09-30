@@ -105,7 +105,7 @@ app.get('/projects/:route', function(req, res){
 						github.repos.getContributors(args, function(err, r){
 							if(r) vars.contributors = r;
 							args.path = '';
-              if(req.user){
+              if(r && req.user){
                 var match = r.filter(isUser, req.user.githubId);
                 if(match.length > 0) vars.member = true;
               }
@@ -117,7 +117,7 @@ app.get('/projects/:route', function(req, res){
 					} else {
 						github.orgs.getPublicMembers(args, function(err, r){
 							if(r) vars.contributors = r;
-              if(req.user){
+              if(r && req.user){
                 var match = r.filter(isUser, req.user.githubId);
                 if(match.length > 0) vars.member = true;
               }

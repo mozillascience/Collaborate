@@ -1632,6 +1632,7 @@ section.project ul.repo {
   list-style: none;
   border: 1px solid black;
   font-size: 1em;
+  padding: 0;
 }
 
 .project .repo-info{
@@ -1658,7 +1659,6 @@ section.project ul.repo li:last-child {
 
 section.project ul {
   margin:0;
-  padding:0;
 }
 
 div.project h3 {
@@ -1674,4 +1674,5 @@ div.project h3 {
 
 ul.infolink {
   list-style: none;
+  padding:0;
 }
