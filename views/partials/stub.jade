@@ -10,10 +10,10 @@ mixin stub(project)
       div.pure-u-1.pure-u-lrg-1-3
         i.fa.fa-user
         label= project.lead
-      div.pure-u-1.pure-u-lrg-1-4
+      div.pure-u-1.pure-u-lrg-1-3
         i.fa.fa-map-marker
         label= project.institute
-      div.pure-u-1.pure-u-lrg-5-12
+      div.pure-u-1.pure-u-lrg-1-3
         i.fa.fa-tag
         label= project.languages.join(', ')
     div.pure-u-1.pure-u-med-1-4.sidebar
@@ -22,4 +22,7 @@ mixin stub(project)
           - var image = '/static/img/'+project.imageName
           img(src= image)
     div.pure-u-1.pure-u-med-3-4
-      p= project.summary.slice(0, 400) + "..."
+      if(project.who)
+        p= project.who
+      else
+        p= project.summary.slice(0, 400) + "..."

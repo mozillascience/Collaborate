@@ -76,7 +76,7 @@ app.get('/projects/:route', function(req, res){
 												languages: project.languages,
 												lead: project.lead,
 												institute: project.institute,
-												summaryText: project.summary,
+												summaryText: project.who || project.summary,
 												who: project.who,
 												what: project.what,
 												repo: project.repoURL,

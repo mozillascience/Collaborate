@@ -40,17 +40,11 @@ html
             div.pure-u-1
               p
                 small= 'Tags: ' + languages.join(', ')
-            //div.pure-u-1
-              h4 Who We Are
-              p.summaryText= who
-              h4 What We're Doing
-              p.summaryText= what
-              h4 Main Deliverables
-              ul.goals
-                each goal in goals
-                  li!= goal
             div.pure-u-1
-              p.summary= summaryText
+              p.summary= who
+              if(what)
+                h3 WHAT WE'RE DOING
+                p.summary= what
 
             div.project-links
               if(page)
@@ -70,6 +64,10 @@ html
             h3 RELATED PROJECTS
           div.pure-u-1.pure-u-med-3-4
             div.pure-u-1
+              h3 MAIN DELIVERABLES
+              ul.goals
+                each goal in goals
+                  li!= goal
               if(content)
                 h3 REPO PREVIEW
 
