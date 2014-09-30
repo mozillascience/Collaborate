@@ -93,8 +93,10 @@ app.get('/projects/:route', function(req, res){
 											};
           if(project.contributors) {
             vars.local_contrib = project.contributors;
-            var match = vars.local_contrib.filter(isUser, req.user.githubId);
-            if(match.length > 0) vars.member = true;
+            if(req.user){
+              var match = vars.local_contrib.filter(isUser, req.user.githubId);
+              if(match.length > 0) vars.member = true;
+            }
           }
 					if(req.user) vars.user = req.user;
 					// WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
@@ -103,10 +105,10 @@ app.get('/projects/:route', function(req, res){
 						github.repos.getContributors(args, function(err, r){
 							if(r) vars.contributors = r;
 							args.path = '';
-              var match = r.filter(isUser, req.user.githubId);
-              console.log('MATCH');
-              console.log(match);
-              if(match.length > 0) vars.member = true;
+              if(req.user){
+                var match = r.filter(isUser, req.user.githubId);
+                if(match.length > 0) vars.member = true;
+              }
 							github.repos.getContent(args, function(err, r){
 								if(r) vars.content = r;
 								res.render('project/project.jade', vars);
@@ -115,8 +117,10 @@ app.get('/projects/:route', function(req, res){
 					} else {
 						github.orgs.getPublicMembers(args, function(err, r){
 							if(r) vars.contributors = r;
-              var match = r.filter(isUser, req.user.githubId);
-              if(match.length > 0) vars.member = true;
+              if(req.user){
+                var match = r.filter(isUser, req.user.githubId);
+                if(match.length > 0) vars.member = true;
+              }
 							github.repos.getFromOrg(args, function(err, r){
 								if(r) vars.content = r;
 								res.render('project/project.jade', vars);
@@ -171,21 +175,24 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.post('/projects/:route/join', function(req, res){
-
-	connect(function(err, db) {
-		db.collection('projects', function(er, collection) {
-				collection.findOne( {route: req.params.route}, function(err, project){
-          console.log(project);
-          var contributors = project.contributors || [];
-          contributors.push(req.user);
-          project.contributors = contributors;
-          collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
-            if(err) console.log(err);
-            res.send();
-          });
-				});
-		});
-	});
+  if (req.isAuthenticated()) {
+  	connect(function(err, db) {
+  		db.collection('projects', function(er, collection) {
+  				collection.findOne( {route: req.params.route}, function(err, project){
+            console.log(project);
+            var contributors = project.contributors || [];
+            contributors.push(req.user);
+            project.contributors = contributors;
+            collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
+              if(err) console.log(err);
+              res.send();
+            });
+  				});
+  		});
+  	});
+  } else {
+    res.redirect('/auth/github')
+  }
 });
 
 //send an email to the user indicated by _id, and the initiating user

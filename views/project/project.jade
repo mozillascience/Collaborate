@@ -27,9 +27,10 @@ html
                 a(href= contrib.html_url).pure-u-1-4.contributor
                   img(src= contrib.avatar_url)
             if(local_contrib)
-              each c in local_contrib
-                a(href="/").pure-u-1-4.contributor.local
-                  img(src= c.avatar_url)
+              each localc in local_contrib
+                if(localc)
+                  a(href="https://github.com/" + localc.githubId).pure-u-1-4.contributor.local
+                    img(src= localc.avatar_url)
           div.pure-u-med-3-4
             div.pure-u-1.pure-u-lrg-1-3
                 i.fa.fa-user
@@ -55,7 +56,11 @@ html
               if(repo)
                 a.pure-button.projectLink(href= repo) Go to the Repo
               if(!member)
-                span.pure-button.btn-success(id='join', data-href='/projects/' + route + '/join') Join Project!
+                if(loggedIn)
+                  span.pure-button.btn-success(id='join', data-href='/projects/' + route + '/join') Join Project!
+                else
+                  a.pure-button.btn-success(href="/auth/github") Sign in to Join the Project!
+
 
           div.pure-u-1.pure-u-med-1-4
 
