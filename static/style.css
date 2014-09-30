@@ -1620,8 +1620,6 @@ section.project .contributor {
 }
 
 section.project ul.repo {
-  padding: 0;
-  margin: 0;
   list-style: none;
   border: 1px solid black;
   font-size: 1em;
@@ -1649,6 +1647,11 @@ section.project ul.repo li:last-child {
   border:none;
 }
 
+section.project ul {
+  margin:0;
+  padding:0;
+}
+
 div.project h3 {
   margin:0;
   padding:0;
@@ -1661,7 +1664,5 @@ div.project h3 {
 }
 
 ul.infolink {
-  margin:0;
-  padding:0;
   list-style: none;
 }
