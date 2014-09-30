@@ -124,7 +124,7 @@ app.get('/projects', function(req, res){
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 			collection.find( {}).toArray(function(err, results){
-				res.render('projectList.jade', {loggedIn: !!req.user,
+				res.render('index.jade', {loggedIn: !!req.user,
                                   projects: results,
                                   user : req.user || undefined});
 				});

@@ -94,7 +94,6 @@ a:visited {
 }
 
 a:hover{
-   border-bottom: none;
    color:#f47e3c;
 }
 
@@ -1212,7 +1211,7 @@ label {
 }
 
 .pure-menu-horizontal a {
-  border:none;
+  border:1px solid clear;
 }
 
 .pure-menu-horizontal.navigation ul {
@@ -1223,6 +1222,10 @@ label {
 }
 .pure-menu-horizontal.navigation a {
   border-radius: 1em;
+}
+
+.pure-menu-horizontal.navigation .pure-menu-selected a {
+  border:1px solid #8ACEFF;
 }
 
 .home-menu .pure-menu-heading {
