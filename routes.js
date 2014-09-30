@@ -61,12 +61,16 @@ app.get('/projects/about', function(req, res) {
                             user : req.user || undefined});
 });
 
+function isUser(element, id){
+  return element.login == this || element.githubId == this;
+}
 
 //view project page
 app.get('/projects/:route', function(req, res){
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 				collection.findOne( {route: req.params.route}, function(err, project){
+          console.log(project);
 					var repo = project.repoURL.split('github.com/')[1].split('/'),
 							args = (repo[1]) ? {user: repo[0]} : {org: repo[0]},
 							vars = {
@@ -84,8 +88,14 @@ app.get('/projects/:route', function(req, res){
 												goals: project.goals,
 												type: (args.org) ? 'org' : 'repo',
 												loggedIn: !!req.user,
-												user: req.user
+												user: req.user,
+                        route: project.route
 											};
+          if(project.contributors) {
+            vars.local_contrib = project.contributors;
+            var match = vars.local_contrib.filter(isUser, req.user.githubId);
+            if(match.length > 0) vars.member = true;
+          }
 					if(req.user) vars.user = req.user;
 					// WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
 					if(vars.type == 'repo') {
@@ -93,6 +103,10 @@ app.get('/projects/:route', function(req, res){
 						github.repos.getContributors(args, function(err, r){
 							if(r) vars.contributors = r;
 							args.path = '';
+              var match = r.filter(isUser, req.user.githubId);
+              console.log('MATCH');
+              console.log(match);
+              if(match.length > 0) vars.member = true;
 							github.repos.getContent(args, function(err, r){
 								if(r) vars.content = r;
 								res.render('project/project.jade', vars);
@@ -101,6 +115,8 @@ app.get('/projects/:route', function(req, res){
 					} else {
 						github.orgs.getPublicMembers(args, function(err, r){
 							if(r) vars.contributors = r;
+              var match = r.filter(isUser, req.user.githubId);
+              if(match.length > 0) vars.member = true;
 							github.repos.getFromOrg(args, function(err, r){
 								if(r) vars.content = r;
 								res.render('project/project.jade', vars);
@@ -112,11 +128,6 @@ app.get('/projects/:route', function(req, res){
 	});
 });
 
-// app.get('/defineProject', function(req, res){
-
-// 	res.render('project/regForm.jade', {});
-
-// });
 
 app.get('/projects', function(req, res){
 
@@ -133,11 +144,6 @@ app.get('/projects', function(req, res){
 });
 
 
-// app.get('/contact', function(req, res){
-
-// 	res.render('contact.jade', {});
-
-// });
 
 ////////////////////////////////////////////////////////
 //post requests/////////////////////////////////////////
@@ -165,17 +171,18 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.post('/projects/:route/join', function(req, res){
+
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 				collection.findOne( {route: req.params.route}, function(err, project){
-					var repo = project.repoURL.split('github.com/')[1].split('/'),
-							args = (repo[1]) ? {user: repo[0]} : {org: repo[0]};
-					if(repo[1]){
-						args.repo = repo[1];
-						github.repos.star(args, function(err, response){
-							console.log(response);
-						});
-					}
+          console.log(project);
+          var contributors = project.contributors || [];
+          contributors.push(req.user);
+          project.contributors = contributors;
+          collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
+            if(err) console.log(err);
+            res.send();
+          });
 				});
 		});
 	});

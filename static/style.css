@@ -1619,6 +1619,15 @@ section.project .contributor {
   border-radius: 3px;
 }
 
+.project .contributor.local img {
+  filter: grayscale(1);
+  -webkit-filter: grayscale(1);
+  -moz-filter: grayscale(1);
+  -o-filter: grayscale(1);
+  -ms-filter: grayscale(1);
+  opacity: 0.5;
+}
+
 section.project ul.repo {
   list-style: none;
   border: 1px solid black;

@@ -97,7 +97,7 @@ github = new GitHubApi({
     // required
     version: "3.0.0",
     // optional
-    // debug: true,
+    debug: true,
     protocol: "https",
     host: "api.github.com",
     timeout: 5000
@@ -124,7 +124,8 @@ passport.use(new GitHubStrategy({
 			profile.token = accessToken;
 			github.authenticate({
 				type: "oauth",
-				token: accessToken
+				token: accessToken,
+        options: { scope: 'user,repo'}
 			});
 
 			Users.findOne({'githubId': profile.username}, function(err, user) {
