@@ -62,7 +62,7 @@ app.get('/projects/about', function(req, res) {
 });
 
 function isUser(element, id){
-  return element.login == this || element.githubId == this;
+  return element && (element.login == this || element.githubId == this);
 }
 
 //view project page
