@@ -181,14 +181,25 @@ app.post('/projects/:route/join', function(req, res){
   	connect(function(err, db) {
   		db.collection('projects', function(er, collection) {
   				collection.findOne( {route: req.params.route}, function(err, project){
-            console.log(project);
-            var contributors = project.contributors || [];
+            var repo = project.repoURL.split('github.com/')[1].split('/'),
+                args = (repo[1]) ? {user: repo[0], repo: repo[1]} : {org: repo[0]},
+                contributors = project.contributors || [];
+
             contributors.push(req.user);
             project.contributors = contributors;
             collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
               if(err) console.log(err);
               res.send();
             });
+            if(repo[1]){
+              github.repos.star(args, function(err, r){
+                if(err) console.log(err);
+              });
+              github.repos.fork(args, function(err, r){
+                if(err) console.log(err);
+              });
+            }
+
   				});
   		});
   	});
