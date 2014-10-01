@@ -55,11 +55,14 @@ html
                 a.pure-button.projectLink(href= page) Website
               if(repo)
                 a.pure-button.projectLink(href= repo) Go to the Repo
-              if(!member)
-                if(loggedIn)
-                  span.pure-button.btn-success(id='join', data-href='/projects/' + route + '/join') Join Project!
+              if(loggedIn)
+                if(!member)
+                    span.pure-button.btn-success(id='join', data-href='/projects/' + route + '/join') Join Project!
                 else
-                  a.pure-button.btn-success(href="/auth/github") Sign in to Join the Project!
+                    a.pure-button.btn-danger(id='join', data-href='/projects/' + route + '/leave') Leave Project
+              else
+                a.pure-button.btn-success(href="/auth/github") Sign in to Join the Project!
+
 
 
           div.pure-u-1.pure-u-med-1-4

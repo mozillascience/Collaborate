@@ -206,6 +206,29 @@ app.post('/projects/:route/join', function(req, res){
   });
 });
 
+app.post('/projects/:route/leave', function(req, res){
+  ensureAuthenticated(req, res, function(){
+    connect(function(err, db) {
+      db.collection('projects', function(er, collection) {
+          collection.findOne( {route: req.params.route}, function(err, project){
+            var contributors = project.contributors,
+                match = contributors.filter(isUser, req.user.githubId);
+            if(match){
+              var ind = contributors.indexOf(match[0]);
+              contributors.splice(ind, 1);
+            }
+            project.contributors = contributors;
+            collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
+              if(err) console.log(err);
+              res.send();
+            });
+
+          });
+      });
+    });
+  });
+});
+
 //send an email to the user indicated by _id, and the initiating user
 app.post('/sendEmail', function(req, res){
 	//open link to the database

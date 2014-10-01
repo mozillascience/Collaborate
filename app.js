@@ -139,12 +139,13 @@ passport.use(new GitHubStrategy({
 					user.company = profile._json.company;
 					user.location = profile._json.location;
 					user.email = profile._json.email;
+          user.name = profile._json.name || profile.username;
 
 					user.save();
 					return done(null, user);
 				} else { // record not in database
 					var reg = new Users({
-						name: profile._json.name,
+						name: profile._json.name || profile.username,
 						email: profile._json.email,
 						githubId: profile.username,
 						company: profile._json.company,
