@@ -155,7 +155,7 @@ app.get('/projects', function(req, res){
 
 
 app.get('/auth/github',
-  passport.authenticate('github'));
+  passport.authenticate('github', , { scope: 'repo,user' }));
 
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),

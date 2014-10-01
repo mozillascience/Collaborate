@@ -1184,6 +1184,10 @@ label {
     margin: 0 1em 1em 0;
 }
 
+.pure-button:hover {
+  background:#c9e3f6;
+}
+
 .pure-button-primary {
     background: white;
     color: #1f8dd6;
