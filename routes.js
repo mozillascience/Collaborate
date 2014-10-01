@@ -160,8 +160,8 @@ app.get('/auth/github',
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
+    // Successful authentication, redirect to referer.
+    res.redirect(req.headers.referer);
   });
 
 // Simple route middleware to ensure user is authenticated.
