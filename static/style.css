@@ -1546,13 +1546,18 @@ i.bigIcon{
 }
 
 .btn-success {
-  background: #61BA9E;
+  background: #62c462;
 }
-
+.btn-success:hover {
+  background: #51a351;
+}
 .btn-danger {
-  background: #d9534f;
+  background: #ee5f5b;
 }
 
+.btn-danger:hover {
+  background: #bd362f;
+}
 .pure-g {
   letter-spacing: normal; /* no idea why letter spacing gets messed up in  upper .content */
 }
