@@ -67,6 +67,14 @@ function isUser(element, id){
   return element && (element.login == this || element.githubId == this);
 }
 
+function removeUser(array, id){
+  var match = array.filter(isUser, id);
+  if(match){
+    array.splice(array.indexOf(match[0]), 1);
+  }
+  return array;
+}
+
 //view project page
 app.get('/projects/:route', function(req, res){
   req.session.cookie.path = req.originalUrl;
@@ -211,18 +219,11 @@ app.post('/projects/:route/leave', function(req, res){
     connect(function(err, db) {
       db.collection('projects', function(er, collection) {
           collection.findOne( {route: req.params.route}, function(err, project){
-            var contributors = project.contributors,
-                match = contributors.filter(isUser, req.user.githubId);
-            if(match){
-              var ind = contributors.indexOf(match[0]);
-              contributors.splice(ind, 1);
-            }
-            project.contributors = contributors;
+            project.contributors = removeUser(project.contributors, req.user.githubId);
             collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
               if(err) console.log(err);
               res.send();
             });
-
           });
       });
     });
