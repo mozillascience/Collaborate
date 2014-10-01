@@ -21,7 +21,8 @@ html
             div
               div.crop
                 img(src= imageName)
-            h3 PARTICIPANTS
+            if(contributors || local_contrib)
+              h3 PARTICIPANTS
             if(contributors)
               each contrib in contributors
                 a(href= contrib.html_url).pure-u-1-4.contributor
