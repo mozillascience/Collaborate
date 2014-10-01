@@ -124,8 +124,7 @@ passport.use(new GitHubStrategy({
 			profile.token = accessToken;
 			github.authenticate({
 				type: "oauth",
-				token: accessToken,
-        options: { scope: 'user,repo'}
+				token: accessToken
 			});
 
 			Users.findOne({'githubId': profile.username}, function(err, user) {

@@ -5,6 +5,7 @@ var ObjectID = require('mongodb').ObjectID;                 // tool for reconstr
  */
 
 app.get('/', function(req, res){
+  req.session.cookie.path = req.originalUrl;
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 			collection.find({}).toArray(function(err, results){
@@ -57,6 +58,7 @@ app.get('/error', function(req, res){
 
 // about page
 app.get('/projects/about', function(req, res) {
+  req.session.cookie.path = req.originalUrl;
   res.render('about.jade', {loggedIn: !!req.user,
                             user : req.user || undefined});
 });
@@ -67,10 +69,10 @@ function isUser(element, id){
 
 //view project page
 app.get('/projects/:route', function(req, res){
+  req.session.cookie.path = req.originalUrl;
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 				collection.findOne( {route: req.params.route}, function(err, project){
-          console.log(project);
 					var repo = project.repoURL.split('github.com/')[1].split('/'),
 							args = (repo[1]) ? {user: repo[0]} : {org: repo[0]},
 							vars = {
@@ -134,7 +136,7 @@ app.get('/projects/:route', function(req, res){
 
 
 app.get('/projects', function(req, res){
-
+  req.session.cookie.path = req.originalUrl;
 	connect(function(err, db) {
 		db.collection('projects', function(er, collection) {
 			collection.find( {}).toArray(function(err, results){
@@ -155,13 +157,13 @@ app.get('/projects', function(req, res){
 
 
 app.get('/auth/github',
-  passport.authenticate('github', , { scope: 'repo,user' }));
+  passport.authenticate('github', { scope: 'public_repo,user'}));
 
 app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/' }),
   function(req, res) {
-    // Successful authentication, redirect to referer.
-    res.redirect(req.headers.referer);
+    // Successful authentication, redirect to referrer.
+    res.redirect(req.session.cookie.path || (req.headers && req.headers.referer) || '/');
   });
 
 // Simple route middleware to ensure user is authenticated.
@@ -171,11 +173,11 @@ app.get('/auth/github/callback',
 // login page.
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next(); }
-	res.redirect('/login')
+	res.redirect('/auth/github')
 }
 
 app.post('/projects/:route/join', function(req, res){
-  if (req.isAuthenticated()) {
+  ensureAuthenticated(req, res, function(){
   	connect(function(err, db) {
   		db.collection('projects', function(er, collection) {
   				collection.findOne( {route: req.params.route}, function(err, project){
@@ -190,9 +192,7 @@ app.post('/projects/:route/join', function(req, res){
   				});
   		});
   	});
-  } else {
-    res.redirect('/auth/github')
-  }
+  });
 });
 
 //send an email to the user indicated by _id, and the initiating user
