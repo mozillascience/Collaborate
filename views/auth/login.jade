@@ -5,8 +5,8 @@ include ../partials/footer.jade
 doctype html5
 html
   head
-    +head() 
-  body.vanilla  
+    +head()
+  body.vanilla
     div.page-wrapper
       +header(loggedIn)
       section
@@ -22,7 +22,7 @@ html
               input(type='submit' value='Log In').pure-button
             a(href='/register', class='block-link') Sign Up
             a(href='/forgotPass', class='block-link') Recover Password
-      +footer()
+    +footer()
 
 
 

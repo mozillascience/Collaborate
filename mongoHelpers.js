@@ -2,7 +2,7 @@ module.exports = {
 //function to open new connection to db only when necessary
     'connect' : function(callback){
         if(database === null){
-            MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
+            MongoClient.connect(mongoUri, function(err, db) {
 
                 if(err) { return callback(err)};
                 database = db;  //persist the connected db

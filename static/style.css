@@ -1,24 +1,23 @@
 /* Typography */
 
+
 body {
    font-size: 1em;
    line-height: 1.5em;
-   font-family: "Monda";
+   font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
    color: #444;
-   padding: 0 0 50px;
+   padding: 0;
 }
 
 p {
    font-size: 1.25em;
    line-height: 1.6em;
    margin: 0 0 1.6em 0;
-   font-family: "Monda";
    font-weight: 400;
    font-style: normal;
 }
 
 h1 {
-   font-family: "Archivo Narrow";
    font-size: 2.5em;
    line-height: 1.095em;
    margin: 0.762em 0;
@@ -27,7 +26,6 @@ h1 {
 }
 
 h2 {
-   font-family: "Monda";
    font-size: 2em;
    line-height: 1.188em;
    margin: 2em 0 0.5em 0;
@@ -36,7 +34,6 @@ h2 {
 }
 
 h3 {
-   font-family: "Monda";
    font-size: 1.625em;
    line-height: 1.231em;
    margin: 2.462em 0 0.615em 0;
@@ -69,7 +66,6 @@ blockquote {
 }
 
 p.quote {
-   font-family: "Monda";
    line-height: 1.7;
    font-weight: 400;
    font-style: normal;
@@ -86,22 +82,19 @@ p.pquote {
 }
 
 a {
-   color: #444;
+   color: #248CC8;
    text-decoration: none;
-   border-bottom: 1px solid #000;
    outline: 0;
    cursor: pointer;
 }
 
 a:visited {
-   color: #444;
    text-decoration: none;
-   border-bottom: 1px solid #000;
    outline: 0;
 }
 
-a:hover {
-   border-bottom: none;
+a:hover{
+   color:#f47e3c;
 }
 
 a:active {
@@ -114,12 +107,10 @@ a:focus {
 
 em {
    font-style: normal;
-   font-family: "Archivo Narrow";
    font-weight: 400;
 }
 
 strong {
-   font-family: "Monda";
    font-weight: 700;
 }
 
@@ -147,7 +138,6 @@ a.a-sup {
 }
 
 p.header {
-   font-family: "Monda";
    font-size: 0.875em;
    line-height: 1em;
    margin: 0;
@@ -155,7 +145,6 @@ p.header {
 
 span.author {
    text-transform: uppercase;
-   font-family: "Archivo Narrow";
    font-weight: 400;
    font-style: normal;
 }
@@ -166,7 +155,6 @@ h2.header {
    border-top: 1px solid #444;
    padding-top: 0.8em;
    margin: 0;
-   font-family: "Archivo Narrow";
    font-weight: 400;
    font-style: normal;
 }
@@ -175,7 +163,6 @@ p.first-paragraph {
    font-size: 1.625em;
    line-height: 1.462em;
    margin: 2.462em 0 1.846em 0;
-   font-family: Monda;
    font-weight: 400;
    font-style: normal;
 }
@@ -202,7 +189,6 @@ ul.comment-list p {
 }
 
 p.comment-options {
-   font-family: "Monda";
    font-size: 1.25em;
    line-height: 1.6em;
    margin: 0 0 2.4em 0;
@@ -243,7 +229,6 @@ div.figure {
 }
 
 p.caption {
-   font-family: "Monda";
    text-align: center;
    font-size: 0.875em;
    line-height: 1em;
@@ -256,18 +241,15 @@ span.heading-small {
    font-weight: 400;
    font-size: 0.538em;
    margin-left: 0.5em;
-   font-family: Monda;
    font-style: normal;
 }
 
 span {
-   font-family: "Archivo Narrow";
    font-weight: 400;
    font-style: normal;
 }
 
 li {
-   font-family: "Monda";
    font-weight: 400;
    font-style: normal;
 }
@@ -1142,7 +1124,7 @@ br {
  */
 body {
     line-height: 1.7em;
-    color: #7f8c8d;
+    color: #515657;
     font-size: 13px;
 }
 
@@ -1154,6 +1136,8 @@ h5,
 h6,
 label {
     color: #34495e;
+    font-family:'Fira Sans',Arial,"Lucida Grande",sans-serif;
+    font-weight:300;
 }
 
 .pure-img-responsive {
@@ -1193,16 +1177,21 @@ label {
 
 /* Button Styles */
 .pure-button {
-    background-color: #1f8dd6;
-    color: white;
+    background-color: #c9e3f6;
+    color: black;
     padding: 0.5em 2em;
-    border-radius: 5px;
+    border-radius: 0;
+    margin: 0 1em 1em 0;
 }
 
-a.pure-button-primary {
+.pure-button:hover {
+  background:#c9e3f6;
+}
+
+.pure-button-primary {
     background: white;
     color: #1f8dd6;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 120%;
 }
 
@@ -1214,14 +1203,33 @@ a.pure-button-primary {
     text-align: center;
     box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
 }
-.home-menu.pure-menu-open {
-    background: #2d3e50;
-}
-.pure-menu.pure-menu-open.pure-menu-fixed {
+
+.pure-menu.pure-menu-open.pure-menu-horizontal {
     /* Fixed menus normally have a border at the bottom. */
     border-bottom: none;
-    /* I need a higher z-index here because of the scroll-over effect. */
-    z-index: 4;
+}
+
+.pure-menu-horizontal ul {
+  float:right;
+  clear:both;
+}
+
+.pure-menu-horizontal a {
+  border:1px solid clear;
+}
+
+.pure-menu-horizontal.navigation ul {
+  float:none;
+  background: #c9e3f6;
+  border-radius:1em;
+  margin:2em 0;
+}
+.pure-menu-horizontal.navigation a {
+  border-radius: 1em;
+}
+
+.pure-menu-horizontal.navigation .pure-menu-selected a {
+  border:1px solid #8ACEFF;
 }
 
 .home-menu .pure-menu-heading {
@@ -1247,10 +1255,9 @@ a.pure-button-primary {
 /* Footer Styles */
 
 .page-wrapper {
-	display: table;
-	height: 100%;
-	width: 70%;
-	margin: 0 auto;
+  width: 75%;
+  max-width:1170px;
+  margin: 0 auto;
 }
 
 .push {
@@ -1258,13 +1265,56 @@ a.pure-button-primary {
 }
 
 footer {
-	display: table-row;
-	height: 1px;
-	color: #000;
+  color: #FFF;
+  background:rgb(239, 64, 54);
+  margin: 50px 0 0;
+  border-top:12px solid #c9e3f6;
+  position:relative;
 }
 
-footer p{
-	margin: 0;
+footer .footer-design {
+  width:200px;
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: -25px;
+}
+
+footer p {
+  color: #CCC;
+}
+
+footer .footer-main {
+  padding: 50px 0;
+}
+
+footer .social-icons {
+  color: #55ACEE;
+}
+
+footer .email input {
+  padding: 0.5em;
+}
+
+footer .email .pure-button {
+  padding: 0.5em 1em;
+  margin:0 0.5em;
+  border-radius: 0;
+}
+
+::-webkit-input-placeholder {
+   font-style: italic;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   font-style: italic;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   font-style: italic;
+}
+
+:-ms-input-placeholder {
+   font-style: italic;
 }
 
 /* Header + Header Menu */
@@ -1273,50 +1323,14 @@ footer p{
   white-space: normal;
 }
 
-/* Splash Page Styles */
-.splash-container {
-    background: #1f8dd6;
-    z-index: 1;
-    overflow: hidden;
-    /* The following styles are required for the "scroll-over" effect */
-    width: 100%;
-    height: 88%;
-    top: 0;
-    left: 0;
-    position: fixed !important;
-
-    background: url('img/splash2.jpg');
-    background-size: cover;
-}
-
 .splash {
-    /* absolute center .splash within .splash-container */
-    width: 80%;
-    height: 50%;
-    margin: auto;
-    position: absolute;
-    top: 100px; left: 0; bottom: 0; right: 0;
     text-align: center;
-    text-transform: uppercase;
+    clear:both;
 }
 
-/* This is the main heading that appears on the blue section */
-.splash-head {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    border: 3px solid white;
-    padding: 1em 1.6em;
-    font-weight: 100;
-    border-radius: 5px;
-    line-height: 1em;
-}
-
-/* This is the subheading that appears on the blue section */
-.splash-subhead {
-    color: white;
-    letter-spacing: 0.05em;
-    opacity: 1;
+h1 {
+  font-size: 3em;
+  margin-bottom:0.2em;
 }
 
 .content-wrapper {
@@ -1347,6 +1361,7 @@ footer p{
 /* This is the class used for the content sub-headers (<h3>) */
 .content-subhead {
     color: #1f8dd6;
+    margin-top: 0;
 }
     .content-subhead i {
         margin-right: 7px;
@@ -1383,7 +1398,7 @@ footer p{
 }
 
 .vanilla .content-wrapper {
-	width: 70%;
+	/*width: 70%;*/
 	margin: 0 auto;
 	position: static;
 	margin-top: 12%;
@@ -1403,7 +1418,7 @@ div#registrationDetails{
   -moz-transition: opacity 0.3s, max-height 0.3s ease;
   -ms-transition: opacity 0.3s, max-height 0.3s ease;
   -o-transition: opacity 0.3s, max-height 0.3s ease;
-  transition: opacity 0.3s, max-height 0.3s ease; 
+  transition: opacity 0.3s, max-height 0.3s ease;
 }
 
 p#passError, p#disciplineError, p#languageError, p#affiliationError{
@@ -1438,7 +1453,10 @@ i.bigIcon{
 }
 
 .resultsUserStub {
-  border: 1px solid red;
+  padding: 0.5px 1em 1em;
+  background: none repeat scroll 0% 0% #EEE;
+  border-radius: 5px;
+  margin-bottom: 1em;
 }
 
 .resultsUserStub h3, .resultsUserStub h4 {
@@ -1471,7 +1489,6 @@ i.bigIcon{
 }
 
 .pure-form label span {
-  font-family: "Monda";
   font-weight: bold;
   font-size: 100%;
 }
@@ -1485,9 +1502,9 @@ i.bigIcon{
 @media (min-width: 48em) {
 
     body {
-        font-size: 16px;
+        font-size: 13px;
     }
-    
+
     .content {
         padding: 1em;
     }
@@ -1499,15 +1516,6 @@ i.bigIcon{
         .home-menu ul {
             float: right;
         }
-
-    .splash {
-        width: 50%;
-        height: 50%;
-    }
-
-    .splash-head {
-        font-size: 250%;
-    }
 
     .l-box-lrg {
         border: none;
@@ -1527,7 +1535,157 @@ i.bigIcon{
     }
 }
 
+/* pilot study styles */
 
+.fade {
+  color: #888;
+}
 
+.text-success {
+  color: #61BA9E;
+}
 
+.btn-success {
+  background: #62c462;
+}
+.btn-success:hover {
+  background: #51a351;
+}
+.btn-danger {
+  background: #ee5f5b;
+}
 
+.btn-danger:hover {
+  background: #bd362f;
+}
+.pure-g {
+  letter-spacing: normal; /* no idea why letter spacing gets messed up in  upper .content */
+}
+
+header, .ribbon, .ribbon-alt {
+    /*display: none;*/
+}
+
+.splash-head {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.content-contrast {
+  background-color: #c9e3f6;
+}
+
+.MSLlogo{
+  width:260px;
+  margin:1em 0;
+}
+
+/* weird pure css alignment stuff */
+#logo {
+  padding:0;
+  margin:0;
+  display:inline;
+}
+
+/* pilot study project page styles */
+
+.project {
+  margin: 2em 0 1em;
+}
+
+.project i.fa {
+  font-size:1.5em;
+  margin-right:0.4em;
+}
+
+.project .crop {
+  max-height:10em;
+  width:100%;
+  overflow:hidden;
+  border:1px solid #999;
+  margin-top:0.4em;
+}
+
+section.project .crop {
+  height:auto;
+}
+
+section.project label {
+  font-size:1.3em;
+}
+
+.project .sidebar {
+  padding-right:1.5em;
+  padding-bottom: 1em;
+}
+
+.project .project-links {
+  float:right;
+}
+
+section.project .contributor {
+  padding: 0 3px 3px 0;
+}
+
+.project .contributor img {
+  border-radius: 3px;
+}
+
+.project .contributor.local img {
+  filter: grayscale(1);
+  -webkit-filter: grayscale(1);
+  -moz-filter: grayscale(1);
+  -o-filter: grayscale(1);
+  -ms-filter: grayscale(1);
+  opacity: 0.5;
+}
+
+section.project ul.repo {
+  list-style: none;
+  border: 1px solid black;
+  font-size: 1em;
+  padding: 0;
+}
+
+.project .repo-info{
+  float:right;
+}
+
+.project .repo-info i {
+  font-size: 1em;
+  margin-left:1em;
+}
+
+.project .repo-info>div {
+  float:right;
+}
+
+section.project ul.repo li {
+  padding: 1em;
+  border-bottom: 1px solid #999;
+}
+
+section.project ul.repo li:last-child {
+  border:none;
+}
+
+section.project ul {
+  margin:0;
+}
+
+div.project h3 {
+  margin:0;
+  padding:0;
+  font-size:1.2em;
+  font-weight:bold;
+}
+
+.projects {
+  margin-top:4em;
+}
+
+ul.infolink {
+  list-style: none;
+  padding:0;
+}

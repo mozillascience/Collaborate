@@ -1,0 +1,34 @@
+include partials/head.jade
+include partials/footer.jade
+
+doctype html5
+html
+  head
+    +head()
+    
+  body.vanilla
+    div.projectHeader
+      h1.content-head Interdisciplinary Programming
+
+    div.page-wrapper
+      section.projectSection
+        div.content-wrapper
+
+          h2.content-head Contact Us
+
+          div.pure-g
+            div.l-box-lrg.pure-u-1
+              p Want to get on board with one of our projects, have a proposal for a new one, have some questions or just want to say hi?  Contact the team right here - looking forward to working with you!
+
+              form(method='post' action='/emailIP').pure-form.pure-form-stacked
+                fieldset
+                  label(for='email') Email Address
+                  input#email(type='email', name='email' required)
+                  label(for='message') Message
+                  textarea#message(cols=40, rows=10, name='body' required)
+                  button.pure-button(type='submit') Send Email
+
+    div.projectFooter
+      div Interdisciplinary Programming
+      div In partnership with <a href='http://mozillascience.org/'>Mozilla Science Lab</a>
+      div Header picture credit <a href='http://www.flickr.com/photos/amylovesyah/4528869007/'>Amy Loves Yah</a>

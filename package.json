@@ -1,39 +1,40 @@
 {
-  "name": "herokuHW",
-  "version": "0.0.0",
-  "description": "learning how to Heroku",
+  "name": "Contribute",
+  "version": "0.0.1",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BillMills/node-example.git"
-  },
-  "keywords": [
-    "example",
-    "heroku"
-  ],
-  "author": "BillMills",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/BillMills/node-example/issues"
-  },
   "dependencies": {
+    "connect-mongo": "0.4.1",
+    "dotenv": "^0.4.0",
     "express": "3.4.8",
-    "mongodb": "1.3.23",
+    "express-minify": "0.0.7",
+    "express-session": "1.0.2",
+    "github": "0.2.2",
     "jade": "1.1.5",
+    "mongodb": "1.3.23",
+    "mongoose": "^3.8.16",
+    "nodemailer": "0.6.1",
     "passport": "0.2.0",
-    "passport-local": "0.1.6",
-    "bcrypt":"0.7.7",
-    "nodemailer":"0.6.1",
-    "express-minify":"0.0.7",
-    "connect-redis":"1.4.7",
-    "express-session":"1.0.2"
-
+    "passport-github": "0.1.5",
+    "passport-local": "0.1.6"
   },
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.32"
-  }
+  },
+  "description": "interdisciplinary-programming",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mozillascience/interdisciplinary-programming.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mozillascience/interdisciplinary-programming/issues"
+  },
+  "homepage": "https://github.com/mozillascience/interdisciplinary-programming"
 }
