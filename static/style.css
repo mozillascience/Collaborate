@@ -1435,6 +1435,9 @@ p#passError, p#disciplineError, p#languageError, p#affiliationError{
   border-radius: 5px;
 }
 
+.ui-hidden{
+  display: none;
+}
 .block-link {
   float: left;
   margin-bottom: 1em;
@@ -1679,6 +1682,11 @@ div.project h3 {
   padding:0;
   font-size:1.2em;
   font-weight:bold;
+}
+
+.project p {
+  padding-bottom:0;
+  margin-bottom:0.8em;
 }
 
 .projects {

@@ -26,3 +26,4 @@ mixin stub(project)
         p= project.who
       else
         p= project.summary
+      span= 'Looking for: ' + project.wanted.join(', ')

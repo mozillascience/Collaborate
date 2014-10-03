@@ -184,7 +184,7 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/auth/github')
 }
 
-app.post('/projects/:route/join', function(req, res){
+app.get('/projects/:route/join', function(req, res){
   ensureAuthenticated(req, res, function(){
     connect(function(err, db) {
       db.collection('projects', function(er, collection) {
@@ -214,7 +214,7 @@ app.post('/projects/:route/join', function(req, res){
   });
 });
 
-app.post('/projects/:route/leave', function(req, res){
+app.get('/projects/:route/leave', function(req, res){
   ensureAuthenticated(req, res, function(){
     connect(function(err, db) {
       db.collection('projects', function(er, collection) {
@@ -224,6 +224,21 @@ app.post('/projects/:route/leave', function(req, res){
               if(err) console.log(err);
               res.send();
             });
+          });
+      });
+    });
+  });
+});
+
+app.post('/projects/:route/submit', function(req, res){
+  ensureAuthenticated(req, res, function(){
+    connect(function(err, db) {
+      db.collection('projects', function(er, collection) {
+          collection.findOne( {route: req.params.route}, function(err, project){
+
+
+
+            res.send();
           });
       });
     });
