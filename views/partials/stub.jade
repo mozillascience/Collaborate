@@ -23,7 +23,7 @@ mixin stub(project)
           img(src= image)
     div.pure-u-1.pure-u-med-3-4
       if(project.who)
-        p= project.who
+        p!= project.who
       else
-        p= project.summary
+        p!= project.summary
       span= 'Looking for: ' + project.wanted.join(', ')
