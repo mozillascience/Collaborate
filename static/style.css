@@ -1603,15 +1603,14 @@ header, .ribbon, .ribbon-alt {
 }
 
 .project .crop {
-  max-height:12em;
   width:100%;
   overflow:hidden;
   border:1px solid #999;
   margin-top:0.4em;
 }
 
-section.project .crop {
-  max-height:auto;
+.project a .crop {
+  max-height:12em;
 }
 
 section.project label {
