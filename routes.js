@@ -320,8 +320,8 @@ app.post('/projects/:route/join', function(req, res){
                   if(err) console.log(err);
                 });
               }
-              args.title = "Volunteer Introduction: " + req.user.githubId;
-              args.body = req.body.text;
+              args.title = req.user.name + ": new volunteer via Mozilla Science Lab Collaborate";
+              args.body = req.body.text + "<p><br><blockquote>This issue was created by @" + req.user.githubId + " via <a href='http://collaborate.mozillascience.org'>Mozilla Science Lab Collaborate</a></blockquote></p>";
               args.labels = ['New Volunteer'];
               github.issues.create(args, function(err, r){
                   if(err) console.log(err);
