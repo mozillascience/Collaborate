@@ -1680,6 +1680,10 @@ section.project ul {
   margin:0;
 }
 
+section.project ul ul {
+  font-size: 1em;
+}
+
 div.project h3 {
   margin:0;
   padding:0;
