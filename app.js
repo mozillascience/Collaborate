@@ -164,10 +164,16 @@ passport.use(new GitHubStrategy({
 
 // Passport session setup.
 passport.serializeUser(function(user, done) {
-	done(null, user);
+  done(null, user);
 });
 passport.deserializeUser(function(obj, done) {
-	done(null, obj);
+  if(obj){
+    github.authenticate({
+      type: "oauth",
+      token: obj.token
+    });
+  }
+  done(null, obj);
 });
 
 
