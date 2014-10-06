@@ -48,7 +48,10 @@ html
                 br
                 small= 'Looking for: ' + wanted.join(', ')
             div.pure-u-1
-              p.summary!= who
+              p.summary!= tweetable
+              if(who)
+                h3 WHO WE ARE
+                p.summary!= who
               if(what)
                 h3 WHAT WE'RE DOING
                 p.summary!= what

@@ -96,6 +96,7 @@ app.get('/projects/:route/edit', function(req, res){
                           institute: project.institute,
                           who: project.who || project.summary,
                           what: project.what,
+                          tweetable: project.tweetable || project.who || project.summary,
                           repo: project.repoURL,
                           page: project.pageURL,
                           moreInfo: project.moreinfo,
@@ -133,6 +134,7 @@ app.post('/projects/:route/save', function(req, res){
             project.institute = req.body.institute;
             project.who = req.body.who;
             project.what = req.body.what;
+            project.tweetable = req.body.tweetable;
             project.repoURL = req.body.repoURL;
             project.pageURL = req.body.pageURL;
             project.moreinfo = req.body.moreInfo;
@@ -169,6 +171,7 @@ app.get('/projects/:route', function(req, res){
                         institute: project.institute,
                         who: project.who || project.summary,
                         what: project.what,
+                        tweetable: project.tweetable || project.who || project.summary,
                         repo: project.repoURL,
                         page: project.pageURL,
                         moreInfo: project.moreinfo,
