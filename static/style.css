@@ -1626,6 +1626,10 @@ section.project label {
   float:right;
 }
 
+span.tag {
+  font-weight: bold;
+}
+
 section.project .contributor {
   padding: 0 3px 3px 0;
 }
