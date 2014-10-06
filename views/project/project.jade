@@ -48,10 +48,10 @@ html
                 br
                 small= 'Looking for: ' + wanted.join(', ')
             div.pure-u-1
-              p.summary= who
+              p.summary!= who
               if(what)
                 h3 WHAT WE'RE DOING
-                p.summary= what
+                p.summary!= what
 
             if(!member && loggedIn)
               div#join-project.ui-hidden
