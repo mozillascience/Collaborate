@@ -1405,7 +1405,7 @@ h1 {
 	margin-bottom: 12%;
 }
 
-.pure-form textarea {
+.project textarea {
   width: 100%;
   min-height: 7em;
 }
@@ -1603,7 +1603,7 @@ header, .ribbon, .ribbon-alt {
 }
 
 .project .crop {
-  max-height:10em;
+  max-height:12em;
   width:100%;
   overflow:hidden;
   border:1px solid #999;
@@ -1611,7 +1611,7 @@ header, .ribbon, .ribbon-alt {
 }
 
 section.project .crop {
-  height:auto;
+  max-height:auto;
 }
 
 section.project label {

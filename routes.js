@@ -75,14 +75,91 @@ function removeUser(array, id){
   return array;
 }
 
+function canEdit(project, user){
+  return (user && ((user.githubId == project.lead.githubId) || (user.githubId == process.env.ADMIN)));
+}
+
+
+//edit project page
+app.get('/projects/:route/edit', function(req, res){
+  ensureAuthenticated(req, res, function(){
+    connect(function(err, db) {
+      db.collection('projects', function(er, collection) {
+          collection.findOne( {route: req.params.route}, function(err, project){
+            var args = (project.github.repo) ? {user: project.github.user } : {org: project.github.user},
+                vars = {
+                          title: project.title,
+                          imageName: '/static/img/' + project.imageName,
+                          subjects: project.subjects,
+                          languages: project.languages,
+                          lead: project.lead,
+                          institute: project.institute,
+                          who: project.who || project.summary,
+                          what: project.what,
+                          repo: project.repoURL,
+                          page: project.pageURL,
+                          moreInfo: project.moreinfo,
+                          goals: project.goals,
+                          loggedIn: !!req.user,
+                          user: req.user,
+                          route: project.route,
+                          wanted: project.wanted
+                        };
+
+            if(canEdit(project, req.user)){
+              res.render('project/edit.jade', vars);
+            } else {
+              res.status(403).end();
+            }
+          });
+      });
+    });
+  });
+});
+
+
+//save project page
+app.post('/projects/:route/save', function(req, res){
+  connect(function(err, db) {
+    db.collection('projects', function(er, collection) {
+        collection.findOne( {route: req.params.route}, function(err, project){
+          var args = (project.github.repo) ? {user: project.github.user } : {org: project.github.user};
+          if(canEdit(project, req.user)){
+            //update project
+            project.title = req.body.title;
+            project.subjects = req.body.subjects;
+            project.languages = req.body.languages;
+            project.lead.name = req.body.lead;
+            project.institute = req.body.institute;
+            project.who = req.body.who;
+            project.what = req.body.what;
+            project.repoURL = req.body.repoURL;
+            project.pageURL = req.body.pageURL;
+            project.moreinfo = req.body.moreInfo;
+            project.goals = req.body.goals;
+            project.wanted = req.body.wanted;
+
+            collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
+              if(err) console.log(err);
+              res.send();
+            });
+          } else {
+            res.status(403).end();
+          }
+
+        });
+    });
+  });
+});
+
+
 //view project page
 app.get('/projects/:route', function(req, res){
   req.session.cookie.path = req.originalUrl;
   connect(function(err, db) {
     db.collection('projects', function(er, collection) {
         collection.findOne( {route: req.params.route}, function(err, project){
-          var repo = project.repoURL.split('github.com/')[1].split('/'),
-              args = (repo[1]) ? {user: repo[0]} : {org: repo[0]},
+          var args = (project.github.repo) ? {user: project.github.user } : {org: project.github.user},
               vars = {
                         title: project.title,
                         imageName: '/static/img/' + project.imageName,
@@ -96,10 +173,12 @@ app.get('/projects/:route', function(req, res){
                         page: project.pageURL,
                         moreInfo: project.moreinfo,
                         goals: project.goals,
-                        type: (args.org) ? 'org' : 'repo',
+                        type: (project.github.repo) ? 'repo' : 'org',
                         loggedIn: !!req.user,
                         user: req.user,
-                        route: project.route
+                        route: project.route,
+                        wanted: project.wanted,
+                        canEdit: canEdit(project, req.user)
                       };
           if(project.contributors) {
             vars.local_contrib = project.contributors;
@@ -110,14 +189,16 @@ app.get('/projects/:route', function(req, res){
           }
           if(req.user) vars.user = req.user;
           // WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
-          if(vars.type == 'repo') {
-            args.repo = repo[1];
+          if(project.github.repo) {
+            args.repo = project.github.repo;
             github.repos.getContributors(args, function(err, r){
               if(r) vars.contributors = r;
               args.path = '';
               if(r && req.user){
                 var match = r.filter(isUser, req.user.githubId);
-                if(match.length > 0) vars.member = true;
+                if(match.length > 0) {
+                  vars.member = true;
+                }
               }
               github.repos.getContent(args, function(err, r){
                 if(r) vars.content = r;
@@ -129,7 +210,9 @@ app.get('/projects/:route', function(req, res){
               if(r) vars.contributors = r;
               if(r && req.user){
                 var match = r.filter(isUser, req.user.githubId);
-                if(match.length > 0) vars.member = true;
+                if(match.length > 0) {
+                  vars.member = true;
+                }
               }
               github.repos.getFromOrg(args, function(err, r){
                 if(r) vars.content = r;
@@ -141,6 +224,7 @@ app.get('/projects/:route', function(req, res){
     });
   });
 });
+
 
 
 app.get('/projects', function(req, res){
@@ -184,61 +268,62 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/auth/github')
 }
 
-app.get('/projects/:route/join', function(req, res){
-  ensureAuthenticated(req, res, function(){
-    connect(function(err, db) {
-      db.collection('projects', function(er, collection) {
-          collection.findOne( {route: req.params.route}, function(err, project){
-            var repo = project.repoURL.split('github.com/')[1].split('/'),
-                args = (repo[1]) ? {user: repo[0], repo: repo[1]} : {org: repo[0]},
-                contributors = project.contributors || [];
-
-            contributors.push(req.user);
-            project.contributors = contributors;
-            collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
-              if(err) console.log(err);
-              res.send();
-            });
-            if(repo[1]){
-              github.repos.star(args, function(err, r){
-                if(err) console.log(err);
-              });
-              github.repos.fork(args, function(err, r){
-                if(err) console.log(err);
-              });
-            }
-
-          });
-      });
-    });
-  });
-});
 
 app.get('/projects/:route/leave', function(req, res){
   ensureAuthenticated(req, res, function(){
     connect(function(err, db) {
       db.collection('projects', function(er, collection) {
           collection.findOne( {route: req.params.route}, function(err, project){
-            project.contributors = removeUser(project.contributors, req.user.githubId);
-            collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
-              if(err) console.log(err);
+            if(project.contributors){
+              project.contributors = removeUser(project.contributors, req.user.githubId);
+              collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
+                if(err) console.log(err);
+                res.send();
+              });
+            }else{
               res.send();
-            });
+            }
           });
       });
     });
   });
 });
 
-app.post('/projects/:route/submit', function(req, res){
+app.post('/projects/:route/join', function(req, res){
   ensureAuthenticated(req, res, function(){
     connect(function(err, db) {
       db.collection('projects', function(er, collection) {
           collection.findOne( {route: req.params.route}, function(err, project){
+            var args = (project.github.repo) ? {user: project.github.user } : {org: project.github.user},
+                contributors = project.contributors || [];
 
+            contributors.push(req.user);
+            project.contributors = contributors;
+            collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
+              console.log(proj);
+              if(err) console.log(err);
+              res.send();
+            });
 
-
-            res.send();
+            if(project.github.repo){
+              args.repo = project.github.repo;
+              if(req.body.star === 'true'){
+                github.repos.star(args, function(err, r){
+                  if(err) console.log(err);
+                });
+              }
+              if(req.body.fork === 'true'){
+                github.repos.fork(args, function(err, r){
+                  if(err) console.log(err);
+                });
+              }
+              args.title = "Volunteer Introduction: " + req.user.githubId;
+              args.body = req.body.text;
+              args.labels = ['New Volunteer'];
+              github.issues.create(args, function(err, r){
+                  if(err) console.log(err);
+              });
+            }
           });
       });
     });
