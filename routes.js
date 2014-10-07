@@ -174,67 +174,71 @@ app.get('/projects/:route', function(req, res){
   connect(function(err, db) {
     db.collection('projects', function(er, collection) {
         collection.findOne( {route: req.params.route}, function(err, project){
-          var args = (project.github.repo) ? {user: project.github.user } : {org: project.github.user},
-              vars = {
-                        title: project.title,
-                        imageName: '/static/img/' + project.imageName,
-                        subjects: project.subjects,
-                        languages: project.languages,
-                        lead: project.lead,
-                        institute: project.institute,
-                        who: project.who || project.summary,
-                        what: project.what,
-                        tweetable: project.tweetable || project.who || project.summary,
-                        repo: project.repoURL,
-                        page: project.pageURL,
-                        moreInfo: project.moreinfo,
-                        goals: project.goals,
-                        type: (project.github.repo) ? 'repo' : 'org',
-                        loggedIn: !!req.user,
-                        user: req.user,
-                        route: project.route,
-                        wanted: project.wanted,
-                        canEdit: canEdit(project, req.user)
-                      };
-          if(project.contributors) {
-            vars.local_contrib = project.contributors;
-            if(req.user){
-              var match = vars.local_contrib.filter(isUser, req.user.githubId);
-              if(match.length > 0) vars.member = true;
-            }
-          }
-          if(req.user) vars.user = req.user;
-          // WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
-          if(project.github.repo) {
-            args.repo = project.github.repo;
-            github.repos.getContributors(args, function(err, r){
-              if(r) vars.contributors = r;
-              args.path = '';
-              if(r && req.user){
-                var match = r.filter(isUser, req.user.githubId);
-                if(match.length > 0) {
-                  vars.member = true;
-                }
-              }
-              github.repos.getContent(args, function(err, r){
-                if(r) vars.content = r;
-                res.render('project/project.jade', vars);
-              })
-            });
+          if(!project){
+            res.status(404).end();
           } else {
-            github.orgs.getPublicMembers(args, function(err, r){
-              if(r) vars.contributors = r;
-              if(r && req.user){
-                var match = r.filter(isUser, req.user.githubId);
-                if(match.length > 0) {
-                  vars.member = true;
-                }
+            var args = (project.github.repo) ? {user: project.github.user } : {org: project.github.user},
+                vars = {
+                          title: project.title,
+                          imageName: '/static/img/' + project.imageName,
+                          subjects: project.subjects,
+                          languages: project.languages,
+                          lead: project.lead,
+                          institute: project.institute,
+                          who: project.who || project.summary,
+                          what: project.what,
+                          tweetable: project.tweetable || project.who || project.summary,
+                          repo: project.repoURL,
+                          page: project.pageURL,
+                          moreInfo: project.moreinfo,
+                          goals: project.goals,
+                          type: (project.github.repo) ? 'repo' : 'org',
+                          loggedIn: !!req.user,
+                          user: req.user,
+                          route: project.route,
+                          wanted: project.wanted,
+                          canEdit: canEdit(project, req.user)
+                        };
+            if(project.contributors) {
+              vars.local_contrib = project.contributors;
+              if(req.user){
+                var match = vars.local_contrib.filter(isUser, req.user.githubId);
+                if(match.length > 0) vars.member = true;
               }
-              github.repos.getFromOrg(args, function(err, r){
-                if(r) vars.content = r;
-                res.render('project/project.jade', vars);
-              })
-            });
+            }
+            if(req.user) vars.user = req.user;
+            // WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
+            if(project.github.repo) {
+              args.repo = project.github.repo;
+              github.repos.getContributors(args, function(err, r){
+                if(r) vars.contributors = r;
+                args.path = '';
+                if(r && req.user){
+                  var match = r.filter(isUser, req.user.githubId);
+                  if(match.length > 0) {
+                    vars.member = true;
+                  }
+                }
+                github.repos.getContent(args, function(err, r){
+                  if(r) vars.content = r;
+                  res.render('project/project.jade', vars);
+                })
+              });
+            } else {
+              github.orgs.getPublicMembers(args, function(err, r){
+                if(r) vars.contributors = r;
+                if(r && req.user){
+                  var match = r.filter(isUser, req.user.githubId);
+                  if(match.length > 0) {
+                    vars.member = true;
+                  }
+                }
+                github.repos.getFromOrg(args, function(err, r){
+                  if(r) vars.content = r;
+                  res.render('project/project.jade', vars);
+                })
+              });
+            }
           }
         });
     });
