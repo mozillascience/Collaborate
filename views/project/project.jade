@@ -24,13 +24,15 @@ html
               h3 PARTICIPANTS
             if(contributors)
               each contrib in contributors
-                a(href= contrib.html_url).pure-u-1-4.contributor
+                a(href= contrib.html_url).tooltips.pure-u-1-4.contributor
                   img(src= contrib.avatar_url)
+                  span= contrib.login
             if(local_contrib)
               each localc in local_contrib
                 if(localc)
-                  a(href="https://github.com/" + localc.githubId).pure-u-1-4.contributor.local
+                  a(href="https://github.com/" + localc.githubId).tooltips.pure-u-1-4.contributor.local
                     img(src= localc.avatar_url)
+                    span= localc.githubId
           div.pure-u-med-3-4
             div.pure-u-1.pure-u-lrg-1-3
                 i.fa.fa-user

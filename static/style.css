@@ -1410,6 +1410,7 @@ h1 {
   min-height: 7em;
 }
 
+
 div#registrationDetails{
   opacity: 0;
   max-height: 0;
@@ -1703,4 +1704,40 @@ div.project h3 {
 ul.infolink {
   list-style: none;
   padding:0;
+}
+
+
+
+
+/* Tooltips */
+a.tooltips {
+  position: relative;
+}
+a.tooltips span {
+  position: absolute;
+  padding:0 5px;
+  color: #FFFFFF;
+  background: #000000;
+  text-align: center;
+  visibility: hidden;
+  border-radius: 5px;
+  font-size:8pt;
+}
+a.tooltips span:after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0; height: 0;
+  border-bottom: 5px solid #000000;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+a:hover.tooltips span {
+  visibility: visible;
+  opacity: 0.8;
+  top: 100%;
+  left: 0;
+  z-index: 999;
 }
