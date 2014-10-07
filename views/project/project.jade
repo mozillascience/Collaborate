@@ -41,6 +41,10 @@ html
                 i.fa.fa-map-marker
                 label= institute
             div.pure-u-1.pure-u-lrg-1-3
+              if(inactive == 'true')
+                i.fa.fa-circle.text-danger
+                label Closed Project
+              else
                 i.fa.fa-circle.text-success
                 label Active Project
             div.pure-u-1

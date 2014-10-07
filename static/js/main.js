@@ -58,6 +58,7 @@
           info = $('#pmoreinfo').children(),
           g = $('#pgoals').find('input'),
           wanted = $('#pwanted').val().split(', '),
+          active = $('#pactive').prop('checked'),
           moreInfo = [],
           goals = [];
       $(this).text('Saving...');
@@ -75,7 +76,6 @@
       g.each(function(){
         goals.push($(this).val());
       })
-
       $.ajax({
         url: $(this).data('href'),
         type:'POST',
@@ -92,7 +92,8 @@
           pageURL: pageURL,
           moreInfo: moreInfo,
           goals: goals,
-          wanted: wanted
+          wanted: wanted,
+          inactive: (!active)
         },
         success: function(msg){
           window.location.reload();

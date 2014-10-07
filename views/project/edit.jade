@@ -28,6 +28,12 @@ html
             div.pure-u-1.pure-u-lrg-1-3
                 i.fa.fa-map-marker
                 input(value= institute, id='pinstitute')
+            div.pure-u-1.pure-u-lrg-1-3
+              if(inactive == 'true')
+                input(type="checkbox" id="pactive")
+              else
+                input(type="checkbox" id="pactive" checked)
+              label  Active Project
             div.pure-u-1
               p
                 small= 'Tags: '

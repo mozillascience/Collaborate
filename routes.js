@@ -117,7 +117,8 @@ app.get('/projects/:route/edit', function(req, res){
                           loggedIn: !!req.user,
                           user: req.user,
                           route: project.route,
-                          wanted: project.wanted
+                          wanted: project.wanted,
+                          inactive: project.inactive
                         };
 
             if(canEdit(project, req.user)){
@@ -153,6 +154,7 @@ app.post('/projects/:route/save', function(req, res){
             project.moreinfo = req.body.moreInfo;
             project.goals = req.body.goals;
             project.wanted = req.body.wanted;
+            project.inactive = req.body.inactive;
 
             collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
               if(err) console.log(err);
@@ -197,6 +199,7 @@ app.get('/projects/:route', function(req, res){
                           user: req.user,
                           route: project.route,
                           wanted: project.wanted,
+                          inactive: project.inactive,
                           canEdit: canEdit(project, req.user)
                         };
             if(project.contributors) {
