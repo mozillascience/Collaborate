@@ -57,7 +57,7 @@ app.get('/error', function(req, res){
 
 
 // about page
-app.get('/projects/about', function(req, res) {
+app.get('/collaborate/about', function(req, res) {
   req.session.cookie.path = req.originalUrl;
   res.render('about.jade', {loggedIn: !!req.user,
                             user : req.user || undefined});
