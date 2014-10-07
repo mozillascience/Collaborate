@@ -206,7 +206,10 @@ app.get('/projects/:route', function(req, res){
               vars.local_contrib = project.contributors;
               if(req.user){
                 var match = vars.local_contrib.filter(isUser, req.user.githubId);
-                if(match.length > 0) vars.member = true;
+                if(match.length > 0) {
+                  vars.member = true;
+                  vars.canLeave = true;
+                }
               }
             }
             if(req.user) vars.user = req.user;
@@ -214,13 +217,12 @@ app.get('/projects/:route', function(req, res){
             if(project.github.repo) {
               args.repo = project.github.repo;
               github.repos.getContributors(args, function(err, r){
+                if(err) console.log(err);
                 if(r) vars.contributors = r;
                 args.path = '';
                 if(r && req.user){
                   var match = r.filter(isUser, req.user.githubId);
-                  if(match.length > 0) {
-                    vars.member = true;
-                  }
+                  if(match.length > 0)  vars.member = true;
                 }
                 github.repos.getContent(args, function(err, r){
                   if(r) vars.content = r;

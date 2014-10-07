@@ -92,7 +92,7 @@ html
               if(loggedIn)
                 if(!member)
                     span.pure-button.btn-success(id='join', data-href='/projects/' + route + '/join') Join Project!
-                else if(!canEdit)
+                else if(canLeave)
                     span.pure-button.btn-danger(id='leave', data-href='/projects/' + route + '/leave') Leave Project
                 if(canEdit)
                   a.pure-button.btn-danger(href='/projects/' + route + '/edit') Edit Project
