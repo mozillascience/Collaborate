@@ -120,7 +120,6 @@ passport.use(new GitHubStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
 		process.nextTick(function () {
-			console.log('User profile after github login - ', profile);
 			profile.token = accessToken;
 			github.authenticate({
 				type: "oauth",
@@ -128,8 +127,8 @@ passport.use(new GitHubStrategy({
 			});
 
 			Users.findOne({'githubId': profile.username}, function(err, user) {
-				console.log('Error any - ', err);
-				if(err) { // OAuth error
+        if(err) { // OAuth error
+  				console.log(err);
 					return done(err);
 				} else if (user) { // User record in the database
 
