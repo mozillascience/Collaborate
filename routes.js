@@ -6,7 +6,15 @@ var ObjectID = require('mongodb').ObjectID;                 // tool for reconstr
 
 app.get('/', function(req, res){
   req.session.cookie.path = req.originalUrl;
-  res.redirect('/collaborate');
+  connect(function(err, db) {
+    db.collection('projects', function(er, collection) {
+      collection.find({}).toArray(function(err, results){
+        res.render('index.jade', {loggedIn: !!req.user,
+                                  projects: results,
+                                  user : req.user || undefined});
+      });
+    });
+  });
 });
 
 app.get('/collaborate', function(req,res){
