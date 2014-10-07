@@ -85,7 +85,7 @@ function removeUser(array, id){
   if(match){
     array.splice(array.indexOf(match[0]), 1);
   }
-  return array;
+  return match;
 }
 
 function canEdit(project, user){
@@ -213,7 +213,6 @@ app.get('/projects/:route', function(req, res){
               }
             }
             if(req.user) vars.user = req.user;
-            // WHY IS IT SOMETIMES LINKED TO A REPO AND SOMETIMES AN ORG??!??!
             if(project.github.repo) {
               args.repo = project.github.repo;
               github.repos.getContributors(args, function(err, r){
@@ -300,7 +299,7 @@ app.get('/projects/:route/leave', function(req, res){
       db.collection('projects', function(er, collection) {
           collection.findOne( {route: req.params.route}, function(err, project){
             if(project.contributors){
-              project.contributors = removeUser(project.contributors, req.user.githubId);
+              removeUser(project.contributors, req.user.githubId);
               collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
                 if(err) console.log(err);
                 res.send();
@@ -325,7 +324,6 @@ app.post('/projects/:route/join', function(req, res){
             contributors.push(req.user);
             project.contributors = contributors;
             collection.update({route: req.params.route}, project, {w:1}, function(err, proj){
-              console.log(proj);
               if(err) console.log(err);
               res.send();
             });
