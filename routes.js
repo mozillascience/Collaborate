@@ -273,7 +273,7 @@ app.get('/projects', function(req, res){
 
 
 app.get('/auth/github',
-  passport.authenticate('github', { scope: 'public_repo,user'}));
+  passport.authenticate('github', { scope: 'public_repo'}));
 
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/' }),
