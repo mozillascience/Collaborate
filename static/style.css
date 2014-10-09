@@ -1301,6 +1301,17 @@ footer .email .pure-button {
   border-radius: 0;
 }
 
+footer ul {
+  padding:1em 0;
+  margin:0;
+  list-style:none;
+  font-size:1em;
+}
+
+footer ul a {
+  color:white;
+}
+
 ::-webkit-input-placeholder {
    font-style: italic;
 }

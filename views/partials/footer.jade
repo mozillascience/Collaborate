@@ -13,17 +13,56 @@ mixin footer
             a(href="https://www.mozilla.org/en-US/privacy/websites")
               small.fa-inverse Privacy Policy
             br
+            a(href="https://github.com/mozillascience/Collaborate/issues/new")
+              small.fa-inverse Report a Bug
+            br
             a(href="http://creativecommons.org/licenses/by/3.0/deed.en_US" target="_blank")
               i.fa.fa-cc.fa-inverse
               small.fa-inverse  Creative Commons Attribution 3.0 Unported License
-
         div.pure-u-1.pure-u-med-1-4
+          em Links
+          ul
+            li
+              a(href="http://mozillascience.org/") Home
+            li
+              a(href="http://mozillascience.org/about/") About
+            li
+              a(href="http://mozillascience.org/blog/") Blog
+            li
+              a(href="http://mozillascience.org/education/") Education
+            li
+              a(href="http://mozillascience.org/community/") Community
+
+        //div.pure-u-1.pure-u-med-1-4
           em FOLLOW US
           div
             a(href="https://twitter.com/MozillaScience" target="_blank").fa-stack.fa-lg
               i.fa.fa-circle.fa-stack-2x.social-icons
               i.fa.fa-twitter.fa-stack-1x.fa-inverse
-        div.pure-u-1.pure-u-med-1-4.email
+        div.pure-u-1.pure-u-med-1-4
+          em Keep in Touch
+          ul
+            li
+              a(href="http://forum.mozillascience.org/")
+                span.fa.fa-comments
+                span  Forum
+            li
+              a(href="https://twitter.com/MozillaScience")
+                span.fa.fa-twitter
+                span  @MozillaScience
+            li
+              a(href="https://mail.mozilla.org/listinfo/mozillascience")
+                span.fa.fa-envelope
+                span  Mailing List
+            li
+              a(href="https://wiki.mozilla.org/ScienceLab/Calls")
+                span.fa.fa-phone
+                span  Community Call
+            li
+              a(href="irc://irc.mozilla.org/sciencelab")
+                b irc
+                span  #ScienceLab
+        //div.pure-u-1.pure-u-med-1-4.email
           em MAILING LIST
           p
             small Occasional e-mail updates & news.
